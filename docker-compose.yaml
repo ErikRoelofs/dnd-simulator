@@ -1,0 +1,15 @@
+dnd5e-php:
+  image: zigweb/nginx-php7fpm:1.0
+  environment:
+    PROTOCOL: "http"
+    VIRTUAL_HOST: "dnd5e.dev"
+    USER_ID: 1000
+  volumes:
+    - .:/var/www/html
+
+composercli:
+  image: registry.hexia.io/zigweb/composer:4.0
+  volumes:
+    - ./Web:/var/www/html
+  environment:
+    USER_ID: 1000
