@@ -40,11 +40,16 @@ abstract class BaseCreature implements CreatureInterface
         return $this->ac;
     }
 
-    public function makeAttack(CreatureInterface $creature)
+    public function makeAttack(CreatureInterface $creature, Log $log)
     {
         $roll = mt_rand(1,20) + $this->attackBonus;
         if( $roll >= $creature->getAC()) {
-            $creature->takeDamage($this->doDamageRoll());
+            $dmg = $this->doDamageRoll();
+            $creature->takeDamage($dmg);
+            $log->write($this->getName() . ' hit ' . $creature->getName() . ' with a ' . $roll . ' for ' . $dmg, Log::MEDIUM_IMPORTANT);
+        }
+        else {
+            $log->write($this->getName() . ' missed ' . $creature->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
         }
     }
 

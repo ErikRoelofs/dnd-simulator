@@ -3,8 +3,21 @@
 class Faction
 {
 
+    /**
+     * @var Log
+     */
+    protected $log;
     protected $creatures = [];
     protected $corpses = [];
+
+    /**
+     * Faction constructor.
+     * @param $log
+     */
+    public function __construct(Log $log)
+    {
+        $this->log = $log;
+    }
 
     public function addCreature(CreatureInterface $creature) {
         $this->creatures[] = $creature;
@@ -34,6 +47,7 @@ class Faction
             if($creature->isDead()) {
                 $this->corpses[] = $creature;
                 unset($this->creatures[$key]);
+                $this->log->write($creature->getName() . ' has been downed.', Log::HIGH_IMPORTANT);
             }
         }
     }

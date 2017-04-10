@@ -2,6 +2,10 @@
 
 class Round
 {
+    /**
+     * @var Log
+     */
+    protected $log;
 
     /**
      * @var Faction
@@ -13,16 +17,18 @@ class Round
      */
     protected $b;
 
-    public function perform($initCounts, Faction $a, Faction $b) {
+    public function perform($initCounts, Faction $a, Faction $b, Log $log) {
+        $log->write('A new round starts', Log::HEADER);
         $this->a = $a;
         $this->b = $b;
+        $this->log = $log;
 
         $init = 30;
-        while($init > 0) {
+        while($init > -5) {
             if(isset($initCounts[$init])) {
                 foreach($initCounts[$init] as $creature) {
                     if(!$creature->isDead()) {
-                        $this->creatureTakesTurn($creature);
+                        $this->creatureTakesTurn($creature, $log);
                     }
                 }
             }
@@ -30,7 +36,9 @@ class Round
         }
     }
 
-    private function creatureTakesTurn(CreatureInterface $creature) {
+    private function creatureTakesTurn(CreatureInterface $creature, Log $log) {
+        $this->log->write($creature->getName() . ' is taking a turn', $log::NOTICE);
+
         if($this->a->memberOf($creature)) {
             $target = $this->b->getRandomCreature();
         }
@@ -40,7 +48,7 @@ class Round
         if(!$target) {
             return;
         }
-        $creature->makeAttack($target);
+        $creature->makeAttack($target, $this->log);
         $this->a->removeDead();
         $this->b->removeDead();
     }

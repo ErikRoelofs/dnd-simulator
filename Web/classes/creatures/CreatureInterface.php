@@ -8,7 +8,7 @@ interface CreatureInterface
     public function takeDamage($damage);
 
     public function getAC();
-    public function makeAttack(CreatureInterface $creature);
+    public function makeAttack(CreatureInterface $creature, Log $log);
 
     public function isDead();
     public function getInitiative();
