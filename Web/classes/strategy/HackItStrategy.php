@@ -2,13 +2,13 @@
 
 class HackItStrategy implements StrategyInterface
 {
-    public function doTurn(CreatureInterface $creature, Faction $myFaction, Faction $otherFaction, Log $log)
+    public function doTurn(Perspective $perspective)
     {
-        $target = $otherFaction->getRandomCreature();
+        $target = $perspective->getOtherFaction()->getRandomCreature();
         if(!$target) {
             return null;
         }
-        $creature->makeAttack($target, $log);
+        $perspective->getMe()->makeAttack($target, $perspective->getLog());
     }
 
 }

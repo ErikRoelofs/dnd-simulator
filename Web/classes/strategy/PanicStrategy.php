@@ -2,19 +2,19 @@
 
 class PanicStrategy implements StrategyInterface
 {
-    public function doTurn(CreatureInterface $creature, Faction $myFaction, Faction $otherFaction, Log $log)
+    public function doTurn(Perspective $perspective)
     {
-        if($creature->getCurrentHP() < $creature->getMaxHP()) {
-            $log->write($creature->getName() . ' is injured and flees the fight!', Log::MEDIUM_IMPORTANT);
-            $creature->takeDamage($creature->getCurrentHP());
+        if($perspective->getMe()->getCurrentHP() < $perspective->getMe()->getMaxHP()) {
+            $perspective->getLog()->write($perspective->getMe()->getName() . ' is injured and flees the fight!', Log::MEDIUM_IMPORTANT);
+            $perspective->getMe()->takeDamage($perspective->getMe()->getCurrentHP());
             return;
         }
 
-        $target = $otherFaction->getRandomCreature();
+        $target = $perspective->getOtherFaction()->getRandomCreature();
         if(!$target) {
             return null;
         }
-        $creature->makeAttack($target, $log);
+        $perspective->getMe()->makeAttack($target, $perspective->getLog());
     }
 
 }

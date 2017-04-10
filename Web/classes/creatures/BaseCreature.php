@@ -77,7 +77,7 @@ abstract class BaseCreature implements CreatureInterface
 
     public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log)
     {
-        $this->strategy->doTurn($this, $myFaction, $otherFaction, $log);
+        $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $log));
     }
 
 
