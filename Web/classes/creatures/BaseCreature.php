@@ -12,10 +12,11 @@ abstract class BaseCreature implements CreatureInterface
     protected $maxHP;
     protected $currentHP;
     protected $attackBonus;
+    protected $damage;
     protected $ac;
     protected $initiative;
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $initiative) {
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative) {
         $this->strategy = $strategy;
         $this->name = $name;
         $this->type = $type;
@@ -24,6 +25,7 @@ abstract class BaseCreature implements CreatureInterface
         $this->attackBonus = $attackBonus;
         $this->ac = $ac;
         $this->initiative = $initiative;
+        $this->damage = $damage;
     }
 
     public function getMaxHP() {
@@ -45,21 +47,6 @@ abstract class BaseCreature implements CreatureInterface
         return $this->ac;
     }
 
-    public function makeAttack(CreatureInterface $creature, Log $log)
-    {
-        $roll = mt_rand(1,20) + $this->attackBonus;
-        if( $roll >= $creature->getAC()) {
-            $dmg = $this->doDamageRoll();
-            $creature->takeDamage($dmg);
-            $log->write($this->getName() . ' hit ' . $creature->getName() . ' with a ' . $roll . ' for ' . $dmg, Log::MEDIUM_IMPORTANT);
-        }
-        else {
-            $log->write($this->getName() . ' missed ' . $creature->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
-        }
-    }
-
-    abstract protected function doDamageRoll();
-
     public function isDead()
     {
         return $this->currentHP <= 0;
@@ -80,5 +67,10 @@ abstract class BaseCreature implements CreatureInterface
         $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $log));
     }
 
+    public function getActions() {
+        $a = new ActionPool();
+        $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
+        return $a;
+    }
 
 }

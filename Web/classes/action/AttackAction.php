@@ -5,16 +5,18 @@ class AttackAction implements ActionInterface
 
     protected $attackBonus;
     protected $damage;
+    protected $attacks;
 
     /**
      * AttackAction constructor.
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($attackBonus, $damage)
+    public function __construct($attackBonus, $damage, $attacks = 1)
     {
         $this->attackBonus = $attackBonus;
         $this->damage = $damage;
+        $this->attacks = $attacks;
     }
 
 
@@ -34,7 +36,7 @@ class AttackAction implements ActionInterface
                 $cb = $this->damage;
                 $dmg = $cb();
                 $target->takeDamage($dmg);
-                $log->write($me->getName() . ' hit ' . $target->getName() . ' with a ' . $roll . ' for ' . $dmg, Log::MEDIUM_IMPORTANT);
+                $log->write($me->getName() . ' hit ' . $target->getName() . ' with a ' . $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
             }
             else {
                 $log->write($me->getName() . ' missed ' . $target->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
@@ -44,7 +46,11 @@ class AttackAction implements ActionInterface
 
     public function getTargetSlots()
     {
-        return [ ActionInterface::TARGET_CREATURE ];
+        $slots = [];
+        for( $i = 0 ; $i < $this->attacks ; $i++ ) {
+            $slots[] = ActionInterface::TARGET_CREATURE;
+        }
+        return $slots;
     }
 
 

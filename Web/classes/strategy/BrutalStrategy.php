@@ -10,7 +10,7 @@ class BrutalStrategy implements StrategyInterface
         $slots = $todo->getTargetSlots();
         $targets = [];
         foreach($slots as $slot) {
-            $targets[] = $this->findValidTarget($perspective, $slot);
+            $targets[] = $this->findTarget($perspective, $slot);
         }
 
         $todo->perform($perspective, $targets);
@@ -20,8 +20,17 @@ class BrutalStrategy implements StrategyInterface
         return $actions->getActions()[0];
     }
 
-    private function findValidTarget(Perspective $perspective, $slot) {
-        return $perspective->getOtherFaction()->getRandomCreature();
+    private function findTarget(Perspective $perspective, $slot) {
+        $list = $perspective->getOtherFaction()->getCreatures();
+        $lowestHP = INF;
+        $target = null;
+        foreach($list as $creature) {
+            if($creature->getCurrentHP() < $lowestHP) {
+                $lowestHP = $creature->getCurrentHP();
+                $target = $creature;
+            }
+        }
+        return $target;
     }
 
 }

@@ -11,10 +11,9 @@ interface CreatureInterface
 
     public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log);
 
-    public function makeAttack(CreatureInterface $creature, Log $log);
-
     public function isDead();
     public function getInitiative();
 
     public function getName();
+    public function getActions();
 }
