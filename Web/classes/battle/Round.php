@@ -36,19 +36,15 @@ class Round
         }
     }
 
-    private function creatureTakesTurn(CreatureInterface $creature, Log $log) {
-        $this->log->write($creature->getName() . ' is taking a turn', $log::NOTICE);
+    private function creatureTakesTurn(CreatureInterface $creature) {
+        $this->log->write($creature->getName() . ' is taking a turn', Log::NOTICE);
 
         if($this->a->memberOf($creature)) {
-            $target = $this->b->getRandomCreature();
+            $creature->takeTurn($this->a, $this->b, $this->log);
         }
         else {
-            $target = $this->a->getRandomCreature();
+            $creature->takeTurn($this->b, $this->a, $this->log);
         }
-        if(!$target) {
-            return;
-        }
-        $creature->makeAttack($target, $this->log);
         $this->a->removeDead();
         $this->b->removeDead();
     }

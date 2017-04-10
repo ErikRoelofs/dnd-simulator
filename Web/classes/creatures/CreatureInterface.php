@@ -8,6 +8,9 @@ interface CreatureInterface
     public function takeDamage($damage);
 
     public function getAC();
+
+    public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log);
+
     public function makeAttack(CreatureInterface $creature, Log $log);
 
     public function isDead();

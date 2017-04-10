@@ -70,4 +70,14 @@ abstract class BaseCreature implements CreatureInterface
         return $this->name . ' the ' . $this->type;
     }
 
+    public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log)
+    {
+        $target = $otherFaction->getRandomCreature();
+        if(!$target) {
+            return null;
+        }
+        $this->makeAttack($target, $log);
+    }
+
+
 }
