@@ -5,7 +5,7 @@ class Rogue extends BaseCreature
 
    public function __construct()
     {
-        parent::__construct('Tooky', 'Rogue', 9,14,5,3);
+        parent::__construct(new HackItStrategy(), 'Tooky', 'Rogue', 9,14,5,3);
     }
 
     protected function doDamageRoll()

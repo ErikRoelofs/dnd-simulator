@@ -5,7 +5,7 @@ class Goblin extends BaseCreature
 
    public function __construct($name)
     {
-        parent::__construct($name, 'Goblin', 7,15,4,2);
+        parent::__construct(new PanicStrategy(), $name, 'Goblin', 7,15,4,2);
     }
 
     protected function doDamageRoll()

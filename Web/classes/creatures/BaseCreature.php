@@ -3,6 +3,10 @@
 abstract class BaseCreature implements CreatureInterface
 {
 
+    /**
+     * @var StrategyInterface
+     */
+    protected $strategy;
     protected $name;
     protected $type;
     protected $maxHP;
@@ -11,7 +15,8 @@ abstract class BaseCreature implements CreatureInterface
     protected $ac;
     protected $initiative;
 
-    public function __construct($name, $type, $hp, $ac, $attackBonus, $initiative) {
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $initiative) {
+        $this->strategy = $strategy;
         $this->name = $name;
         $this->type = $type;
         $this->maxHP = $hp;
@@ -72,11 +77,7 @@ abstract class BaseCreature implements CreatureInterface
 
     public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log)
     {
-        $target = $otherFaction->getRandomCreature();
-        if(!$target) {
-            return null;
-        }
-        $this->makeAttack($target, $log);
+        $this->strategy->doTurn($this, $myFaction, $otherFaction, $log);
     }
 
 

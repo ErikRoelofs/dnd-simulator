@@ -5,6 +5,8 @@
 require_once __DIR__.'/classes/creatures/CreatureInterface.php';
 require_once __DIR__.'/classes/creatures/BaseCreature.php';
 
+require_once __DIR__.'/classes/strategy/StrategyInterface.php';
+
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 

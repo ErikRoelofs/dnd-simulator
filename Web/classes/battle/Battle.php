@@ -69,7 +69,7 @@ class Battle
             echo $this->getCreatureString($creature);
         }
         echo '<h1>Faction A downed:</h1>';
-        foreach($this->factionA->getCorpses() as $creature) {
+        foreach($this->factionA->getDowned() as $creature) {
             echo $this->getCreatureString($creature);
         }
 
@@ -78,7 +78,7 @@ class Battle
             echo $this->getCreatureString($creature);
         }
         echo '<h1>Faction B downed:</h1>';
-        foreach($this->factionB->getCorpses() as $creature) {
+        foreach($this->factionB->getDowned() as $creature) {
             echo $this->getCreatureString($creature);
         }
         echo '<h1>' . $this->roundCount . ' round elapsed</h1>';

@@ -8,7 +8,7 @@ class Faction
      */
     protected $log;
     protected $creatures = [];
-    protected $corpses = [];
+    protected $downed = [];
 
     /**
      * Faction constructor.
@@ -38,14 +38,14 @@ class Faction
         return $this->creatures;
     }
 
-    public function getCorpses() {
-        return $this->corpses;
+    public function getDowned() {
+        return $this->downed;
     }
 
     public function removeDead() {
         foreach($this->creatures as $key => $creature) {
             if($creature->isDead()) {
-                $this->corpses[] = $creature;
+                $this->downed[] = $creature;
                 unset($this->creatures[$key]);
                 $this->log->write($creature->getName() . ' has been downed.', Log::HIGH_IMPORTANT);
             }
@@ -58,7 +58,7 @@ class Faction
                 return true;
             }
         }
-        foreach($this->corpses as $member) {
+        foreach($this->downed as $member) {
             if($creature === $member) {
                 return true;
             }

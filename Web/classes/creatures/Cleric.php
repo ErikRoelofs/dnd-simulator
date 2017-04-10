@@ -5,7 +5,7 @@ class Cleric extends BaseCreature
 
    public function __construct()
     {
-        parent::__construct('Dwarfy', 'Cleric', 11,18,4,-1);
+        parent::__construct(new HackItStrategy(), 'Dwarfy', 'Cleric', 11,18,4,-1);
     }
 
     protected function doDamageRoll()

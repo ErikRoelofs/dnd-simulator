@@ -5,7 +5,7 @@ class Fighter extends BaseCreature
 
    public function __construct()
     {
-        parent::__construct('Jimbob', 'Fighter', 12,17,5,-1);
+        parent::__construct(new HackItStrategy(), 'Jimbob', 'Fighter', 12,17,5,-1);
     }
 
     protected function doDamageRoll()
