@@ -36,24 +36,31 @@ class BasicStrategy implements StrategyInterface
     private function getMostValuableActionAvailable(Perspective $perspective, ActionPool $actions, $actionsLeft) {
 
         $availableActions = $actions->getActions();
+        $value = [];
         foreach ($availableActions as $key => $action) {
             if (!isset($actionsLeft[$action->getType()])) {
                 unset($availableActions[$key]);
             }
+            else {
+                $value[spl_object_hash($action)] = 0;
+            }
         }
 
-        $high = 0;
-        $bestAction = null;
         foreach($this->goals as $goal) {
             foreach ($availableActions as $action) {
                 $targets = $this->findTargets($perspective, $action);
-                $impact = $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
-                if ($impact >= $high) {
-                    $bestAction = $action;
-                    $high = $impact;
-                }
+                $value[spl_object_hash($action)] += $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
             }
         }
+        $high = 0;
+        $bestAction = null;
+        foreach($availableActions as $action) {
+            if($value[spl_object_hash($action)] >= $high) {
+                $bestAction = $action;
+                $high = $value[spl_object_hash($action)];
+            }
+        }
+
         return $bestAction;
     }
 

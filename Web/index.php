@@ -70,7 +70,7 @@ $app->get('/test/batch', function() use ($app) {
     $wonByA = 0;
     $wonByB = 0;
     $avgDuration = 0;
-    for($i = 0 ; $i <= 5000 ; $i++ ) {
+    for($i = 0 ; $i <= 1000 ; $i++ ) {
         $battle = $app['testbattle']();
         $battle->doBattle();
         if($battle->getWinner() == 'faction A') {
