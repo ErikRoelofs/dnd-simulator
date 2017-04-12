@@ -24,14 +24,24 @@ class HealFriendsGoal implements GoalInterface
 
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
     {
+        $healNeeded = $this->healNeeded($perspective);
+        if($healNeeded === 0) { return 0; }
         $impact = 0;
         $outcomes = $action->predict($perspective, $targets);
+        // buggy: does not take into account one heal spell hitting & overhealing the same target twice
         foreach($outcomes as $modification) {
             if($modification instanceof HealDamageModification) {
-                $impact += $modification->getAmount();
+                $impact += min( $modification->getAmount(), $modification->getTarget()->getMaxHP() - $modification->getTarget()->getCurrentHP() );
             }
         }
-        return $impact;
+        return $impact / $healNeeded;
     }
 
+    private function healNeeded(Perspective $perspective) {
+        $needed = 0;
+        foreach($perspective->getMyFaction()->getCreatures() as $member) {
+            $needed += $member->getMaxHP() - $member->getCurrentHP();
+        }
+        return $needed;
+    }
 }

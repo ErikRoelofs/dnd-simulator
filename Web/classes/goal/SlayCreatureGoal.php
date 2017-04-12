@@ -33,11 +33,11 @@ class SlayCreatureGoal implements GoalInterface
         foreach($outcomes as $modification) {
             if($modification instanceof TakeDamageModification) {
                 if($modification->getTarget() === $this->creature) {
-                    $impact += $modification->getDamage();
+                    $impact += $modification->getDamage() / $this->creature->getCurrentHP();
                 }
             }
         }
-        return $impact;
+        return min(1, $impact);
     }
 
 }
