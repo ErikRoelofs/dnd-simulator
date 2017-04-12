@@ -25,10 +25,9 @@ class BasicStrategy implements StrategyInterface
             if(!$todo) {
                 throw new Exception("No actions :( You didn't add pass-actions to the pool");
             }
-            $targets = $this->findTargets($perspective, $todo);
 
-            $mods = array_merge($mods, $todo->perform($perspective, $targets));
-            unset($actionsLeft[ $todo->getType() ]);
+            $mods = array_merge($mods, $todo->getAction()->perform($perspective, $todo->getTargets()));
+            unset($actionsLeft[ $todo->getAction()->getType() ]);
         }
         return $mods;
     }
@@ -36,49 +35,59 @@ class BasicStrategy implements StrategyInterface
     private function getMostValuableActionAvailable(Perspective $perspective, ActionPool $actions, $actionsLeft) {
 
         $availableActions = $actions->getActions();
+        $executables = [];
         $value = [];
         foreach ($availableActions as $key => $action) {
             if (!isset($actionsLeft[$action->getType()])) {
                 unset($availableActions[$key]);
             }
-            else {
-                $value[spl_object_hash($action)] = 0;
-            }
         }
 
         foreach($this->goals as $goal) {
             foreach ($availableActions as $action) {
-                $targets = $this->findTargets($perspective, $action);
-                $value[spl_object_hash($action)] += $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
+                $targetSets = $this->findAllTargetSets($perspective, $action);
+                foreach($targetSets as $targets) {
+                    $executable = new ExecutableAction($action, $targets);
+                    if(!isset($value[spl_object_hash($executable)])) {
+                        $value[spl_object_hash($executable)] = 0;
+                    }
+                    $value[spl_object_hash($executable)] += $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
+                    $executables[] = $executable;
+                }
             }
         }
         $high = 0;
-        $bestAction = null;
-        foreach($availableActions as $action) {
-            if($value[spl_object_hash($action)] >= $high) {
-                $bestAction = $action;
-                $high = $value[spl_object_hash($action)];
+        $bestExecutable = null;
+        foreach($executables as $executable) {
+            if($value[spl_object_hash($executable)] >= $high) {
+                $bestExecutable = $executable;
+                $high = $value[spl_object_hash($executable)];
             }
         }
 
-        return $bestAction;
+        return $bestExecutable;
     }
 
-    private function findTargets(Perspective $perspective, ActionInterface $action) {
-        $slots = $action->getTargetSlots();
-        $targets = [];
-        foreach ($slots as $slot) {
-            $targets[] = $this->findTarget($perspective, $slot);
+    private function findAllTargetSets(Perspective $perspective, ActionInterface $action) {
+        $sets = [];
+        // return the empty set if this action has no slots; it can still be performed.
+        if($action->getTargetSlots() === []) {
+            return $sets = [[]];
         }
-        return $targets;
+        foreach($action->getTargetSlots() as $slot) {
+            foreach( $this->findAllTargets($perspective, $slot) as $target ) {
+                $sets[] = [ $target ];
+            }
+        }
+        return $sets;
     }
 
-    private function findTarget(Perspective $perspective, $slot) {
+    private function findAllTargets(Perspective $perspective, $slot) {
         if($slot === ActionInterface::TARGET_ENEMY_CREATURE) {
-            return (new FindWeakestEnemy())->findTarget($perspective);
+            return $perspective->getOtherFaction()->getCreatures();
         }
         else {
-            return (new FindMostWoundedFriendly())->findTarget($perspective);
+            return $perspective->getMyFaction()->getCreatures();
         }
     }
 
