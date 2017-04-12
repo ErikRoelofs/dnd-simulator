@@ -3,6 +3,8 @@
 class SlayCreatureGoal implements GoalInterface
 {
 
+    protected $importance;
+
     /**
      * @var CreatureInterface
      */
@@ -11,15 +13,17 @@ class SlayCreatureGoal implements GoalInterface
     /**
      * SlayCreatureGoal constructor.
      * @param CreatureInterface $creature
+     * @param $importance
      */
-    public function __construct(CreatureInterface $creature)
+    public function __construct(CreatureInterface $creature, $importance)
     {
         $this->creature = $creature;
+        $this->importance = $importance;
     }
 
     public function getImportance()
     {
-        return 1;
+        return $this->importance;
     }
 
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)

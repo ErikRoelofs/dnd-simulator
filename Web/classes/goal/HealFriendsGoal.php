@@ -1,11 +1,25 @@
 <?php
 
-class HealFirstSmashLaterGoal implements GoalInterface
+class HealFriendsGoal implements GoalInterface
 {
 
+    protected $importance;
+
+    /**
+     * HealFirstSmashLaterGoal constructor.
+     * @param $importance
+     */
+    public function __construct($importance)
+    {
+        $this->importance = $importance;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getImportance()
     {
-        return 1;
+        return $this->importance;
     }
 
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
@@ -13,11 +27,8 @@ class HealFirstSmashLaterGoal implements GoalInterface
         $impact = 0;
         $outcomes = $action->predict($perspective, $targets);
         foreach($outcomes as $modification) {
-            if($modification instanceof TakeDamageModification) {
-                $impact += $modification->getDamage();
-            }
             if($modification instanceof HealDamageModification) {
-                $impact += 1000 * $modification->getAmount();
+                $impact += $modification->getAmount();
             }
         }
         return $impact;

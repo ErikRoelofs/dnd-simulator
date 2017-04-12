@@ -3,6 +3,18 @@
 class BasicStrategy implements StrategyInterface
 {
 
+    protected $goals = [];
+
+    /**
+     * BasicStrategy constructor.
+     * @param array $goals
+     */
+    public function __construct(array $goals)
+    {
+        $this->goals = $goals;
+    }
+
+
     public function doTurn(Perspective $perspective)
     {
         $mods = [];
@@ -22,22 +34,24 @@ class BasicStrategy implements StrategyInterface
     }
 
     private function getMostValuableActionAvailable(Perspective $perspective, ActionPool $actions, $actionsLeft) {
-        $goal = new HealFirstSmashLaterGoal();
+
         $availableActions = $actions->getActions();
-        foreach($availableActions as $key => $action) {
-            if(!isset($actionsLeft[$action->getType()])) {
+        foreach ($availableActions as $key => $action) {
+            if (!isset($actionsLeft[$action->getType()])) {
                 unset($availableActions[$key]);
             }
         }
 
         $high = 0;
         $bestAction = null;
-        foreach($availableActions as $action) {
-            $targets = $this->findTargets($perspective, $action);
-            $impact = $goal->calculateImpact($perspective, $action, $targets);
-            if($impact >= $high) {
-                $bestAction = $action;
-                $high = $impact;
+        foreach($this->goals as $goal) {
+            foreach ($availableActions as $action) {
+                $targets = $this->findTargets($perspective, $action);
+                $impact = $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
+                if ($impact >= $high) {
+                    $bestAction = $action;
+                    $high = $impact;
+                }
             }
         }
         return $bestAction;

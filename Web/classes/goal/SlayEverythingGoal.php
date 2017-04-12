@@ -3,9 +3,16 @@
 class SlayEverythingGoal implements GoalInterface
 {
 
+    protected $importance;
+
+    public function __construct($importance)
+    {
+        $this->importance = $importance;
+    }
+
     public function getImportance()
     {
-        return 1;
+        return $this->importance;
     }
 
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
