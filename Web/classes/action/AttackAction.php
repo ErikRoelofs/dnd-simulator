@@ -29,19 +29,21 @@ class AttackAction implements ActionInterface
     {
         $me = $perspective->getMe();
         $log = $perspective->getLog();
+        $mods = [];
         foreach($targets as $target) {
-            if(!$target) { return; }
+            if(!$target) { continue; }
             $roll = mt_rand(1,20) + $this->attackBonus;
             if( $roll >= $target->getAC()) {
                 $cb = $this->damage;
                 $dmg = $cb();
-                $target->takeDamage($dmg);
+                $mods[] = new TakeDamageModification($target, $dmg);
                 $log->write($me->getName() . ' hit ' . $target->getName() . ' with a ' . $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
             }
             else {
                 $log->write($me->getName() . ' missed ' . $target->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
             }
         }
+        return $mods;
     }
 
     public function getTargetSlots()

@@ -5,6 +5,7 @@ class BasicStrategy implements StrategyInterface
 
     public function doTurn(Perspective $perspective)
     {
+        $mods = [];
         $actionsLeft = [ ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_MOVEMENT => true, ActionInterface::TYPE_BONUS => true];
         while(count($actionsLeft)) {
             $actions = $perspective->getMe()->getActions();
@@ -19,9 +20,10 @@ class BasicStrategy implements StrategyInterface
                 $targets[] = $this->findTarget($perspective, $slot);
             }
 
-            $todo->perform($perspective, $targets);
+            $mods = array_merge($mods, $todo->perform($perspective, $targets));
             unset($actionsLeft[ $todo->getType() ]);
         }
+        return $mods;
     }
 
     private function getMostValuableActionAvailable(ActionPool $actions, $actionsLeft) {

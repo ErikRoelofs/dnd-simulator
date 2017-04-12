@@ -28,7 +28,12 @@ class Round
             if(isset($initCounts[$init])) {
                 foreach($initCounts[$init] as $creature) {
                     if(!$creature->isDead()) {
-                        $this->creatureTakesTurn($creature, $log);
+                        $mods = $this->creatureTakesTurn($creature, $log);
+                        foreach($mods as $mod) {
+                            $mod->execute();
+                        }
+                        $this->a->removeDead();
+                        $this->b->removeDead();
                     }
                 }
             }
@@ -40,12 +45,10 @@ class Round
         $this->log->write($creature->getName() . ' is taking a turn', Log::NOTICE);
 
         if($this->a->memberOf($creature)) {
-            $creature->takeTurn($this->a, $this->b, $this->log);
+            return $creature->takeTurn($this->a, $this->b, $this->log);
         }
         else {
-            $creature->takeTurn($this->b, $this->a, $this->log);
+            return $creature->takeTurn($this->b, $this->a, $this->log);
         }
-        $this->a->removeDead();
-        $this->b->removeDead();
     }
 }

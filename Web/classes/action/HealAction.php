@@ -25,13 +25,15 @@ class HealAction implements ActionInterface
     {
         $me = $perspective->getMe();
         $log = $perspective->getLog();
+        $mods = [];
         foreach($targets as $target) {
-            if(!$target) { return; }
+            if(!$target) { continue; }
             $cb = $this->amount;
             $heal = $cb();
-            $target->healDamage($heal);
+            $mods[] = new HealDamageModification($target, $heal);
             $log->write($me->getName() . ' healed ' . $target->getName() . ' for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
         }
+        return $mods;
     }
 
     public function getTargetSlots()

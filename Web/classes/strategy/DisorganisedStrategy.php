@@ -13,7 +13,7 @@ class DisorganisedStrategy implements StrategyInterface
             $targets[] = $this->findTarget($perspective, $slot);
         }
 
-        $todo->perform($perspective, $targets);
+        return $todo->perform($perspective, $targets);
     }
 
     private function getMostDamagingAvailable(ActionPool $actions) {

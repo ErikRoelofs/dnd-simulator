@@ -10,6 +10,7 @@ class PassBonusAction implements ActionInterface
 
     public function perform(Perspective $perspective, $targets)
     {
+        return [];
     }
 
     public function getTargetSlots()
