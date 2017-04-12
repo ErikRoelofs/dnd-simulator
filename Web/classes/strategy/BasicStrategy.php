@@ -38,6 +38,15 @@ class BasicStrategy implements StrategyInterface
     }
 
     private function findTarget(Perspective $perspective, $slot) {
+        if($slot === ActionInterface::TARGET_ENEMY_CREATURE) {
+            return $this->findEnemy($perspective);
+        }
+        else {
+            return $this->findAlly($perspective);
+        }
+    }
+
+    private function findEnemy(Perspective $perspective) {
         $list = $perspective->getOtherFaction()->getCreatures();
         $lowestHP = INF;
         $target = null;
@@ -49,5 +58,19 @@ class BasicStrategy implements StrategyInterface
         }
         return $target;
     }
+
+    private function findAlly(Perspective $perspective) {
+        $list = $perspective->getMyFaction()->getCreatures();
+        $lowestHP = INF;
+        $target = null;
+        foreach($list as $creature) {
+            if($creature->getCurrentHP() < $lowestHP) {
+                $lowestHP = $creature->getCurrentHP();
+                $target = $creature;
+            }
+        }
+        return $target;
+    }
+
 
 }

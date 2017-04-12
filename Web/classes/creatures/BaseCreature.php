@@ -79,7 +79,7 @@ abstract class BaseCreature implements CreatureInterface
     public function healDamage($heal)
     {
         $this->currentHP += $heal;
-        $this->currentHP = max($this->currentHP, $this->maxHP);
+        $this->currentHP = min($this->currentHP, $this->maxHP);
     }
 
 }
