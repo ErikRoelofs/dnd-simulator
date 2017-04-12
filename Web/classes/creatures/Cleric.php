@@ -19,5 +19,4 @@ class Cleric extends BaseCreature
         return $a;
     }
 
-
 }
