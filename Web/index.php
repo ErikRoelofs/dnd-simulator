@@ -28,11 +28,27 @@ $app['testbattle'] = function() {
         $fac1->addCreature(new Rogue());
         $fac1->addCreature(new Wizard());
         $fac2 = new Faction($log);
+
         $fac2->addCreature(new Goblin('Skiv'));
         $fac2->addCreature(new Goblin('Nork'));
         $fac2->addCreature(new Goblin('Brak'));
         $fac2->addCreature(new Goblin('Glum'));
         $fac2->addCreature(new Goblin('Tschu'));
+        /*
+        $fac2->addCreature(new Skeleton('Bones'));
+        $fac2->addCreature(new Skeleton('Rattles'));
+        $fac2->addCreature(new Skeleton('Clatters'));
+        $fac2->addCreature(new Skeleton('Chatters'));
+        $fac2->addCreature(new Skeleton('Jim'));
+
+        $fac2->addCreature(new Hobgoblin('Bluk'));
+        $fac2->addCreature(new Hobgoblin('Pluk'));
+        $fac2->addCreature(new Hobgoblin('Ruk'));
+        $fac2->addCreature(new Hobgoblin('Tuk'));
+        $fac2->addCreature(new Hobgoblin('Nuk'));
+
+        $fac2->addCreature(new Ogre("Dumfuk"));
+*/
 
         $battle = new Battle($log, $fac1, $fac2);
         return $battle;

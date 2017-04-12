@@ -6,6 +6,7 @@ interface CreatureInterface
     public function getMaxHP();
     public function getCurrentHP();
     public function takeDamage($damage);
+    public function healDamage($heal);
 
     public function getAC();
 
@@ -16,4 +17,5 @@ interface CreatureInterface
 
     public function getName();
     public function getActions();
+
 }

@@ -7,6 +7,7 @@ interface ActionInterface
     const TYPE_ACTION = 3;
 
     const TARGET_CREATURE = 100;
+    const TARGET_FRIENDLY_CREATURE = 101;
 
     public function getType();
 

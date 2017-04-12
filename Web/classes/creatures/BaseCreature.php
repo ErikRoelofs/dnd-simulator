@@ -70,7 +70,16 @@ abstract class BaseCreature implements CreatureInterface
     public function getActions() {
         $a = new ActionPool();
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
+        $a->addAction(new PassAction());
+        $a->addAction(new PassBonusAction());
+        $a->addAction(new PassMovementAction());
         return $a;
+    }
+
+    public function healDamage($heal)
+    {
+        $this->currentHP += $heal;
+        $this->currentHP = max($this->currentHP, $this->maxHP);
     }
 
 }
