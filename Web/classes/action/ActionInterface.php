@@ -14,5 +14,7 @@ interface ActionInterface
 
     public function perform(Perspective $perspective, $targets);
 
+    public function predict(Perspective $perspective, $targets);
+
     public function getTargetSlots();
 }

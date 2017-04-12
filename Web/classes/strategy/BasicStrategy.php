@@ -9,16 +9,11 @@ class BasicStrategy implements StrategyInterface
         $actionsLeft = [ ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_MOVEMENT => true, ActionInterface::TYPE_BONUS => true];
         while(count($actionsLeft)) {
             $actions = $perspective->getMe()->getActions();
-            $todo = $this->getMostValuableActionAvailable($actions, $actionsLeft);
+            $todo = $this->getMostValuableActionAvailable($perspective, $actions, $actionsLeft);
             if(!$todo) {
                 throw new Exception("No actions :( You didn't add pass-actions to the pool");
             }
-
-            $slots = $todo->getTargetSlots();
-            $targets = [];
-            foreach ($slots as $slot) {
-                $targets[] = $this->findTarget($perspective, $slot);
-            }
+            $targets = $this->findTargets($perspective, $todo);
 
             $mods = array_merge($mods, $todo->perform($perspective, $targets));
             unset($actionsLeft[ $todo->getType() ]);
@@ -26,7 +21,8 @@ class BasicStrategy implements StrategyInterface
         return $mods;
     }
 
-    private function getMostValuableActionAvailable(ActionPool $actions, $actionsLeft) {
+    private function getMostValuableActionAvailable(Perspective $perspective, ActionPool $actions, $actionsLeft) {
+        $goal = new HealFirstSmashLaterGoal();
         $availableActions = $actions->getActions();
         foreach($availableActions as $key => $action) {
             if(!isset($actionsLeft[$action->getType()])) {
@@ -34,9 +30,26 @@ class BasicStrategy implements StrategyInterface
             }
         }
 
+        $high = 0;
+        $bestAction = null;
         foreach($availableActions as $action) {
-            return $action;
+            $targets = $this->findTargets($perspective, $action);
+            $impact = $goal->calculateImpact($perspective, $action, $targets);
+            if($impact >= $high) {
+                $bestAction = $action;
+                $high = $impact;
+            }
         }
+        return $bestAction;
+    }
+
+    private function findTargets(Perspective $perspective, ActionInterface $action) {
+        $slots = $action->getTargetSlots();
+        $targets = [];
+        foreach ($slots as $slot) {
+            $targets[] = $this->findTarget($perspective, $slot);
+        }
+        return $targets;
     }
 
     private function findTarget(Perspective $perspective, $slot) {

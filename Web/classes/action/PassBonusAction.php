@@ -18,4 +18,9 @@ class PassBonusAction implements ActionInterface
         return [];
     }
 
+    public function predict(Perspective $perspective, $targets)
+    {
+        return [];
+    }
+
 }

@@ -8,6 +8,8 @@ require_once __DIR__.'/classes/creatures/BaseCreature.php';
 require_once __DIR__.'/classes/strategy/StrategyInterface.php';
 require_once __DIR__.'/classes/action/ActionInterface.php';
 require_once __DIR__.'/classes/targeting/TargetingInterface.php';
+require_once __DIR__.'/classes/modification/ModificationInterface.php';
+require_once __DIR__.'/classes/goal/GoalInterface.php';
 
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);

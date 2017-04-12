@@ -41,5 +41,21 @@ class HealAction implements ActionInterface
         return [ ActionInterface::TARGET_FRIENDLY_CREATURE ];
     }
 
+    public function predict(Perspective $perspective, $targets)
+    {
+        $mods = [];
+        $healAvg = 0;
+        foreach($targets as $target) {
+            if(!$target) { continue; }
+            $cb = $this->amount;
+            for($i = 1; $i < 50; $i++ ) {
+                $heal = $cb();
+                $healAvg = (($healAvg * $i) + $heal ) / ( $i + 1 );
+            }
+            $mods[] = new HealDamageModification($target, $healAvg);
+        }
+        return $mods;
+    }
+
 
 }

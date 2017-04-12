@@ -55,5 +55,23 @@ class AttackAction implements ActionInterface
         return $slots;
     }
 
+    public function predict(Perspective $perspective, $targets)
+    {
+        $mods = [];
+        foreach($targets as $target) {
+            if(!$target) { continue; }
+            $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
+            $avgDmg = 0;
+            $cb = $this->damage;
+            for($i = 1; $i < 50; $i++ ) {
+                $damage = $cb();
+                $avgDmg = (($avgDmg * $i) + $damage ) / ( $i + 1 );
+            }
+            $avgDmg *= $chanceToHit;
+            $mods[] = new TakeDamageModification($target, $avgDmg);
+        }
+        return $mods;
+    }
+
 
 }
