@@ -50,7 +50,7 @@ class AttackAction implements ActionInterface
     {
         $slots = [];
         for( $i = 0 ; $i < $this->attacks ; $i++ ) {
-            $slots[] = ActionInterface::TARGET_CREATURE;
+            $slots[] = ActionInterface::TARGET_ENEMY_CREATURE;
         }
         return $slots;
     }

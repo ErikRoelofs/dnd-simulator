@@ -69,21 +69,35 @@ class BasicStrategy implements StrategyInterface
     }
 
     private function findAllTargetSets(Perspective $perspective, ActionInterface $action) {
-        $sets = [];
         // return the empty set if this action has no slots; it can still be performed.
         if($action->getTargetSlots() === []) {
-            return $sets = [[]];
+            return [[]];
         }
+        // we assume all slot types are equal, for now.
         foreach($action->getTargetSlots() as $slot) {
-            foreach( $this->findAllTargets($perspective, $slot) as $target ) {
-                $sets[] = [ $target ];
+            $targets = $this->findAllTargets($perspective, $slot);
+            $uniques = false;
+            if($slot === ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE || $slot === ActionInterface::TARGET_UNIQUE_FRIENDLY_CREATURE) {
+                $uniques = true;
             }
+            break;
         }
-        return $sets;
+
+        $set = new Set;
+        $count = count($action->getTargetSlots());
+        if($uniques) {
+            $this->ucombinations($targets, min($count, count($targets)), $set);
+        }
+        else {
+            $this->combinations($targets, $count, $set);
+        }
+
+        return $set->items;
+
     }
 
     private function findAllTargets(Perspective $perspective, $slot) {
-        if($slot === ActionInterface::TARGET_ENEMY_CREATURE) {
+        if($slot === ActionInterface::TARGET_ENEMY_CREATURE || $slot === ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE) {
             return $perspective->getOtherFaction()->getCreatures();
         }
         else {
@@ -91,4 +105,38 @@ class BasicStrategy implements StrategyInterface
         }
     }
 
+    private function combinations($array, $count, Set $set) {
+        if($count == 0) { return; }
+        $newSets = [];
+        foreach($array as $item) {
+            foreach($set->items as $setItem) {
+                $copy = $setItem;
+                $copy[] = $item;
+                $newSets[] = $copy;
+            }
+        }
+        $set->items = $newSets;
+        $this->combinations($array, $count - 1, $set);
+    }
+
+    private function ucombinations($array, $count, Set $set) {
+        if($count == 0) { return; }
+        $newSets = [];
+        foreach($array as $item) {
+            foreach($set->items as $setItem) {
+                if(!in_array($item, $setItem)){
+                    $copy = $setItem;
+                    $copy[] = $item;
+                    $newSets[] = $copy;
+                }
+            }
+        }
+        $set->items = $newSets;
+        $this->ucombinations($array, $count - 1, $set);
+    }
+
+}
+
+class Set {
+    public $items = [[]];
 }
