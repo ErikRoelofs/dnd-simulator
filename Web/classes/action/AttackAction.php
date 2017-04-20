@@ -78,4 +78,10 @@ class AttackAction implements ActionInterface
         return true;
     }
 
+    public function getResourceCost()
+    {
+        return [];
+    }
+
+
 }

@@ -28,4 +28,9 @@ class PassAction implements ActionInterface
         return true;
     }
 
+    public function getResourceCost()
+    {
+        return [];
+    }
+
 }

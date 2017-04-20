@@ -26,8 +26,12 @@ class BasicStrategy implements StrategyInterface
                 throw new Exception("No actions :( You didn't add pass-actions to the pool");
             }
 
-            $mods = array_merge($mods, $todo->getAction()->perform($perspective, $todo->getTargets()));
-            unset($actionsLeft[ $todo->getAction()->getType() ]);
+            $action = $todo->getAction();
+            foreach($action->getResourceCost() as $cost) {
+                $cost->spend($action);
+            }
+            $mods = array_merge($mods, $action->perform($perspective, $todo->getTargets()));
+            unset($actionsLeft[ $action->getType() ]);
         }
         return $mods;
     }

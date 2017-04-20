@@ -28,4 +28,9 @@ class PassBonusAction implements ActionInterface
         return true;
     }
 
+    public function getResourceCost()
+    {
+        return [];
+    }
+
 }

@@ -22,4 +22,6 @@ interface ActionInterface
     public function getTargetSlots();
 
     public function isAvailable();
+
+    public function getResourceCost();
 }

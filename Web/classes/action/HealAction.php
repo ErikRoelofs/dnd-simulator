@@ -4,6 +4,10 @@ class HealAction implements ActionInterface
 {
 
     protected $amount;
+    /**
+     * @var LimitedUseUniqueResource
+     */
+    protected $resource;
 
     /**
      * AttackAction constructor.
@@ -13,6 +17,7 @@ class HealAction implements ActionInterface
     public function __construct($amount)
     {
         $this->amount = $amount;
+        $this->resource = new LimitedUseUniqueResource(1);
     }
 
 
@@ -59,7 +64,12 @@ class HealAction implements ActionInterface
 
     public function isAvailable()
     {
-        return false;
+        return $this->resource->getUses() > 0;
+    }
+
+    public function getResourceCost()
+    {
+        return [ $this->resource ];
     }
 
 }
