@@ -13,6 +13,8 @@ interface ActionInterface
     const TARGET_UNIQUE_ENEMY_CREATURE = 102;
     const TARGET_UNIQUE_FRIENDLY_CREATURE = 103;
 
+    const TARGET_ME = 104;
+
     public function getType();
 
     public function perform(Perspective $perspective, $targets);
@@ -21,7 +23,7 @@ interface ActionInterface
 
     public function getTargetSlots();
 
-    public function isAvailable();
+    public function isAvailable(CreatureInterface $creature);
 
     public function getResourceCost();
 }

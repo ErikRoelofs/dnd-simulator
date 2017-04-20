@@ -1,6 +1,6 @@
 <?php
 
-class HealAction implements ActionInterface
+class SecondWindAction implements ActionInterface
 {
 
     protected $amount;
@@ -36,14 +36,14 @@ class HealAction implements ActionInterface
             $cb = $this->amount;
             $heal = $cb();
             $mods[] = new HealDamageModification($target, $heal);
-            $log->write($me->getName() . ' healed ' . $target->getName() . ' for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
+            $log->write($me->getName() . ' used Second Wind to heal for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
         }
         return $mods;
     }
 
     public function getTargetSlots()
     {
-        return [ ActionInterface::TARGET_FRIENDLY_CREATURE ];
+        return [ ActionInterface::TARGET_ME];
     }
 
     public function predict(Perspective $perspective, $targets)

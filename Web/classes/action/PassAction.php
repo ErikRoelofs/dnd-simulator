@@ -23,7 +23,7 @@ class PassAction implements ActionInterface
         return [];
     }
 
-    public function isAvailable()
+    public function isAvailable(CreatureInterface $creature)
     {
         return true;
     }

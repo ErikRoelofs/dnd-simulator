@@ -28,7 +28,7 @@ class BasicStrategy implements StrategyInterface
 
             $action = $todo->getAction();
             foreach($action->getResourceCost() as $cost) {
-                $cost->spend($action);
+                $cost->spend($action, $perspective->getMe());
             }
             $mods = array_merge($mods, $action->perform($perspective, $todo->getTargets()));
             unset($actionsLeft[ $action->getType() ]);
@@ -42,7 +42,7 @@ class BasicStrategy implements StrategyInterface
         $executables = [];
         $value = [];
         foreach ($availableActions as $key => $action) {
-            if (!isset($actionsLeft[$action->getType()]) || !$action->isAvailable()) {
+            if (!isset($actionsLeft[$action->getType()]) || !$action->isAvailable($perspective->getMe())) {
                 unset($availableActions[$key]);
             }
         }
@@ -103,6 +103,9 @@ class BasicStrategy implements StrategyInterface
     private function findAllTargets(Perspective $perspective, $slot) {
         if($slot === ActionInterface::TARGET_ENEMY_CREATURE || $slot === ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE) {
             return $perspective->getOtherFaction()->getCreatures();
+        }
+        elseif ($slot === ActionInterface::TARGET_ME) {
+            return [$perspective->getMe()];
         }
         else {
             return $perspective->getMyFaction()->getCreatures();

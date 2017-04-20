@@ -1,0 +1,53 @@
+Resource management:
+- spells
+- limited abilities
+
+Goals:
+- resource conservation
+- predictions
+- self-preservation
+- encounter goals
+
+Battlefield:
+- positioning
+- area targeting
+
+Actions:
+- buffing
+- advantage/disadvantage
+- saves
+- durations
+- multipart (extra attack; condition bonuses like superiority)
+- riders & modifications (casting from higher slot)
+- immunity/resistance/vulnerable
+- damage types
+- conditions
+
+
+=======
+
+creature has spellslots
+creature knows spells
+
+creature has limited use actions
+
+
+
+$wizard = new Wizard;
+$wizard->addResource(new Spellslots(3,2,1));
+$wizard->addAction(new Fireball);
+$wizard->addAction(new MagicMissile);
+
+$wizard->addAction(new ScrollOfBlur);
+
+
+class FireballSpell implements ActionInterface {
+
+  public function getResourceCost() {
+    return [ new SpellSlotResourceCost(3) ];
+  }
+
+}
+
+$fighter = new Fighter;
+$fighter->addAction(new ActionSurge);

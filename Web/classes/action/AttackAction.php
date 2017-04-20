@@ -73,7 +73,7 @@ class AttackAction implements ActionInterface
         return $mods;
     }
 
-    public function isAvailable()
+    public function isAvailable(CreatureInterface $creature)
     {
         return true;
     }
