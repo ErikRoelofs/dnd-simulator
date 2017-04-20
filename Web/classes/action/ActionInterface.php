@@ -20,4 +20,6 @@ interface ActionInterface
     public function predict(Perspective $perspective, $targets);
 
     public function getTargetSlots();
+
+    public function isAvailable();
 }

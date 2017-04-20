@@ -38,7 +38,7 @@ class BasicStrategy implements StrategyInterface
         $executables = [];
         $value = [];
         foreach ($availableActions as $key => $action) {
-            if (!isset($actionsLeft[$action->getType()])) {
+            if (!isset($actionsLeft[$action->getType()]) || !$action->isAvailable()) {
                 unset($availableActions[$key]);
             }
         }

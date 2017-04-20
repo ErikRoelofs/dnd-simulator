@@ -23,5 +23,9 @@ class PassAction implements ActionInterface
         return [];
     }
 
+    public function isAvailable()
+    {
+        return true;
+    }
 
 }

@@ -57,5 +57,9 @@ class HealAction implements ActionInterface
         return $mods;
     }
 
+    public function isAvailable()
+    {
+        return false;
+    }
 
 }

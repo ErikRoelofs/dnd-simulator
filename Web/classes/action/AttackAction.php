@@ -73,5 +73,9 @@ class AttackAction implements ActionInterface
         return $mods;
     }
 
+    public function isAvailable()
+    {
+        return true;
+    }
 
 }
