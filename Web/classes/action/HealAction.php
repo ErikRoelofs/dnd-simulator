@@ -14,10 +14,10 @@ class HealAction implements ActionInterface, SpellInterface
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($amount)
+    public function __construct($amount, SpellPoolResource $spellPoolResource)
     {
         $this->amount = $amount;
-        $this->resource = new SpellPoolResource();
+        $this->resource = $spellPoolResource;
     }
 
 

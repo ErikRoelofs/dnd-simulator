@@ -13,7 +13,6 @@ class Wizard extends BaseCreature
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
         $a->addAction(new PassAction());
         $a->addAction(new PassMovementAction());
-        $a->addAction(new HealAction(function() { return mt_rand(1,4) + 2; }));
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
 
