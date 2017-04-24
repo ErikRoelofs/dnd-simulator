@@ -1,11 +1,11 @@
 <?php
 
-class HealAction implements ActionInterface
+class HealAction implements ActionInterface, SpellInterface
 {
 
     protected $amount;
     /**
-     * @var LimitedUseUniqueResource
+     * @var SpellPoolResource
      */
     protected $resource;
 
@@ -17,7 +17,7 @@ class HealAction implements ActionInterface
     public function __construct($amount)
     {
         $this->amount = $amount;
-        $this->resource = new LimitedUseUniqueResource(1, 1);
+        $this->resource = new SpellPoolResource();
     }
 
 
@@ -64,12 +64,18 @@ class HealAction implements ActionInterface
 
     public function isAvailable(CreatureInterface $creature)
     {
-        return $this->resource->getUses() > 0;
+        return $this->resource->hasSlot($this->getSpellLevel());
     }
 
     public function getResourceCost()
     {
         return [ $this->resource ];
     }
+
+    public function getSpellLevel()
+    {
+        return 1;
+    }
+
 
 }

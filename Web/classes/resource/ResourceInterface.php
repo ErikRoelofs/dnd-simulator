@@ -4,7 +4,7 @@ interface ResourceInterface
 {
     public function spend(ActionInterface $action, CreatureInterface $creature);
 
-    public function getUseValue();
+    public function getUseValue(ActionInterface $action, CreatureInterface $creature);
 
-    public function getTotalValue();
+    public function getTotalValue(CreatureInterface $creature);
 }

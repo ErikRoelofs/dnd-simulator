@@ -30,12 +30,12 @@ class LimitedUseUniqueResource implements ResourceInterface
         $this->uses--;
     }
 
-    public function getUseValue()
+    public function getUseValue(ActionInterface $action, CreatureInterface $creature)
     {
         return $this->value;
     }
 
-    public function getTotalValue()
+    public function getTotalValue(CreatureInterface $creature)
     {
         return $this->value * $this->uses;
     }

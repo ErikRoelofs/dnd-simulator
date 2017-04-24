@@ -27,7 +27,7 @@ class ConserveResourcesGoal implements GoalInterface
         // or should this be $perspective->getMe()->getTotalResourceWorth() ? or currentResourceWorth()?
         $impact = 0;
         foreach($action->getResourceCost() as $resource) {
-            $impact -= $resource->getUseValue();
+            $impact -= $resource->getUseValue($action, $perspective->getMe());
         }
         return $impact;
     }
