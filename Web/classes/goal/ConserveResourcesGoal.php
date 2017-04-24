@@ -25,9 +25,9 @@ class ConserveResourcesGoal implements GoalInterface
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
     {
         // or should this be $perspective->getMe()->getTotalResourceWorth() ? or currentResourceWorth()?
-        $impact = 1;
+        $impact = 0;
         foreach($action->getResourceCost() as $resource) {
-            $impact -= $resource->getValue();
+            $impact -= $resource->getUseValue();
         }
         return $impact;
     }

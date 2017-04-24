@@ -47,16 +47,16 @@ class BasicStrategy implements StrategyInterface
             }
         }
 
-        foreach($this->goals as $goal) {
-            foreach ($availableActions as $action) {
-                $targetSets = $this->findAllTargetSets($perspective, $action);
-                foreach($targetSets as $targets) {
-                    $executable = new ExecutableAction($action, $targets);
+        foreach ($availableActions as $action) {
+            $targetSets = $this->findAllTargetSets($perspective, $action);
+            foreach($targetSets as $targets) {
+                $executable = new ExecutableAction($action, $targets);
+                $executables[] = $executable;
+                foreach($this->goals as $goal) {
                     if(!isset($value[spl_object_hash($executable)])) {
                         $value[spl_object_hash($executable)] = 0;
                     }
                     $value[spl_object_hash($executable)] += $goal->calculateImpact($perspective, $action, $targets) * $goal->getImportance();
-                    $executables[] = $executable;
                 }
             }
         }
@@ -68,7 +68,6 @@ class BasicStrategy implements StrategyInterface
                 $high = $value[spl_object_hash($executable)];
             }
         }
-
         return $bestExecutable;
     }
 

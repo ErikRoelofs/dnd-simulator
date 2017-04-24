@@ -24,7 +24,7 @@ class HealFriendsGoal implements GoalInterface
 
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
     {
-        $healNeeded = $this->healNeeded($perspective);
+        $healNeeded = $this->healNeeded($targets);
         if($healNeeded === 0) { return 0; }
         $impact = 0;
         $outcomes = $action->predict($perspective, $targets);
@@ -37,9 +37,9 @@ class HealFriendsGoal implements GoalInterface
         return $impact / $healNeeded;
     }
 
-    private function healNeeded(Perspective $perspective) {
+    private function healNeeded(array $targets) {
         $needed = 0;
-        foreach($perspective->getMyFaction()->getCreatures() as $member) {
+        foreach($targets as $member) {
             $needed += $member->getMaxHP() - $member->getCurrentHP();
         }
         return $needed;

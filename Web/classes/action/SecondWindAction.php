@@ -17,7 +17,7 @@ class SecondWindAction implements ActionInterface
     public function __construct($amount)
     {
         $this->amount = $amount;
-        $this->resource = new LimitedUseUniqueResource(1, 1);
+        $this->resource = new LimitedUseUniqueResource(1, 0.5);
     }
 
 
