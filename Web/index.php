@@ -91,10 +91,23 @@ $app->get('/test/batch', function() use ($app) {
     return '';
 });
 
-$app->get('/dice', function() use ($app) {
-    $expr = new DiceExpression([new Dice(2,8), new Dice(3, 6), new Dice(10, 4)], 5);
-    return 'Rolling: ' . $expr . ' and getting: ' . $expr->roll();
-
+$app->get('/dice/test', function() use ($app) {
+    dieTest("3d6", "3d6");
+    dieTest("3d6 + 2d4", "3d6 + 2d4");
+    dieTest("3d6+1d8", "3d6 + 1d8");
+    dieTest("3d6 + 4", "3d6 + 4");
+    dieTest("3d6+2", "3d6 + 2");
+    dieTest("3d6 - 3", "3d6 - 3");
+    dieTest("3d6-1", "3d6 - 1");
+    return 'ok';
 });
+
+function dieTest($in, $out) {
+    $expr = DiceExpression::written($in );
+    if((string) $expr !== $out ) {
+        throw new Exception("$in should convert to $out, but comes to " . $expr);
+    }
+
+}
 
 $app->run();

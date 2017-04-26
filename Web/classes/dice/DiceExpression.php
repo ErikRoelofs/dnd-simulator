@@ -52,4 +52,36 @@ class DiceExpression
         return $out;
     }
 
+    public static function written($str) {
+        $pool = [];
+        $flat = 0;
+
+        if(strpos($str, '-') !== false) {
+            $temp = explode('-', $str);
+            $str = $temp[0];
+            $flat = $temp[1] * -1;
+        }
+
+        $parts = explode("+", $str);
+        foreach($parts as $part) {
+            if(strpos( $part,'d') === false) {
+                $flat = (int)$part;
+            }
+            else {
+                $pool[] = self::readDie($part);
+            }
+        }
+        return new DiceExpression($pool, $flat);
+    }
+
+    private static function readDie($die) {
+        $part = trim($die);
+        $subParts = explode('d', $part);
+        return new Dice($subParts[0], $subParts[1]);
+    }
+
+}
+
+function dice($str) {
+    return DiceExpression::written($str);
 }
