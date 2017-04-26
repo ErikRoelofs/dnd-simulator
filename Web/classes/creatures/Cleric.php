@@ -23,7 +23,6 @@ class Cleric extends BaseCreature
         $a->addAction(new PassAction());
         $a->addAction(new PassMovementAction());
         $a->addAction(new HealAction(function() { return mt_rand(1,4) + 2; }, $this->spellPool));
-        $a->addAction(new DivineFireAction($this->spellPool));
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
 

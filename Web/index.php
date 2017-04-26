@@ -34,7 +34,8 @@ $app['testbattle'] = function() {
         $fac2->addCreature(new Goblin('Brak'));
         $fac2->addCreature(new Goblin('Glum'));
         $fac2->addCreature(new Goblin('Tschu'));
-        /*
+      /*
+
         $fac2->addCreature(new Skeleton('Bones'));
         $fac2->addCreature(new Skeleton('Rattles'));
         $fac2->addCreature(new Skeleton('Clatters'));
@@ -48,7 +49,7 @@ $app['testbattle'] = function() {
         $fac2->addCreature(new Hobgoblin('Nuk'));
 
         $fac2->addCreature(new Ogre("Dumfuk"));
-*/
+      */
 
         $battle = new Battle($log, $fac1, $fac2);
         return $battle;
@@ -88,6 +89,12 @@ $app->get('/test/batch', function() use ($app) {
     echo 'average encounter duration: ' . round($avgDuration, 2);
 
     return '';
+});
+
+$app->get('/dice', function() use ($app) {
+    $expr = new DiceExpression([new Dice(2,8), new Dice(3, 6), new Dice(10, 4)], 5);
+    return 'Rolling: ' . $expr . ' and getting: ' . $expr->roll();
+
 });
 
 $app->run();

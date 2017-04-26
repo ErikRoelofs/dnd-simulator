@@ -1,9 +1,34 @@
+Working on:
+- damage expressions
+- damage types
+- resistance/immunity/vulnerability
+
+DiceExpression:
+- has some dice
+- has a flat amount
+
+DamageComponent:
+- has a DiceExpression
+- has a type
+
+DamageExpression:
+- has one or more DamageComponents
+- can generate a Damage object (with one more types of rolled damage)
+
+Damage:
+- has a list of DamageItems
+
+DamageItem:
+- has an amount
+- has a type
+
+
 Resource management:
-- spells
-- limited abilities
+V spells
+V limited abilities
 
 Goals:
-- resource conservation
+V resource conservation
 - predictions
 - self-preservation
 - encounter goals

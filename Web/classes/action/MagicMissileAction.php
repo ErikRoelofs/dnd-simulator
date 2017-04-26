@@ -1,12 +1,12 @@
 <?php
 
-class DivineFireAction implements ActionInterface, SpellInterface
+class MagicMissileAction implements ActionInterface, SpellInterface
 {
 
     protected $resource;
 
     /**
-     * DivineFireAction constructor.
+     * MagicMissileAction constructor.
      * @param $resource
      */
     public function __construct($resource)
@@ -19,6 +19,10 @@ class DivineFireAction implements ActionInterface, SpellInterface
         return ActionInterface::TYPE_ACTION;
     }
 
+    private function rollDmg() {
+        return mt_rand(1,4) + mt_rand(1,4) + mt_rand(1,4) + 3;
+    }
+
     public function perform(Perspective $perspective, $targets)
     {
         $me = $perspective->getMe();
@@ -26,9 +30,9 @@ class DivineFireAction implements ActionInterface, SpellInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $dmg = 20;
+            $dmg = $this->rollDmg();
             $mods[] = new TakeDamageModification($target, $dmg);
-            $log->write($me->getName() . ' used divine fire on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+            $log->write($me->getName() . ' cast Magic Missile on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
         }
         return $mods;
     }
@@ -45,7 +49,12 @@ class DivineFireAction implements ActionInterface, SpellInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $mods[] = new TakeDamageModification($target, 20);
+            $avgDmg = 0;
+            for($i = 1; $i < 50; $i++ ) {
+                $damage = $this->rollDmg();
+                $avgDmg = (($avgDmg * $i) + $damage ) / ( $i + 1 );
+            }
+            $mods[] = new TakeDamageModification($target, $avgDmg);
         }
         return $mods;
     }
@@ -64,6 +73,5 @@ class DivineFireAction implements ActionInterface, SpellInterface
     {
         return 1;
     }
-
 
 }
