@@ -16,7 +16,8 @@ interface CreatureInterface
     public function getName();
     public function getActions();
 
-    public function takeDamage($damage);
+    public function takeDamage(RolledDamage $damage);
+    public function predictDamageTaken(RolledDamage $damage);
     public function healDamage($heal);
 
 }

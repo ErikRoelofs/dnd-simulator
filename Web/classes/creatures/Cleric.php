@@ -15,7 +15,7 @@ class Cleric extends BaseCreature
 
     public function __construct()
     {
-        parent::__construct(new BasicStrategy([new HealFriendsGoal(1), new SlayEverythingGoal(5)]), 'Dwarfy', 'Cleric', 11,18,4,dice("1d8+2"), -1);
+        parent::__construct(new BasicStrategy([new HealFriendsGoal(1), new SlayEverythingGoal(5)]), 'Dwarfy', 'Cleric', 11,18,4,damage("1d8+2"), -1);
         $this->spellPool = new SpellPoolResource();
 
         $a = new ActionPool();

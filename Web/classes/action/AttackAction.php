@@ -6,9 +6,10 @@ class AttackAction implements ActionInterface
     protected $attackBonus;
 
     /**
-     * @var DiceExpression
+     * @var DamageExpression
      */
     protected $damageExpression;
+
     protected $attacks;
 
     /**
@@ -16,7 +17,7 @@ class AttackAction implements ActionInterface
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($attackBonus, $damageExpression, $attacks = 1)
+    public function __construct($attackBonus, DamageExpression $damageExpression, $attacks = 1)
     {
         $this->attackBonus = $attackBonus;
         $this->damageExpression = $damageExpression;
@@ -64,8 +65,7 @@ class AttackAction implements ActionInterface
         foreach($targets as $target) {
             if(!$target) { continue; }
             $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
-            $avgDmg = $this->damageExpression->avg();
-            $avgDmg *= $chanceToHit;
+            $avgDmg = $this->damageExpression->avg()->multiply($chanceToHit);
             $mods[] = new TakeDamageModification($target, $avgDmg);
         }
         return $mods;

@@ -6,9 +6,9 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     protected $resource;
 
     /**
-     * @var DiceExpression
+     * @var DamageExpression
      */
-    private $diceExpression;
+    private $damageExpression;
 
     /**
      * MagicMissileAction constructor.
@@ -17,7 +17,7 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     public function __construct($resource)
     {
         $this->resource = $resource;
-        $this->diceExpression = dice("3d4+3");
+        $this->damageExpression = damage("3d4+3", Damage::TYPE_FORCE);
     }
 
     public function getType()
@@ -32,7 +32,7 @@ class MagicMissileAction implements ActionInterface, SpellInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $dmg = $this->diceExpression->roll();
+            $dmg = $this->damageExpression->roll();
             $mods[] = new TakeDamageModification($target, $dmg);
             $log->write($me->getName() . ' cast Magic Missile on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
         }
@@ -49,7 +49,7 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     public function predict(Perspective $perspective, $targets)
     {
         $mods = [];
-        $avgDmg = $this->diceExpression->avg();
+        $avgDmg = $this->damageExpression->avg();
         foreach($targets as $target) {
             if(!$target) { continue; }
             $mods[] = new TakeDamageModification($target, $avgDmg);

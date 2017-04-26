@@ -7,7 +7,7 @@ class Fighter extends BaseCreature
 
     public function __construct()
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Jimbob', 'Fighter', 12,17,5,dice("1d12+3"), -1);
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Jimbob', 'Fighter', 12,17,5,damage("1d12+3"), -1);
         $a = new ActionPool();
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
         $a->addAction(new SecondWindAction(dice("1d10+1")));

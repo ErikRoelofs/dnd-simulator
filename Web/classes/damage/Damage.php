@@ -7,9 +7,19 @@ class Damage
     const TYPE_FIRE = 2;
     const TYPE_COLD = 3;
     const TYPE_LIGHTNING = 4;
+    const TYPE_FORCE = 5;
 
-    protected $amount;
-    protected $type;
+    const STRINGS = [
+        self::TYPE_NORMAL => 'untyped',
+        self::TYPE_FIRE => 'fire',
+        self::TYPE_COLD => 'cold',
+        self::TYPE_LIGHTNING => 'lightning',
+        self::TYPE_FORCE => 'force'
+    ];
+
+
+    private $amount;
+    private $type;
 
     /**
      * Damage constructor.
@@ -37,5 +47,15 @@ class Damage
     {
         return $this->type;
     }
+
+    public static function write($type) {
+        return self::STRINGS[$type];
+    }
+
+    function __toString()
+    {
+        return $this->getAmount() . ' points of ' . self::write($this->getType());
+    }
+
 
 }

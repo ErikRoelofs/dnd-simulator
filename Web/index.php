@@ -86,9 +86,18 @@ $app->get('/test/batch', function() use ($app) {
 
     echo round(($wonByA/$i)*100,1) . '% encounters are won by Faction A<br />';
     echo round(($wonByB/$i)*100,1) . '% encounters are won by Faction B<br />';
-    echo 'average encounter duration: ' . round($avgDuration, 2);
+    echo 'average encounter duration: ' . round($avgDuration, 2) . ' rounds.<br />';
+    echo 'Simulated a total of ' . ($i-1) . ' encounters.<br />';
 
     return '';
+});
+
+$app->get('/damage/test', function() use ($app) {
+    damageTest(["3d6"], "3d6 untyped");
+    damageTest(["3d6", Damage::TYPE_FIRE], "3d6 fire");
+    damageTest(["3d6", Damage::TYPE_FIRE, "1d8", Damage::TYPE_COLD], "3d6 fire + 1d8 cold");
+
+    return 'ok';
 });
 
 $app->get('/dice/test', function() use ($app) {
@@ -104,6 +113,14 @@ $app->get('/dice/test', function() use ($app) {
 
 function dieTest($in, $out) {
     $expr = DiceExpression::written($in );
+    if((string) $expr !== $out ) {
+        throw new Exception(implode(' ', $in ) . " should convert to $out, but comes to " . $expr);
+    }
+
+}
+
+function damageTest($in, $out) {
+    $expr = DamageExpression::written($in);
     if((string) $expr !== $out ) {
         throw new Exception("$in should convert to $out, but comes to " . $expr);
     }

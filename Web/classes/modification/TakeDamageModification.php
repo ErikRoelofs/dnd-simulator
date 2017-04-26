@@ -8,6 +8,9 @@ class TakeDamageModification implements ModificationInterface
      */
     protected $target;
 
+    /**
+     * @var RolledDamage
+     */
     protected $damage;
 
     /**
@@ -15,7 +18,7 @@ class TakeDamageModification implements ModificationInterface
      * @param CreatureInterface $target
      * @param $damage
      */
-    public function __construct(CreatureInterface $target, $damage)
+    public function __construct(CreatureInterface $target, RolledDamage $damage)
     {
         $this->target = $target;
         $this->damage = $damage;
@@ -35,7 +38,7 @@ class TakeDamageModification implements ModificationInterface
     }
 
     /**
-     * @return mixed
+     * @return RolledDamage
      */
     public function getDamage()
     {

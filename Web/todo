@@ -22,6 +22,11 @@ DamageItem:
 - has an amount
 - has a type
 
+new AttackAction(4, damage("3d6+1", Damage::NORMAL, "2d4", Damage::FIRE))
+
+
+
+=========
 
 Resource management:
 V spells

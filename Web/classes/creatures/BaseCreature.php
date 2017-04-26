@@ -37,10 +37,22 @@ abstract class BaseCreature implements CreatureInterface
         return $this->currentHP;
     }
 
-    public function takeDamage($damage)
+    public function takeDamage(RolledDamage $damage)
     {
-        $this->currentHP -= $damage;
+        foreach($damage->getRolls() as $roll) {
+            $this->currentHP -= $roll->getAmount();
+        }
     }
+
+    public function predictDamageTaken(RolledDamage $damage)
+    {
+        $taken = 0;
+        foreach($damage->getRolls() as $roll) {
+            $taken += $roll->getAmount();
+        }
+        return min($taken, $this->currentHP);
+    }
+
 
     public function getAC()
     {
