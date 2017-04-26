@@ -3,18 +3,26 @@
 class Damage
 {
 
-    const TYPE_NORMAL = 1;
+    const TYPE_NORMAL = 1; // deprecated
+    const TYPE_UNTYPED = 1;
     const TYPE_FIRE = 2;
     const TYPE_COLD = 3;
     const TYPE_LIGHTNING = 4;
     const TYPE_FORCE = 5;
 
+    const TYPE_BLUDGEONING = 11;
+    const TYPE_PIERCING = 12;
+    const TYPE_SLASHING = 13;
+
     const STRINGS = [
-        self::TYPE_NORMAL => 'untyped',
+        self::TYPE_UNTYPED=> 'untyped',
         self::TYPE_FIRE => 'fire',
         self::TYPE_COLD => 'cold',
         self::TYPE_LIGHTNING => 'lightning',
-        self::TYPE_FORCE => 'force'
+        self::TYPE_FORCE => 'force',
+        self::TYPE_BLUDGEONING => 'bludgeoning',
+        self::TYPE_SLASHING => 'slashing',
+        self::TYPE_PIERCING => 'piercing',
     ];
 
 

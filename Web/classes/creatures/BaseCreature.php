@@ -16,6 +16,10 @@ abstract class BaseCreature implements CreatureInterface
     protected $ac;
     protected $initiative;
 
+    protected $resistances = [];
+    protected $vulnerabilities = [];
+    protected $immunities = [];
+
     public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative) {
         $this->strategy = $strategy;
         $this->name = $name;
@@ -39,20 +43,32 @@ abstract class BaseCreature implements CreatureInterface
 
     public function takeDamage(RolledDamage $damage)
     {
-        foreach($damage->getRolls() as $roll) {
-            $this->currentHP -= $roll->getAmount();
-        }
+        $this->currentHP -= $this->calculateDamageAmount($damage);
     }
 
     public function predictDamageTaken(RolledDamage $damage)
     {
+        return $this->calculateDamageAmount($damage);
+    }
+
+    protected function calculateDamageAmount(RolledDamage $damage) {
         $taken = 0;
         foreach($damage->getRolls() as $roll) {
-            $taken += $roll->getAmount();
+            if(isset($this->immunities[$roll->getType()])) {
+
+            }
+            elseif(isset($this->resistances[$roll->getType()])) {
+                $taken += floor($roll->getAmount() * 0.5);
+            }
+            elseif(isset($this->vulnerabilities[$roll->getType()])) {
+                $taken += $roll->getAmount() * 2;
+            }
+            else {
+                $taken += $roll->getAmount();
+            }
         }
         return min($taken, $this->currentHP);
     }
-
 
     public function getAC()
     {
