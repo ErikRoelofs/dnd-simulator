@@ -43,6 +43,10 @@ class Dice
         return $rolled;
     }
 
+    public function avg() {
+        return $this->amount * (($this->sides + 1)/2);
+    }
+
     function __toString()
     {
         return $this->amount . "d" . $this->sides;

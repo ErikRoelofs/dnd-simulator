@@ -37,6 +37,15 @@ class DiceExpression
         return $rolled;
     }
 
+    public function avg() {
+        $totalAvg = 0;
+        foreach($this->dicepool as $dice) {
+            $totalAvg += $dice->avg();
+        }
+        $totalAvg += $this->flatAmount;
+        return $totalAvg;
+    }
+
     public function __toString() {
         $parts = [];
         foreach($this->dicepool as $dice) {

@@ -10,14 +10,19 @@ class HealAction implements ActionInterface, SpellInterface
     protected $resource;
 
     /**
+     * @var DiceExpression
+     */
+    private $diceExpression;
+
+    /**
      * AttackAction constructor.
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($amount, SpellPoolResource $spellPoolResource)
+    public function __construct(DiceExpression $expr, SpellPoolResource $spellPoolResource)
     {
-        $this->amount = $amount;
         $this->resource = $spellPoolResource;
+        $this->diceExpression = $expr;
     }
 
 
@@ -33,8 +38,7 @@ class HealAction implements ActionInterface, SpellInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $cb = $this->amount;
-            $heal = $cb();
+            $heal = $this->diceExpression->roll();
             $mods[] = new HealDamageModification($target, $heal);
             $log->write($me->getName() . ' healed ' . $target->getName() . ' for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
         }
@@ -49,14 +53,9 @@ class HealAction implements ActionInterface, SpellInterface
     public function predict(Perspective $perspective, $targets)
     {
         $mods = [];
-        $healAvg = 0;
+        $healAvg = $this->diceExpression->avg();
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $cb = $this->amount;
-            for($i = 1; $i < 50; $i++ ) {
-                $heal = $cb();
-                $healAvg = (($healAvg * $i) + $heal ) / ( $i + 1 );
-            }
             $mods[] = new HealDamageModification($target, $healAvg);
         }
         return $mods;

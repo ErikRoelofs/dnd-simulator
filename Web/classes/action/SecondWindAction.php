@@ -10,13 +10,18 @@ class SecondWindAction implements ActionInterface
     protected $resource;
 
     /**
+     * @var DiceExpression
+     */
+    private $healExpression;
+
+    /**
      * AttackAction constructor.
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($amount)
+    public function __construct(DiceExpression $healExpr)
     {
-        $this->amount = $amount;
+        $this->healExpression = $healExpr;
         $this->resource = new LimitedUseUniqueResource(1, 0.5);
     }
 
@@ -33,8 +38,7 @@ class SecondWindAction implements ActionInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $cb = $this->amount;
-            $heal = $cb();
+            $heal = $this->healExpression->roll();
             $mods[] = new HealDamageModification($target, $heal);
             $log->write($me->getName() . ' used Second Wind to heal for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
         }
@@ -49,14 +53,9 @@ class SecondWindAction implements ActionInterface
     public function predict(Perspective $perspective, $targets)
     {
         $mods = [];
-        $healAvg = 0;
+        $healAvg = $this->healExpression->avg();
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $cb = $this->amount;
-            for($i = 1; $i < 50; $i++ ) {
-                $heal = $cb();
-                $healAvg = (($healAvg * $i) + $heal ) / ( $i + 1 );
-            }
             $mods[] = new HealDamageModification($target, $healAvg);
         }
         return $mods;

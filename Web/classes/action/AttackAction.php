@@ -4,7 +4,11 @@ class AttackAction implements ActionInterface
 {
 
     protected $attackBonus;
-    protected $damage;
+
+    /**
+     * @var DiceExpression
+     */
+    protected $damageExpression;
     protected $attacks;
 
     /**
@@ -12,10 +16,10 @@ class AttackAction implements ActionInterface
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($attackBonus, $damage, $attacks = 1)
+    public function __construct($attackBonus, $damageExpression, $attacks = 1)
     {
         $this->attackBonus = $attackBonus;
-        $this->damage = $damage;
+        $this->damageExpression = $damageExpression;
         $this->attacks = $attacks;
     }
 
@@ -34,8 +38,7 @@ class AttackAction implements ActionInterface
             if(!$target) { continue; }
             $roll = mt_rand(1,20) + $this->attackBonus;
             if( $roll >= $target->getAC()) {
-                $cb = $this->damage;
-                $dmg = $cb();
+                $dmg = $this->damageExpression->roll();
                 $mods[] = new TakeDamageModification($target, $dmg);
                 $log->write($me->getName() . ' hit ' . $target->getName() . ' with a ' . $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
             }
@@ -61,12 +64,7 @@ class AttackAction implements ActionInterface
         foreach($targets as $target) {
             if(!$target) { continue; }
             $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
-            $avgDmg = 0;
-            $cb = $this->damage;
-            for($i = 1; $i < 50; $i++ ) {
-                $damage = $cb();
-                $avgDmg = (($avgDmg * $i) + $damage ) / ( $i + 1 );
-            }
+            $avgDmg = $this->damageExpression->avg();
             $avgDmg *= $chanceToHit;
             $mods[] = new TakeDamageModification($target, $avgDmg);
         }

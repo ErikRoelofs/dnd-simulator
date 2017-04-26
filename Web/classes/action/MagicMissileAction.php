@@ -6,21 +6,23 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     protected $resource;
 
     /**
+     * @var DiceExpression
+     */
+    private $diceExpression;
+
+    /**
      * MagicMissileAction constructor.
      * @param $resource
      */
     public function __construct($resource)
     {
         $this->resource = $resource;
+        $this->diceExpression = dice("3d4+3");
     }
 
     public function getType()
     {
         return ActionInterface::TYPE_ACTION;
-    }
-
-    private function rollDmg() {
-        return mt_rand(1,4) + mt_rand(1,4) + mt_rand(1,4) + 3;
     }
 
     public function perform(Perspective $perspective, $targets)
@@ -30,7 +32,7 @@ class MagicMissileAction implements ActionInterface, SpellInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $dmg = $this->rollDmg();
+            $dmg = $this->diceExpression->roll();
             $mods[] = new TakeDamageModification($target, $dmg);
             $log->write($me->getName() . ' cast Magic Missile on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
         }
@@ -47,13 +49,9 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     public function predict(Perspective $perspective, $targets)
     {
         $mods = [];
+        $avgDmg = $this->diceExpression->avg();
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $avgDmg = 0;
-            for($i = 1; $i < 50; $i++ ) {
-                $damage = $this->rollDmg();
-                $avgDmg = (($avgDmg * $i) + $damage ) / ( $i + 1 );
-            }
             $mods[] = new TakeDamageModification($target, $avgDmg);
         }
         return $mods;
