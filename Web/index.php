@@ -42,15 +42,14 @@ $app['testbattle'] = function() {
         $fac2->addCreature(new Skeleton('Clatters'));
         $fac2->addCreature(new Skeleton('Chatters'));
         $fac2->addCreature(new Skeleton('Jim'));
-/*
+
         $fac2->addCreature(new Hobgoblin('Bluk'));
         $fac2->addCreature(new Hobgoblin('Pluk'));
         $fac2->addCreature(new Hobgoblin('Ruk'));
         $fac2->addCreature(new Hobgoblin('Tuk'));
         $fac2->addCreature(new Hobgoblin('Nuk'));
 
-        $fac2->addCreature(new Ogre("Dumfuk"));
-      */
+//        $fac2->addCreature(new Ogre("Dumfuk"));
 
         $battle = new Battle($log, $fac1, $fac2);
         return $battle;

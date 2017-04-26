@@ -12,16 +12,19 @@ class AttackAction implements ActionInterface
 
     protected $attacks;
 
+    protected $weapon;
+
     /**
      * AttackAction constructor.
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct($attackBonus, DamageExpression $damageExpression, $attacks = 1)
+    public function __construct($attackBonus, DamageExpression $damageExpression, $attacks = 1, $weapon = 'weapon')
     {
         $this->attackBonus = $attackBonus;
         $this->damageExpression = $damageExpression;
         $this->attacks = $attacks;
+        $this->weapon = $weapon;
     }
 
 
@@ -41,7 +44,7 @@ class AttackAction implements ActionInterface
             if( $roll >= $target->getAC()) {
                 $dmg = $this->damageExpression->roll();
                 $mods[] = new TakeDamageModification($target, $dmg);
-                $log->write($me->getName() . ' hit ' . $target->getName() . ' with a ' . $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+                $log->write($me->getName() . ' hit ' . $target->getName() . ' with their ' . $this->weapon . ', rolling a ' .  $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
             }
             else {
                 $log->write($me->getName() . ' missed ' . $target->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
