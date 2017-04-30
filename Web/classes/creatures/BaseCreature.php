@@ -43,7 +43,9 @@ abstract class BaseCreature implements CreatureInterface
 
     public function takeDamage(RolledDamage $damage)
     {
-        $this->currentHP -= $this->calculateDamageAmount($damage);
+        $realDamage = $this->calculateDamageAmount($damage);
+        $this->currentHP -= $realDamage;
+        return $realDamage;
     }
 
     public function predictDamageTaken(RolledDamage $damage)
@@ -106,8 +108,9 @@ abstract class BaseCreature implements CreatureInterface
 
     public function healDamage($heal)
     {
-        $this->currentHP += $heal;
-        $this->currentHP = min($this->currentHP, $this->maxHP);
+        $realHeal = min($heal, $this->maxHP - $this->currentHP);
+        $this->currentHP += $realHeal;
+        return $realHeal;
     }
 
 }

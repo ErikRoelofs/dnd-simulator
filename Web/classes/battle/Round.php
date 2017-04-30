@@ -30,7 +30,7 @@ class Round
                     if(!$creature->isDead()) {
                         $mods = $this->creatureTakesTurn($creature, $log);
                         foreach($mods as $mod) {
-                            $mod->execute();
+                            $mod->execute($log);
                         }
                         $this->a->removeDead();
                         $this->b->removeDead();

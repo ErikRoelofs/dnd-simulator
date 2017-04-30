@@ -24,9 +24,10 @@ class TakeDamageModification implements ModificationInterface
         $this->damage = $damage;
     }
 
-    public function execute()
+    public function execute(Log $log)
     {
-        $this->target->takeDamage($this->damage);
+        $realDamage = $this->target->takeDamage($this->damage);
+        $log->write($this->target->getName() . " has taken " . $realDamage . " points of damage.", Log::MEDIUM_IMPORTANT);
     }
 
     /**

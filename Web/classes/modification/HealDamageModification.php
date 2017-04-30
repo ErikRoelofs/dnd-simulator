@@ -21,9 +21,10 @@ class HealDamageModification implements ModificationInterface
         $this->amount = $amount;
     }
 
-    public function execute()
+    public function execute(Log $log)
     {
-        $this->target->healDamage($this->amount);
+        $realHealed = $this->target->healDamage($this->amount);
+        $log->write($this->target->getName() . " has healed for " . $realHealed . " points of damage.", Log::MEDIUM_IMPORTANT);
     }
 
     /**
