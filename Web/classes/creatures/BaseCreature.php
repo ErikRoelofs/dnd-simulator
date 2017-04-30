@@ -115,12 +115,12 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeSave($type, $dc)
     {
-        return mt_rand(1,20) > 11;
+        return mt_rand(1,20) > $dc;
     }
 
     public function predictSave($type, $dc)
     {
-        return 0.55;
+        return (21 - $dc) * 0.05;
     }
 
 

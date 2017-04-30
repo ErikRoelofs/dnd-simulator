@@ -13,7 +13,7 @@ class Wizard extends BaseCreature
     public function __construct()
     {
         parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), 'Zappy', 'Wizard', 8,12,4,damage("1d6+2", Damage::TYPE_SLASHING), 2);
-        $this->spellPool = new SpellPoolResource();
+        $this->spellPool = new SpellPoolResource(13, 5);
 
         $a = new ActionPool();
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));

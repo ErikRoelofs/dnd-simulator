@@ -6,6 +6,20 @@ class SpellPoolResource implements ResourceInterface
     // technically you have infinite level 0 slots but whatever
     protected $slots = [ 0 => 1000000, 1 => 2, 2 => 1 ];
 
+    protected $saveDC;
+    protected $spellAttack;
+
+    /**
+     * SpellPoolResource constructor.
+     * @param $saveDC
+     * @param $spellAttack
+     */
+    public function __construct($saveDC, $spellAttack)
+    {
+        $this->saveDC = $saveDC;
+        $this->spellAttack = $spellAttack;
+    }
+
     /**
      * @return mixed
      */
@@ -35,6 +49,14 @@ class SpellPoolResource implements ResourceInterface
 
     public function hasSlot($level) {
         return isset($this->slots[$level]) && $this->slots[$level] > 0;
+    }
+
+    public function getSaveDC() {
+        return $this->saveDC;
+    }
+
+    public function getSpellAttack() {
+        return $this->spellAttack;
     }
 
 }

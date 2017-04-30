@@ -73,7 +73,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
         $halfDmg = $dmg->multiply(0.5);
         foreach($targets as $target) {
             if(!$target) { continue; }
-            if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, 11)) {
+            if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, $this->resource->getSaveDC())) {
                 $log->write($me->getName() . ' cast ' . $this->name . ' on ' . $target->getName() . ' for ' . $halfDmg . ' damage (target saved)', Log::MEDIUM_IMPORTANT);
                 $mods[] = new TakeDamageModification($target, $halfDmg);
             }
@@ -97,7 +97,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
         foreach($targets as $target) {
             if(!$target) { continue; }
             if($this->saveForHalf > 0) {
-                $chanceOfSave = $target->predictSave($this->saveForHalf, 11);
+                $chanceOfSave = $target->predictSave($this->saveForHalf, $this->resource->getSaveDC());
                 $multiplier = 1 - (0.5 * $chanceOfSave);
                 $avgDmg = $avgDmg->multiply($multiplier);
             }
