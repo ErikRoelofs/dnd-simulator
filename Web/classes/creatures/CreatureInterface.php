@@ -20,4 +20,6 @@ interface CreatureInterface
     public function predictDamageTaken(RolledDamage $damage);
     public function healDamage($heal);
 
+    public function makeSave($type, $dc);
+    public function predictSave($type, $dc);
 }

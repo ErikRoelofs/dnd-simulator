@@ -37,11 +37,13 @@ $app['testbattle'] = function() {
         $fac2->addCreature(new Goblin('Tschu'));
       */
 
+
         $fac2->addCreature(new Skeleton('Bones'));
         $fac2->addCreature(new Skeleton('Rattles'));
         $fac2->addCreature(new Skeleton('Clatters'));
         $fac2->addCreature(new Skeleton('Chatters'));
         $fac2->addCreature(new Skeleton('Jim'));
+
 /*
         $fac2->addCreature(new Hobgoblin('Bluk'));
         $fac2->addCreature(new Hobgoblin('Pluk'));

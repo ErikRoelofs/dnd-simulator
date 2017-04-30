@@ -113,4 +113,15 @@ abstract class BaseCreature implements CreatureInterface
         return $realHeal;
     }
 
+    public function makeSave($type, $dc)
+    {
+        return mt_rand(1,20) > 11;
+    }
+
+    public function predictSave($type, $dc)
+    {
+        return 0.55;
+    }
+
+
 }

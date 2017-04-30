@@ -33,7 +33,7 @@ class RolledDamage
     public function multiply($by) {
         $new = [];
         foreach($this->rolls as $roll) {
-            $new[] = new Damage($roll->getAmount() * $by, $roll->getType());
+            $new[] = new Damage(floor($roll->getAmount() * $by), $roll->getType());
         }
         return new RolledDamage($new);
     }
