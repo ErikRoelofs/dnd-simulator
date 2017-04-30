@@ -16,11 +16,13 @@ abstract class BaseCreature implements CreatureInterface
     protected $ac;
     protected $initiative;
 
+    protected $saves = [];
+
     protected $resistances = [];
     protected $vulnerabilities = [];
     protected $immunities = [];
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative) {
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves) {
         $this->strategy = $strategy;
         $this->name = $name;
         $this->type = $type;
@@ -30,6 +32,7 @@ abstract class BaseCreature implements CreatureInterface
         $this->ac = $ac;
         $this->initiative = $initiative;
         $this->damage = $damage;
+        $this->saves = $saves;
     }
 
     public function getMaxHP() {
@@ -115,12 +118,20 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeSave($type, $dc)
     {
-        return mt_rand(1,20) > $dc;
+        $bonus = 0;
+        if(isset($this->saves[$type])) {
+            $bonus = $this->saves[$type];
+        }
+        return mt_rand(1,20) + $bonus > $dc;
     }
 
     public function predictSave($type, $dc)
     {
-        return (21 - $dc) * 0.05;
+        $bonus = 21;
+        if(isset($this->saves[$type])) {
+            $bonus += $this->saves[$type];
+        }
+        return ($bonus - $dc) * 0.05;
     }
 
 
