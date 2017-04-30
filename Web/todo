@@ -1,32 +1,8 @@
 Working on:
-- damage expressions
-- damage types
-- resistance/immunity/vulnerability
 
-DiceExpression:
-- has some dice
-- has a flat amount
+- saving throws
 
-DamageComponent:
-- has a DiceExpression
-- has a type
-
-DamageExpression:
-- has one or more DamageComponents
-- can generate a Damage object (with one more types of rolled damage)
-
-Damage:
-- has a list of DamageItems
-
-DamageItem:
-- has an amount
-- has a type
-
-new AttackAction(4, damage("3d6+1", Damage::NORMAL, "2d4", Damage::FIRE))
-
-
-
-=========
+===========
 
 Resource management:
 V spells
@@ -41,6 +17,10 @@ V resource conservation
 Battlefield:
 - positioning
 - area targeting
+- death & dying
+
+Creatures:
+- abilities, proficiencies (?)
 
 Actions:
 - buffing
@@ -49,35 +29,9 @@ Actions:
 - durations
 - multipart (extra attack; condition bonuses like superiority)
 - riders & modifications (casting from higher slot)
-- immunity/resistance/vulnerable
-- damage types
 - conditions
 
-
-=======
-
-creature has spellslots
-creature knows spells
-
-creature has limited use actions
-
-
-
-$wizard = new Wizard;
-$wizard->addResource(new Spellslots(3,2,1));
-$wizard->addAction(new Fireball);
-$wizard->addAction(new MagicMissile);
-
-$wizard->addAction(new ScrollOfBlur);
-
-
-class FireballSpell implements ActionInterface {
-
-  public function getResourceCost() {
-    return [ new SpellSlotResourceCost(3) ];
-  }
-
-}
-
-$fighter = new Fighter;
-$fighter->addAction(new ActionSurge);
+Interface:
+- setup parties
+- setup goals
+- more readable logs

@@ -1,8 +1,11 @@
 <?php
 
-class MagicMissileAction implements ActionInterface, SpellInterface
+class SimpleDamageSpellAction implements ActionInterface, SpellInterface
 {
 
+    /**
+     * @var SpellPoolResource
+     */
     protected $resource;
 
     /**
@@ -11,18 +14,48 @@ class MagicMissileAction implements ActionInterface, SpellInterface
     private $damageExpression;
 
     /**
-     * MagicMissileAction constructor.
-     * @param $resource
+     * @var array
      */
-    public function __construct($resource)
+    private $targets;
+
+    /**
+     * @var int
+     */
+    private $level;
+
+    /**
+     * @var int
+     */
+    private $action;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * SimpleDamageSpellAction constructor.
+     * @param SpellPoolResource $resource
+     * @param DamageExpression $damageExpression
+     * @param array $targets
+     * @param int $level
+     * @param int $action
+     * @param string $name
+     */
+    public function __construct(SpellPoolResource $resource, DamageExpression $damageExpression, array $targets, $level, $action, $name)
     {
         $this->resource = $resource;
-        $this->damageExpression = damage("3d4+3", Damage::TYPE_FORCE);
+        $this->damageExpression = $damageExpression;
+        $this->targets = $targets;
+        $this->level = $level;
+        $this->action = $action;
+        $this->name = $name;
     }
+
 
     public function getType()
     {
-        return ActionInterface::TYPE_ACTION;
+        return $this->action;
     }
 
     public function perform(Perspective $perspective, $targets)
@@ -34,16 +67,14 @@ class MagicMissileAction implements ActionInterface, SpellInterface
             if(!$target) { continue; }
             $dmg = $this->damageExpression->roll();
             $mods[] = new TakeDamageModification($target, $dmg);
-            $log->write($me->getName() . ' cast Magic Missile on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+            $log->write($me->getName() . ' cast ' . $this->name . ' on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
         }
         return $mods;
     }
 
     public function getTargetSlots()
     {
-        $slots = [];
-        $slots[] = ActionInterface::TARGET_ENEMY_CREATURE;
-        return $slots;
+        return $this->targets;
     }
 
     public function predict(Perspective $perspective, $targets)
@@ -69,7 +100,7 @@ class MagicMissileAction implements ActionInterface, SpellInterface
 
     public function getSpellLevel()
     {
-        return 1;
+        return $this->level;
     }
 
 }

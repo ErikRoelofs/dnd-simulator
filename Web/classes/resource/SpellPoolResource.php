@@ -3,7 +3,8 @@
 class SpellPoolResource implements ResourceInterface
 {
 
-    protected $slots = [ 1 => 2, 2 => 1 ];
+    // technically you have infinite level 0 slots but whatever
+    protected $slots = [ 0 => 1000000, 1 => 2, 2 => 1 ];
 
     /**
      * @return mixed

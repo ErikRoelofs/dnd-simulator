@@ -7,6 +7,7 @@ require_once __DIR__.'/classes/creatures/BaseCreature.php';
 
 require_once __DIR__.'/classes/strategy/StrategyInterface.php';
 require_once __DIR__.'/classes/action/ActionInterface.php';
+require_once __DIR__.'/classes/action/SpellInterface.php';
 require_once __DIR__.'/classes/resource/ResourceInterface.php';
 require_once __DIR__.'/classes/modification/ModificationInterface.php';
 require_once __DIR__.'/classes/goal/GoalInterface.php';
