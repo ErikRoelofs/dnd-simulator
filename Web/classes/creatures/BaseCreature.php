@@ -124,11 +124,14 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeSave($type, $dc)
     {
-        $bonus = 0;
-        if (isset($this->saves[$type])) {
-            $bonus = $this->saves[$type];
+        if($this->getOverride(self::ROLL_SAVE, $type)) {
+            $rolled = $this->getOverride(self::ROLL_SAVE, $type);
         }
-        return mt_rand(1, 20) + $bonus > $dc;
+        else {
+            $rolled = $this->rollD20($this->getDieState(self::ROLL_SAVE, $type));
+        }
+        $bonus = isset($this->saves[$type]) ? $this->saves[$type] : 0;
+        return $rolled + $bonus >= $dc;
     }
 
     public function predictSave($type, $dc)
@@ -142,10 +145,18 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeAttackRoll($bonus, CreatureInterface $target)
     {
-        $myState = $this->getDieState(self::ROLL_ATTACK);
-        $opponentState = $target->getDieState(self::ROLL_ATTACKED);
-        $state = $this->determineDieState($myState, $opponentState);
-        $rolled = $this->rollD20($state);
+        if($this->getOverride(self::ROLL_ATTACK)) {
+            $rolled = $this->getOverride(self::ROLL_ATTACK);
+        }
+        elseif($target->getOverride(self::ROLL_ATTACKED)) {
+            $rolled = $target->getOverride(self::ROLL_ATTACKED);
+        }
+        else {
+            $myState = $this->getDieState(self::ROLL_ATTACK);
+            $opponentState = $target->getDieState(self::ROLL_ATTACKED);
+            $state = $this->determineDieState($myState, $opponentState);
+            $rolled = $this->rollD20($state);
+        }
 
         if ($rolled === 20) {
             return ActionInterface::ATTACK_CRIT;
@@ -163,6 +174,16 @@ abstract class BaseCreature implements CreatureInterface
             $dmg = $dmg->add($damageExpression->rollDiceOnly());
         }
         return $dmg;
+    }
+
+    // we assume there are never multiple overrides with different effects
+    // because no conditions exist as far as I know that enable this
+    public function getOverride($type, $data = null) {
+        foreach($this->conditions as $condition) {
+            if($condition->replaceRoll($type, $data)) {
+                return $condition->replaceRoll($type, $data);
+            }
+        }
     }
 
     public function getDieState($type, $data = null)
