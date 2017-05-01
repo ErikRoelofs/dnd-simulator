@@ -1,25 +1,20 @@
 <?php
 
-class Restrained implements ConditionInterface
+class Invisible implements ConditionInterface
 {
     public function replaceRoll($type, $data = null)
     {
         return null;
     }
 
-
     public function modifiesRoll($type, $data = null)
     {
         if($type === CreatureInterface::ROLL_ATTACK) {
-            return CreatureInterface::DIE_DISADVANTAGE;
-        }
-        if($type === CreatureInterface::ROLL_ATTACKED) {
             return CreatureInterface::DIE_ADVANTAGE;
         }
-        if($this === CreatureInterface::ROLL_SAVE && $data === Ability::DEXTERITY) {
+        if($type === CreatureInterface::ROLL_ATTACKED) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-        return null;
     }
 
     public function restrictsAvailableActions()

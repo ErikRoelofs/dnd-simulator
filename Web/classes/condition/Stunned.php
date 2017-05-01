@@ -1,15 +1,15 @@
 <?php
 
-// crits currently aren't modeled (because distance isn't modeled)
-class Paralysed implements ConditionInterface
+class Stunned implements ConditionInterface
 {
-
-    public function replaceRoll($type, $data = null) {
+    public function replaceRoll($type, $data = null)
+    {
         if($type === CreatureInterface::ROLL_SAVE && ($data === Ability::DEXTERITY || $data === Ability::STRENGTH)) {
             return 1;
         }
         return null;
     }
+
 
     public function modifiesRoll($type, $data = null)
     {

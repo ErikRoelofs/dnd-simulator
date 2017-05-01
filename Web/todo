@@ -2,9 +2,11 @@ Working on:
 - conditions
 -V poisoned (disadvantage on attack rolls)
 -V restrained (others have advantage on rolls)
--- paralysed (automatic crits, automatic fails)
+-V paralysed (automatic crits, automatic fails)
 -V incapicitated (actions available)
-
+-- charmed (cannot attack the charmer)
+-- petrified (resistance)
+-- exhaustion (max hitpoints reduced; death)
 
 $creature->makeAttackRoll($bonus, $target); // state: miss, hit, crit
 $creature->makeDamageRoll($damageExpression, $target);

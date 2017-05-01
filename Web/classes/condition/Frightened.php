@@ -1,25 +1,21 @@
 <?php
 
-class Restrained implements ConditionInterface
+// simplified: source is always assumed to be in sight; movement isn't modeled.
+class Frightened implements ConditionInterface
 {
     public function replaceRoll($type, $data = null)
     {
         return null;
     }
 
-
     public function modifiesRoll($type, $data = null)
     {
         if($type === CreatureInterface::ROLL_ATTACK) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-        if($type === CreatureInterface::ROLL_ATTACKED) {
-            return CreatureInterface::DIE_ADVANTAGE;
-        }
-        if($this === CreatureInterface::ROLL_SAVE && $data === Ability::DEXTERITY) {
+        if($type === CreatureInterface::ROLL_ABILITY) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-        return null;
     }
 
     public function restrictsAvailableActions()
