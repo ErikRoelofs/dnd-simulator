@@ -74,3 +74,4 @@ Interface:
 Core:
 - events
 - reactions (interrupts)
+- expanded logging

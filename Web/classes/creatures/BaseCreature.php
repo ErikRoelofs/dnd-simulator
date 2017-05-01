@@ -142,7 +142,10 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeAttackRoll($bonus, CreatureInterface $target)
     {
-        $rolled = $this->rollD20($this->getDieState(self::ROLL_ATTACK));
+        $myState = $this->getDieState(self::ROLL_ATTACK);
+        $opponentState = $target->getDieState(self::ROLL_ATTACKED);
+        $state = $this->determineDieState($myState, $opponentState);
+        $rolled = $this->rollD20($state);
 
         if ($rolled === 20) {
             return ActionInterface::ATTACK_CRIT;
@@ -213,5 +216,14 @@ abstract class BaseCreature implements CreatureInterface
         return $actions;
     }
 
+    private function determineDieState($state1, $state2) {
+        if($state1 === self::DIE_ADVANTAGE && $state2 !== self::DIE_DISADVANTAGE) {
+            return self::DIE_ADVANTAGE;
+        }
+        if($state1 !== self::DIE_ADVANTAGE && $state2 === self::DIE_DISADVANTAGE) {
+            return self::DIE_DISADVANTAGE;
+        }
+        return self::DIE_NORMAL;
+    }
 
 }
