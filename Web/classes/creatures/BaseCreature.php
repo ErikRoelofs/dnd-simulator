@@ -134,5 +134,26 @@ abstract class BaseCreature implements CreatureInterface
         return ($bonus - $dc) * 0.05;
     }
 
+    public function makeAttackRoll($bonus, CreatureInterface $target)
+    {
+        $rolled = mt_rand(1,20);
+        if($rolled === 20) {
+            return ActionInterface::ATTACK_CRIT;
+        }
+        if($rolled + $bonus > $target->getAC()) {
+            return ActionInterface::ATTACK_HIT;
+        }
+        return ActionInterface::ATTACK_MISS;
+    }
+
+    public function makeDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target)
+    {
+        $dmg = $damageExpression->roll();
+        if($hitType === ActionInterface::ATTACK_CRIT) {
+            $dmg = $dmg->add($damageExpression->rollDiceOnly());
+        }
+        return $dmg;
+    }
+
 
 }

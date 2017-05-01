@@ -25,6 +25,14 @@ class DamageExpression
         return new RolledDamage($results);
     }
 
+    public function rollDiceOnly() {
+        $results = [];
+        foreach($this->components as $component) {
+            $results[] = $component->rollDiceOnly();
+        }
+        return new RolledDamage($results);
+    }
+
     public function avg() {
         $results = [];
         foreach($this->components as $component) {

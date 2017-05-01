@@ -40,6 +40,10 @@ class DamageComponent
         return new Damage($this->dice->roll(), $this->type);
     }
 
+    public function rollDiceOnly() {
+        return new Damage($this->dice->rollDiceOnly(), $this->type);
+    }
+
     public function avg() {
         return new Damage($this->dice->avg(), $this->type);
     }

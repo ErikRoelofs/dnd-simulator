@@ -29,11 +29,14 @@ class DiceExpression
     }
 
     public function roll() {
+        return $this->rollDiceOnly() + $this->flatAmount;
+    }
+
+    public function rollDiceOnly() {
         $rolled = 0;
         foreach($this->dicepool as $dice) {
             $rolled += $dice->roll();
         }
-        $rolled += $this->flatAmount;
         return $rolled;
     }
 

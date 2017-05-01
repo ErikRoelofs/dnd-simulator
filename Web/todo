@@ -1,6 +1,35 @@
 Working on:
+- conditions
+-- poisoned (disadvantage on attack rolls)
 
-- saving throws
+$creature->makeAttackRoll($bonus, $target); // state: miss, hit, crit
+$creature->makeDamageRoll($damageExpression, $target);
+
+
+=====
+
+- buffs
+
+- move statistics into classes? with calculations attached?
+- give creatures a stat-container instead of methods?
+- add modifications to change statistics
+
+===
+buff examples:
+
+- increase ac
+- (dis)advantage on saves
+- (dis)advantage on attacks
+- flat or rolled bonus to certain checks
+- event-based (WHEN this THEN that)
+- resistance/immunity/vulnerability
+- modify Reactions
+- apply conditions
+- create temporary creature
+- modify behavior
+- change into something else
+- change faction
+- persistent magical effect
 
 ===========
 
@@ -25,13 +54,19 @@ Creatures:
 Actions:
 - buffing
 - advantage/disadvantage
-- saves
+V saves
 - durations
 - multipart (extra attack; condition bonuses like superiority)
 - riders & modifications (casting from higher slot)
 - conditions
+- concentration
+- temp HP
 
 Interface:
 - setup parties
 - setup goals
 - more readable logs
+
+Core:
+- events
+- reactions (interrupts)

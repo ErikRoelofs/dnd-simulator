@@ -22,4 +22,7 @@ interface CreatureInterface
 
     public function makeSave($type, $dc);
     public function predictSave($type, $dc);
+
+    public function makeAttackRoll($bonus, CreatureInterface $target);
+    public function makeDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target);
 }

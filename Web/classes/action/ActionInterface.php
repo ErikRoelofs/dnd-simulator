@@ -15,6 +15,10 @@ interface ActionInterface
 
     const TARGET_ME = 104;
 
+    const ATTACK_MISS = 201;
+    const ATTACK_HIT = 202;
+    const ATTACK_CRIT = 203;
+
     public function getType();
 
     public function perform(Perspective $perspective, $targets);

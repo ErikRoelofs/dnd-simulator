@@ -40,14 +40,16 @@ class AttackAction implements ActionInterface
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $roll = mt_rand(1,20) + $this->attackBonus;
-            if( $roll >= $target->getAC()) {
-                $dmg = $this->damageExpression->roll();
+            $state = $me->makeAttackRoll($this->attackBonus, $target);
+
+            if( $state === ActionInterface::ATTACK_CRIT || $state === ActionInterface::ATTACK_HIT ) {
+                $dmg = $me->makeDamageRoll($state, $this->damageExpression, $target);
                 $mods[] = new TakeDamageModification($target, $dmg);
-                $log->write($me->getName() . ' hit ' . $target->getName() . ' with their ' . $this->weapon . ', rolling a ' .  $roll . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+                $hit = $state === ActionInterface::ATTACK_CRIT ? ' critically hit ' : ' hit ';
+                $log->write($me->getName() . $hit . $target->getName() . ' with their ' . $this->weapon . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
             }
             else {
-                $log->write($me->getName() . ' missed ' . $target->getName() . ' with a ' . $roll, Log::MEDIUM_IMPORTANT );
+                $log->write($me->getName() . ' missed ' . $target->getName() , Log::MEDIUM_IMPORTANT );
             }
         }
         return $mods;

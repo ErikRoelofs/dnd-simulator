@@ -38,4 +38,15 @@ class RolledDamage
         return new RolledDamage($new);
     }
 
+    public function add(RolledDamage $damage) {
+        $rolls = [];
+        foreach($this->rolls as $roll) {
+            $rolls[] = $roll;
+        }
+        foreach($damage->getRolls() as $roll) {
+            $rolls[] = $roll;
+        }
+        return new RolledDamage($rolls);
+    }
+
 }
