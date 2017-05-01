@@ -22,6 +22,11 @@ abstract class BaseCreature implements CreatureInterface
     protected $vulnerabilities = [];
     protected $immunities = [];
 
+    /**
+     * @var Condition[]
+     */
+    protected $conditions = [];
+
     public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves)
     {
         $this->strategy = $strategy;
@@ -159,6 +164,23 @@ abstract class BaseCreature implements CreatureInterface
 
     public function getDieState($type, $data = null)
     {
+        $advantage = false;
+        $disadvantage = false;
+        foreach($this->conditions as $condition) {
+            $change = $condition->modifiesRoll($type, $data);
+            if($change === CreatureInterface::DIE_DISADVANTAGE) {
+                $disadvantage = true;
+            }
+            if($change === CreatureInterface::DIE_ADVANTAGE) {
+                $advantage = true;
+            }
+        }
+        if($advantage && !$disadvantage) {
+            return CreatureInterface::DIE_ADVANTAGE;
+        }
+        if($disadvantage && !$advantage) {
+            return CreatureInterface::DIE_DISADVANTAGE;
+        }
         return CreatureInterface::DIE_NORMAL;
     }
 
@@ -174,5 +196,11 @@ abstract class BaseCreature implements CreatureInterface
             return $roll1;
         }
     }
+
+    public function gainCondition(ConditionInterface $condition)
+    {
+        $this->conditions[] = $condition;
+    }
+
 
 }
