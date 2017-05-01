@@ -3,6 +3,16 @@
 
 interface CreatureInterface
 {
+
+    const ROLL_ATTACK = 1;
+    const ROLL_ABILITY = 2;
+    const ROLL_SAVE = 3;
+    const ROLL_ATTACKED = 4;
+
+    const DIE_ADVANTAGE = 101;
+    const DIE_NORMAL = 102;
+    const DIE_DISADVANTAGE = 103;
+
     public function getMaxHP();
     public function getCurrentHP();
 
@@ -25,4 +35,7 @@ interface CreatureInterface
 
     public function makeAttackRoll($bonus, CreatureInterface $target);
     public function makeDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target);
+
+    public function getDieState($type, $data = null);
+
 }

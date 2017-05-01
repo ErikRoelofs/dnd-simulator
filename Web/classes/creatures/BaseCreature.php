@@ -22,7 +22,8 @@ abstract class BaseCreature implements CreatureInterface
     protected $vulnerabilities = [];
     protected $immunities = [];
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves) {
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves)
+    {
         $this->strategy = $strategy;
         $this->name = $name;
         $this->type = $type;
@@ -35,7 +36,8 @@ abstract class BaseCreature implements CreatureInterface
         $this->saves = $saves;
     }
 
-    public function getMaxHP() {
+    public function getMaxHP()
+    {
         return $this->maxHP;
     }
 
@@ -56,19 +58,17 @@ abstract class BaseCreature implements CreatureInterface
         return $this->calculateDamageAmount($damage);
     }
 
-    protected function calculateDamageAmount(RolledDamage $damage) {
+    protected function calculateDamageAmount(RolledDamage $damage)
+    {
         $taken = 0;
-        foreach($damage->getRolls() as $roll) {
-            if(isset($this->immunities[$roll->getType()])) {
+        foreach ($damage->getRolls() as $roll) {
+            if (isset($this->immunities[$roll->getType()])) {
 
-            }
-            elseif(isset($this->resistances[$roll->getType()])) {
+            } elseif (isset($this->resistances[$roll->getType()])) {
                 $taken += floor($roll->getAmount() * 0.5);
-            }
-            elseif(isset($this->vulnerabilities[$roll->getType()])) {
+            } elseif (isset($this->vulnerabilities[$roll->getType()])) {
                 $taken += $roll->getAmount() * 2;
-            }
-            else {
+            } else {
                 $taken += $roll->getAmount();
             }
         }
@@ -87,7 +87,7 @@ abstract class BaseCreature implements CreatureInterface
 
     public function getInitiative()
     {
-        return mt_rand(1,20) + $this->initiative;
+        return mt_rand(1, 20) + $this->initiative;
     }
 
     public function getName()
@@ -100,7 +100,8 @@ abstract class BaseCreature implements CreatureInterface
         return $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $log));
     }
 
-    public function getActions() {
+    public function getActions()
+    {
         $a = new ActionPool();
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
         $a->addAction(new PassAction());
@@ -119,16 +120,16 @@ abstract class BaseCreature implements CreatureInterface
     public function makeSave($type, $dc)
     {
         $bonus = 0;
-        if(isset($this->saves[$type])) {
+        if (isset($this->saves[$type])) {
             $bonus = $this->saves[$type];
         }
-        return mt_rand(1,20) + $bonus > $dc;
+        return mt_rand(1, 20) + $bonus > $dc;
     }
 
     public function predictSave($type, $dc)
     {
         $bonus = 21;
-        if(isset($this->saves[$type])) {
+        if (isset($this->saves[$type])) {
             $bonus += $this->saves[$type];
         }
         return ($bonus - $dc) * 0.05;
@@ -136,11 +137,12 @@ abstract class BaseCreature implements CreatureInterface
 
     public function makeAttackRoll($bonus, CreatureInterface $target)
     {
-        $rolled = mt_rand(1,20);
-        if($rolled === 20) {
+        $rolled = $this->rollD20($this->getDieState(self::ROLL_ATTACK));
+
+        if ($rolled === 20) {
             return ActionInterface::ATTACK_CRIT;
         }
-        if($rolled + $bonus > $target->getAC()) {
+        if ($rolled + $bonus > $target->getAC()) {
             return ActionInterface::ATTACK_HIT;
         }
         return ActionInterface::ATTACK_MISS;
@@ -149,11 +151,28 @@ abstract class BaseCreature implements CreatureInterface
     public function makeDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target)
     {
         $dmg = $damageExpression->roll();
-        if($hitType === ActionInterface::ATTACK_CRIT) {
+        if ($hitType === ActionInterface::ATTACK_CRIT) {
             $dmg = $dmg->add($damageExpression->rollDiceOnly());
         }
         return $dmg;
     }
 
+    public function getDieState($type, $data = null)
+    {
+        return CreatureInterface::DIE_NORMAL;
+    }
+
+    protected function rollD20($rollType)
+    {
+        $roll1 = mt_rand(1, 20);
+        $roll2 = mt_rand(1, 20);
+        if ($rollType === self::DIE_ADVANTAGE) {
+            return max($roll1, $roll2);
+        } elseif ($rollType === self::DIE_DISADVANTAGE) {
+            return min($roll1, $roll2);
+        } else {
+            return $roll1;
+        }
+    }
 
 }
