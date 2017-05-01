@@ -10,4 +10,9 @@ class Poisoned implements ConditionInterface
         return null;
     }
 
+    public function restrictsAvailableActions()
+    {
+        return [];
+    }
+
 }

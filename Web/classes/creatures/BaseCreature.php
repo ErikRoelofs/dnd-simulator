@@ -202,5 +202,16 @@ abstract class BaseCreature implements CreatureInterface
         $this->conditions[] = $condition;
     }
 
+    public function getAvailableActions()
+    {
+        $actions = [ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_BONUS => true, ActionInterface::TYPE_MOVEMENT => true];;
+        foreach($this->conditions as $condition) {
+            foreach($condition->restrictsAvailableActions() as $action) {
+                unset($actions[$action]);
+            }
+        }
+        return $actions;
+    }
+
 
 }

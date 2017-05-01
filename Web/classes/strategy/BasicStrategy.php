@@ -18,7 +18,7 @@ class BasicStrategy implements StrategyInterface
     public function doTurn(Perspective $perspective)
     {
         $mods = [];
-        $actionsLeft = [ ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_MOVEMENT => true, ActionInterface::TYPE_BONUS => true];
+        $actionsLeft = $perspective->getMe()->getAvailableActions();
         while(count($actionsLeft)) {
             $actions = $perspective->getMe()->getActions();
             $todo = $this->getMostValuableActionAvailable($perspective, $actions, $actionsLeft);

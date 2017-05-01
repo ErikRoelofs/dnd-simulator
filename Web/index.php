@@ -23,7 +23,8 @@ $app['testbattle'] = function() {
         $log = new Log;
 
         $fac1 = new Faction($log);
-        $fac1->addCreature(new Fighter());
+        $ftr = new Fighter();
+        $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric());
         $fac1->addCreature(new Rogue());
         $fac1->addCreature(new Wizard());

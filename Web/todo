@@ -1,6 +1,10 @@
 Working on:
 - conditions
 -- poisoned (disadvantage on attack rolls)
+-- restrained (others have advantage on rolls)
+-- paralysed (automatic crits, automatic fails)
+-- incapicitated (actions available)
+
 
 $creature->makeAttackRoll($bonus, $target); // state: miss, hit, crit
 $creature->makeDamageRoll($damageExpression, $target);
