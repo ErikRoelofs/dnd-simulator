@@ -3,6 +3,10 @@
 class AttackAction implements ActionInterface
 {
 
+    const EVENT_MISS = 'action.attack.miss';
+    const EVENT_HIT = 'action.attack.hit';
+    const EVENT_CRIT = 'action.attack.crit';
+
     protected $attackBonus;
 
     /**
@@ -45,11 +49,11 @@ class AttackAction implements ActionInterface
             if( $state === ActionInterface::ATTACK_CRIT || $state === ActionInterface::ATTACK_HIT ) {
                 $dmg = $me->makeDamageRoll($state, $this->damageExpression, $target);
                 $mods[] = new TakeDamageModification($target, $dmg);
-                $hit = $state === ActionInterface::ATTACK_CRIT ? ' crit' : 'hit';
-                $dispatcher->dispatch(new Event("attack." . $hit, ['attacker' => $me, 'target' => $target, 'damage' => $dmg]));
+                $event = $state === ActionInterface::ATTACK_CRIT ? self::EVENT_CRIT : self::EVENT_HIT;
+                $dispatcher->dispatch(new Event($event, ['attacker' => $me, 'target' => $target, 'damage' => $dmg]));
             }
             else {
-                $dispatcher->dispatch(new Event("attack.miss", ['attacker' => $me, 'target' => $target]));
+                $dispatcher->dispatch(new Event(self::EVENT_MISS, ['attacker' => $me, 'target' => $target, 'damage' => null]));
             }
         }
         return $mods;

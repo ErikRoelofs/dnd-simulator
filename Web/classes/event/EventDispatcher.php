@@ -6,7 +6,13 @@ class EventDispatcher
     private $listenersForAll = [];
     private $listeners = [];
 
-    public function subscribe($eventName, EventListenerInterface $listener) {
+    public function subscribe(EventSubscriberInterface $subscriber) {
+        foreach($subscriber->getSubscribed() as $event) {
+            $this->listen($event, $subscriber );
+        }
+    }
+
+    public function listen($eventName, EventListenerInterface $listener) {
         if($eventName === "all") {
             $this->listenersForAll[] = $listener;
         }
