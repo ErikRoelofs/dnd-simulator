@@ -47,7 +47,7 @@ class Faction
             if($creature->isDead()) {
                 $this->downed[] = $creature;
                 unset($this->creatures[$key]);
-                $this->dispatcher->dispatch(new Event("creature.downed", ['creature' => $creature]));
+                $this->dispatcher->dispatch(new Event(CreatureInterface::EVENT_DOWNED, ['creature' => $creature]));
             }
         }
     }
