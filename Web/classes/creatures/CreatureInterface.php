@@ -42,7 +42,8 @@ interface CreatureInterface
 
     public function getDieState($type, $data = null);
 
-    public function gainCondition(ConditionInterface $condition);
+    public function gainEffect(ActiveEffect $effect);
+    public function loseEffect(ActiveEffect $effect);
 
     public function getAvailableActions();
 }

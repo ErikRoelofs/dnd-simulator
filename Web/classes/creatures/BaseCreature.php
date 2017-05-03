@@ -28,9 +28,9 @@ abstract class BaseCreature implements CreatureInterface
     protected $dispatcher;
 
     /**
-     * @var Condition[]
+     * @var ActiveEffect[]
      */
-    protected $conditions = [];
+    protected $effects = [];
 
     public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves, $dispatcher)
     {
@@ -190,7 +190,7 @@ abstract class BaseCreature implements CreatureInterface
     // we assume there are never multiple overrides with different effects
     // because no conditions exist as far as I know that enable this
     public function getOverride($type, $data = null) {
-        foreach($this->conditions as $condition) {
+        foreach($this->iterateConditions() as $condition) {
             if($condition->replaceRoll($type, $data)) {
                 return $condition->replaceRoll($type, $data);
             }
@@ -201,7 +201,7 @@ abstract class BaseCreature implements CreatureInterface
     {
         $advantage = false;
         $disadvantage = false;
-        foreach($this->conditions as $condition) {
+        foreach($this->iterateConditions() as $condition) {
             $change = $condition->modifiesRoll($type, $data);
             if($change === CreatureInterface::DIE_DISADVANTAGE) {
                 $disadvantage = true;
@@ -232,15 +232,10 @@ abstract class BaseCreature implements CreatureInterface
         }
     }
 
-    public function gainCondition(ConditionInterface $condition)
-    {
-        $this->conditions[] = $condition;
-    }
-
     public function getAvailableActions()
     {
         $actions = [ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_BONUS => true, ActionInterface::TYPE_MOVEMENT => true];;
-        foreach($this->conditions as $condition) {
+        foreach($this->iterateConditions() as $condition) {
             foreach($condition->restrictsAvailableActions() as $action) {
                 unset($actions[$action]);
             }
@@ -257,5 +252,26 @@ abstract class BaseCreature implements CreatureInterface
         }
         return self::DIE_NORMAL;
     }
+
+    private function iterateConditions() {
+        return array_map(function(ActiveEffect $item) {
+            return $item->getCondition();
+        }, $this->effects);
+    }
+
+    public function gainEffect(ActiveEffect $effect)
+    {
+        $effect->setOwner($this);
+        $this->effects[spl_object_hash($effect)] = $effect;
+    }
+
+    public function loseEffect(ActiveEffect $effect)
+    {
+        if(!isset($this->effects[spl_object_hash($effect)])) {
+            throw new Exception("Cannot lose effect; not on this creature.");
+        }
+        unset($this->effects[spl_object_hash($effect)]);
+    }
+
 
 }

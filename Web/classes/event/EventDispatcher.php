@@ -12,6 +12,12 @@ class EventDispatcher
         }
     }
 
+    public function unsubscribe(EventSubscriberInterface $subscriber) {
+        foreach($subscriber->getSubscribed() as $event) {
+            $this->stopListening($event, $subscriber );
+        }
+    }
+
     public function listen($eventName, EventListenerInterface $listener) {
         if($eventName === "all") {
             $this->listenersForAll[] = $listener;
@@ -21,6 +27,19 @@ class EventDispatcher
                 $this->listeners[$eventName] = [];
             }
             $this->listeners[$eventName][] = $listener;
+        }
+    }
+
+    public function stopListening($eventName, $toCancel) {
+        foreach($this->listenersForAll as $key => $listener) {
+            if($listener === $toCancel) {
+                unset($this->listenersForAll[$key]);
+            }
+        }
+        foreach($this->listeners[$eventName] as $key => $listener) {
+            if($listener === $toCancel) {
+                unset($this->listeners[$eventName][$key]);
+            }
         }
     }
 

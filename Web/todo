@@ -8,9 +8,11 @@ Working on:
 
 - duration must be attached to an active effect
 
+- effects must be applied using a modification
+
 ActiveEffect {
   Condition
-  EffectTerminator
+  EffectTerminator (?)
 }
 
 FixedDurationTerminator (tracks end of turn events)

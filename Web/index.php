@@ -35,6 +35,8 @@ $app['testbattle'] = function() {
 
         $fac1 = new Faction($app['event']);
         $ftr = new Fighter($app['event']);
+        $terminator = new FixedDurationTerminator($app['event'], 2);
+        $ftr->gainEffect(new ActiveEffect(new Paralysed(), $terminator));
         $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric($app['event']));
         $fac1->addCreature(new Rogue($app['event']));
