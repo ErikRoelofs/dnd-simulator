@@ -24,10 +24,10 @@ class TakeDamageModification implements ModificationInterface
         $this->damage = $damage;
     }
 
-    public function execute(Log $log)
+    public function execute(EventDispatcher $dispatcher)
     {
         $realDamage = $this->target->takeDamage($this->damage);
-        $log->write($this->target->getName() . " has taken " . $realDamage . " points of damage.", Log::MEDIUM_IMPORTANT);
+        $dispatcher->dispatch(new Event("modification.takeDamage", [ 'target' => $this->target, 'damage' => $this->damage]));
     }
 
     /**

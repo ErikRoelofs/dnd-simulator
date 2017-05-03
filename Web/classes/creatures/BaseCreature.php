@@ -23,11 +23,16 @@ abstract class BaseCreature implements CreatureInterface
     protected $immunities = [];
 
     /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * @var Condition[]
      */
     protected $conditions = [];
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves)
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves, $dispatcher)
     {
         $this->strategy = $strategy;
         $this->name = $name;
@@ -39,6 +44,7 @@ abstract class BaseCreature implements CreatureInterface
         $this->initiative = $initiative;
         $this->damage = $damage;
         $this->saves = $saves;
+        $this->dispatcher = $dispatcher;
     }
 
     public function getMaxHP()
@@ -100,9 +106,9 @@ abstract class BaseCreature implements CreatureInterface
         return $this->name . ' the ' . $this->type;
     }
 
-    public function takeTurn(Faction $myFaction, Faction $otherFaction, Log $log)
+    public function takeTurn(Faction $myFaction, Faction $otherFaction)
     {
-        return $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $log));
+        return $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $this->dispatcher));
     }
 
     public function getActions()

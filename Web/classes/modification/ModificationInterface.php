@@ -2,5 +2,5 @@
 
 interface ModificationInterface
 {
-    public function execute(Log $log);
+    public function execute(EventDispatcher $dispatcher);
 }

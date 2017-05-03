@@ -12,6 +12,7 @@ require_once __DIR__.'/classes/resource/ResourceInterface.php';
 require_once __DIR__.'/classes/modification/ModificationInterface.php';
 require_once __DIR__.'/classes/goal/GoalInterface.php';
 require_once __DIR__.'/classes/condition/ConditionInterface.php';
+require_once __DIR__.'/classes/event/EventListenerInterface.php';
 
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
@@ -36,6 +37,11 @@ class ServiceDefinitions {
 		$app['yaml'] = function ($app) {
 			return new \Symfony\Component\Yaml\Yaml();
 		};
+
+		$app['event'] = function($app) {
+		    return new EventDispatcher();
+        };
 	}
 
 }
+

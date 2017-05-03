@@ -4,19 +4,19 @@ class Faction
 {
 
     /**
-     * @var Log
+     * @var EventDispatcher
      */
-    protected $log;
+    protected $dispatcher;
     protected $creatures = [];
     protected $downed = [];
 
     /**
      * Faction constructor.
-     * @param $log
+     * @param EventDispatcher $dispatcher
      */
-    public function __construct(Log $log)
+    public function __construct(EventDispatcher $dispatcher)
     {
-        $this->log = $log;
+        $this->dispatcher = $dispatcher;
     }
 
     public function addCreature(CreatureInterface $creature) {
@@ -47,7 +47,7 @@ class Faction
             if($creature->isDead()) {
                 $this->downed[] = $creature;
                 unset($this->creatures[$key]);
-                $this->log->write($creature->getName() . ' has been downed.', Log::HIGH_IMPORTANT);
+                $this->dispatcher->dispatch(new Event("creature.downed", ['creature' => $creature]));
             }
         }
     }

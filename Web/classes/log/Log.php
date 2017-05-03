@@ -11,8 +11,10 @@ class Log
 
     const HEADER = 1;
     const NOTICE = 2;
+
     const MEDIUM_IMPORTANT = 3;
     const HIGH_IMPORTANT = 4;
+    const LOW_IMPORTANT = 5;
 
     private $messages = [];
 
@@ -45,6 +47,9 @@ class Log
             }
             case self::HIGH_IMPORTANT: {
                 return "color: red;";
+            }
+            case self::LOW_IMPORTANT: {
+                return "color: green;";
             }
             default: {
                 return "";

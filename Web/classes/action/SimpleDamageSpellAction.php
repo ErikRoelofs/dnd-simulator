@@ -67,18 +67,18 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
     public function perform(Perspective $perspective, $targets)
     {
         $me = $perspective->getMe();
-        $log = $perspective->getLog();
+        $dispatcher = $perspective->getDispatcher();
         $mods = [];
         $dmg = $this->damageExpression->roll();
         $halfDmg = $dmg->multiply(0.5);
         foreach($targets as $target) {
             if(!$target) { continue; }
             if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, $this->resource->getSaveDC())) {
-                $log->write($me->getName() . ' cast ' . $this->name . ' on ' . $target->getName() . ' for ' . $halfDmg . ' damage (target saved)', Log::MEDIUM_IMPORTANT);
+                $dispatcher->dispatch(new Event('action.spell.simpledamage.passedSave', ['caster' => $me, 'target' => $target, 'damage' => $halfDmg]));
                 $mods[] = new TakeDamageModification($target, $halfDmg);
             }
             else {
-                $log->write($me->getName() . ' cast ' . $this->name . ' on ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+                $dispatcher->dispatch(new Event('action.spell.simpledamage.failedSave', ['caster' => $me, 'target' => $target, 'damage' => $dmg]));
                 $mods[] = new TakeDamageModification($target, $dmg);
             }
         }

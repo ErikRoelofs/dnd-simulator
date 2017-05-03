@@ -34,13 +34,13 @@ class HealAction implements ActionInterface, SpellInterface
     public function perform(Perspective $perspective, $targets)
     {
         $me = $perspective->getMe();
-        $log = $perspective->getLog();
+        $dispatcher = $perspective->getDispatcher();
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
             $heal = $this->diceExpression->roll();
             $mods[] = new HealDamageModification($target, $heal);
-            $log->write($me->getName() . ' healed ' . $target->getName() . ' for ' . $heal . ' health', Log::MEDIUM_IMPORTANT);
+            $dispatcher->dispatch(new Event("heal", [ 'healer' => $me, 'target' => $target, 'amount' => $heal]));
         }
         return $mods;
     }

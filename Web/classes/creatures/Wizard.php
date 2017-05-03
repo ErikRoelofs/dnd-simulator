@@ -10,9 +10,9 @@ class Wizard extends BaseCreature
      */
     private $spellPool;
 
-    public function __construct()
+    public function __construct(EventDispatcher $dispatcher)
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), 'Zappy', 'Wizard', 8,12,4,damage("1d6+2", Damage::TYPE_SLASHING), 2, []);
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), 'Zappy', 'Wizard', 8,12,4,damage("1d6+2", Damage::TYPE_SLASHING), 2, [], $dispatcher);
         $this->spellPool = new SpellPoolResource(13, 5);
 
         $a = new ActionPool();

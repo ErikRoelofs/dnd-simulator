@@ -18,6 +18,11 @@ class Battle
      */
     private $factionB;
 
+    /**
+     * @var EventDispatcher
+     */
+    private $dispatcher;
+
     private $initCounts = [];
     private $roundCount = 0;
 
@@ -26,8 +31,9 @@ class Battle
      * @param $factionA
      * @param $factionB
      */
-    public function __construct(Log $log, Faction $factionA, Faction $factionB)
+    public function __construct(EventDispatcher $dispatcher, Log $log, Faction $factionA, Faction $factionB)
     {
+        $this->dispatcher = $dispatcher;
         $this->log = $log;
         $this->factionA = $factionA;
         $this->factionB = $factionB;
@@ -59,8 +65,8 @@ class Battle
 
     private function nextRound() {
         $this->roundCount++;
-        $round = new Round;
-        $round->perform($this->initCounts, $this->factionA, $this->factionB, $this->log);
+        $round = new Round($this->dispatcher, $this->log);
+        $round->perform($this->initCounts, $this->factionA, $this->factionB);
     }
 
     public function printResult() {

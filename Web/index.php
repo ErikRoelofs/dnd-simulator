@@ -19,16 +19,19 @@ $def = new ServiceDefinitions();
 $def->load($app);
 
 $app['testbattle'] = function() {
-    return function() {
+    return function($app) {
+
         $log = new Log;
 
-        $fac1 = new Faction($log);
-        $ftr = new Fighter();
+        $app['event']->subscribe("all", new LogListener($log));
+
+        $fac1 = new Faction($app['event']);
+        $ftr = new Fighter($app['event']);
         $fac1->addCreature($ftr);
-        $fac1->addCreature(new Cleric());
-        $fac1->addCreature(new Rogue());
-        $fac1->addCreature(new Wizard());
-        $fac2 = new Faction($log);
+        $fac1->addCreature(new Cleric($app['event']));
+        $fac1->addCreature(new Rogue($app['event']));
+        $fac1->addCreature(new Wizard($app['event']));
+        $fac2 = new Faction($app['event']);
 
         /*
         $fac2->addCreature(new Goblin('Skiv'));
@@ -39,11 +42,11 @@ $app['testbattle'] = function() {
       */
 
 
-        $fac2->addCreature(new Skeleton('Bones'));
-        $fac2->addCreature(new Skeleton('Rattles'));
-        $fac2->addCreature(new Skeleton('Clatters'));
-        $fac2->addCreature(new Skeleton('Chatters'));
-        $fac2->addCreature(new Skeleton('Jim'));
+        $fac2->addCreature(new Skeleton('Bones', $app['event']));
+        $fac2->addCreature(new Skeleton('Rattles', $app['event']));
+        $fac2->addCreature(new Skeleton('Clatters', $app['event']));
+        $fac2->addCreature(new Skeleton('Chatters', $app['event']));
+        $fac2->addCreature(new Skeleton('Jim', $app['event']));
 
 /*
         $fac2->addCreature(new Hobgoblin('Bluk'));
@@ -54,14 +57,14 @@ $app['testbattle'] = function() {
 */
 //        $fac2->addCreature(new Ogre("Dumfuk"));
 
-        $battle = new Battle($log, $fac1, $fac2);
+        $battle = new Battle($app['event'], $log, $fac1, $fac2);
         return $battle;
     };
 };
 
 $app->get('/test', function() use ($app) {
 
-    $battle = $app['testbattle']();
+    $battle = $app['testbattle']($app);
     $battle->doBattle();
     $battle->printResult();
 
@@ -75,7 +78,7 @@ $app->get('/test/batch', function() use ($app) {
     $wonByB = 0;
     $avgDuration = 0;
     for($i = 0 ; $i <= 1000 ; $i++ ) {
-        $battle = $app['testbattle']();
+        $battle = $app['testbattle']($app);
         $battle->doBattle();
         if($battle->getWinner() == 'faction A') {
             $wonByA++;

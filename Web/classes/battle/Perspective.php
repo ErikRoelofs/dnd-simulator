@@ -3,28 +3,40 @@
 class Perspective
 {
 
+    /**
+     * @var CreatureInterface
+     */
     protected $me;
+    /**
+     * @var Faction
+     */
     protected $myFaction;
+    /**
+     * @var Faction
+     */
     protected $otherFaction;
-    protected $log;
+    /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
 
     /**
      * Perspective constructor.
-     * @param $me
-     * @param $myFaction
-     * @param $otherFaction
-     * @param $log
+     * @param CreatureInterface $me
+     * @param Faction $myFaction
+     * @param Faction $otherFaction
+     * @param EventDispatcher $dispatcher
      */
-    public function __construct($me, $myFaction, $otherFaction, $log)
+    public function __construct(CreatureInterface $me, Faction $myFaction, Faction $otherFaction, EventDispatcher $dispatcher)
     {
         $this->me = $me;
         $this->myFaction = $myFaction;
         $this->otherFaction = $otherFaction;
-        $this->log = $log;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
-     * @return mixed
+     * @return CreatureInterface
      */
     public function getMe()
     {
@@ -32,7 +44,7 @@ class Perspective
     }
 
     /**
-     * @return mixed
+     * @return Faction
      */
     public function getMyFaction()
     {
@@ -40,7 +52,7 @@ class Perspective
     }
 
     /**
-     * @return mixed
+     * @return Faction
      */
     public function getOtherFaction()
     {
@@ -48,11 +60,11 @@ class Perspective
     }
 
     /**
-     * @return mixed
+     * @return EventDispatcher
      */
-    public function getLog()
+    public function getDispatcher()
     {
-        return $this->log;
+        return $this->dispatcher;
     }
 
 }

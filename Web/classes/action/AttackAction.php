@@ -36,7 +36,7 @@ class AttackAction implements ActionInterface
     public function perform(Perspective $perspective, $targets)
     {
         $me = $perspective->getMe();
-        $log = $perspective->getLog();
+        $dispatcher = $perspective->getDispatcher();
         $mods = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
@@ -45,11 +45,11 @@ class AttackAction implements ActionInterface
             if( $state === ActionInterface::ATTACK_CRIT || $state === ActionInterface::ATTACK_HIT ) {
                 $dmg = $me->makeDamageRoll($state, $this->damageExpression, $target);
                 $mods[] = new TakeDamageModification($target, $dmg);
-                $hit = $state === ActionInterface::ATTACK_CRIT ? ' critically hit ' : ' hit ';
-                $log->write($me->getName() . $hit . $target->getName() . ' with their ' . $this->weapon . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+                $hit = $state === ActionInterface::ATTACK_CRIT ? ' crit' : 'hit';
+                $dispatcher->dispatch(new Event("attack." . $hit, ['attacker' => $me, 'target' => $target, 'damage' => $dmg]));
             }
             else {
-                $log->write($me->getName() . ' missed ' . $target->getName() , Log::MEDIUM_IMPORTANT );
+                $dispatcher->dispatch(new Event("attack.miss", ['attacker' => $me, 'target' => $target]));
             }
         }
         return $mods;

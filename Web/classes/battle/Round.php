@@ -3,6 +3,11 @@
 class Round
 {
     /**
+     * @var EventDispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * @var Log
      */
     protected $log;
@@ -17,20 +22,30 @@ class Round
      */
     protected $b;
 
-    public function perform($initCounts, Faction $a, Faction $b, Log $log) {
-        $log->write('A new round starts', Log::HEADER);
+    /**
+     * Round constructor.
+     * @param EventDispatcher $dispatcher
+     * @param Log $log
+     */
+    public function __construct(EventDispatcher $dispatcher, Log $log)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->log = $log;
+    }
+
+    public function perform($initCounts, Faction $a, Faction $b) {
+        $this->dispatcher->dispatch(new Event("round.start"));
         $this->a = $a;
         $this->b = $b;
-        $this->log = $log;
 
         $init = 30;
         while($init > -5) {
             if(isset($initCounts[$init])) {
                 foreach($initCounts[$init] as $creature) {
                     if(!$creature->isDead()) {
-                        $mods = $this->creatureTakesTurn($creature, $log);
+                        $mods = $this->creatureTakesTurn($creature);
                         foreach($mods as $mod) {
-                            $mod->execute($log);
+                            $mod->execute($this->dispatcher);
                         }
                         $this->a->removeDead();
                         $this->b->removeDead();
@@ -39,16 +54,16 @@ class Round
             }
             $init--;
         }
+        $this->dispatcher->dispatch(new Event("round.end"));
     }
 
     private function creatureTakesTurn(CreatureInterface $creature) {
-        $this->log->write($creature->getName() . ' is taking a turn', Log::NOTICE);
 
         if($this->a->memberOf($creature)) {
-            return $creature->takeTurn($this->a, $this->b, $this->log);
+            return $creature->takeTurn($this->a, $this->b, $this->dispatcher);
         }
         else {
-            return $creature->takeTurn($this->b, $this->a, $this->log);
+            return $creature->takeTurn($this->b, $this->a, $this->dispatcher);
         }
     }
 }

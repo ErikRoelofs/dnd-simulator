@@ -1,4 +1,32 @@
 Working on:
+- durations
+
+-- until end of my next turn
+-- until start of my next turn
+-- fixed number of turns (end of mine)
+-- concentration
+
+- duration must be attached to an active effect
+
+ActiveEffect {
+  Condition
+  EffectTerminator
+}
+
+FixedDurationTerminator (tracks end of turn events)
+StartOfTurnTerminator (tracks start of turn event)
+ConcentrationTerminator (tracks damage to caster)
+
+events:
+- start of creature turn
+- end of creature turn
+- end of round
+- creature dies
+- creature takes damage
+- creature gains condition
+
+======
+
 - conditions
 -V poisoned (disadvantage on attack rolls)
 -V restrained (others have advantage on rolls)
@@ -7,11 +35,7 @@ Working on:
 -- charmed (cannot attack the charmer)
 -- petrified (resistance)
 -- exhaustion (max hitpoints reduced; death)
-
-$creature->makeAttackRoll($bonus, $target); // state: miss, hit, crit
-$creature->makeDamageRoll($damageExpression, $target);
-
-
+-- concentration
 =====
 
 - buffs
@@ -19,6 +43,7 @@ $creature->makeDamageRoll($damageExpression, $target);
 - move statistics into classes? with calculations attached?
 - give creatures a stat-container instead of methods?
 - add modifications to change statistics
+- should buffs also be "conditions"?
 
 ===
 buff examples:
@@ -59,7 +84,7 @@ Creatures:
 
 Actions:
 - buffing
-- advantage/disadvantage
+V advantage/disadvantage
 V saves
 - durations
 - multipart (extra attack; condition bonuses like superiority)
