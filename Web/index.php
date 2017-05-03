@@ -26,6 +26,8 @@ $app['testbattle'] = function() {
         $app['event']->listen("all", new LogListener($log));
         $app['event']->subscribe(new AttackSubscriber($log));
         $app['event']->subscribe(new KnockoutSubscriber($log));
+        $app['event']->subscribe(new TakeDamageSubscriber($log));
+        $app['event']->subscribe(new HealDamageSubscriber($log));
 
         $fac1 = new Faction($app['event']);
         $ftr = new Fighter($app['event']);

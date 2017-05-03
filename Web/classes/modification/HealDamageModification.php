@@ -3,6 +3,8 @@
 class HealDamageModification implements ModificationInterface
 {
 
+    const EVENT_HEAL_DAMAGE = "modification.healDamage";
+
     /**
      * @var CreatureInterface
      */
@@ -24,7 +26,7 @@ class HealDamageModification implements ModificationInterface
     public function execute(EventDispatcher $dispatcher)
     {
         $realHealed = $this->target->healDamage($this->amount);
-        $dispatcher->dispatch(new Event("modification.healDamage", [ 'target' => $this->target, 'amount' => $this->amount]));
+        $dispatcher->dispatch(new Event(self::EVENT_HEAL_DAMAGE, [ 'target' => $this->target, 'amount' => $this->amount]));
     }
 
     /**
