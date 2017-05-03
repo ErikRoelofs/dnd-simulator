@@ -3,6 +3,9 @@
 class SimpleDamageSpellAction implements ActionInterface, SpellInterface
 {
 
+    const EVENT_SAVED = 'action.spell.simpledamage.passedSave';
+    const EVENT_NOT_SAVED = 'action.spell.simpledamage.failedSave';
+
     /**
      * @var SpellPoolResource
      */
@@ -74,11 +77,11 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
         foreach($targets as $target) {
             if(!$target) { continue; }
             if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, $this->resource->getSaveDC())) {
-                $dispatcher->dispatch(new Event('action.spell.simpledamage.passedSave', ['caster' => $me, 'target' => $target, 'damage' => $halfDmg]));
+                $dispatcher->dispatch(new Event(self::EVENT_SAVED, ['caster' => $me, 'target' => $target, 'damage' => $halfDmg, 'name' => $this->name]));
                 $mods[] = new TakeDamageModification($target, $halfDmg);
             }
             else {
-                $dispatcher->dispatch(new Event('action.spell.simpledamage.failedSave', ['caster' => $me, 'target' => $target, 'damage' => $dmg]));
+                $dispatcher->dispatch(new Event(self::EVENT_NOT_SAVED, ['caster' => $me, 'target' => $target, 'damage' => $dmg, 'name' => $this->name]));
                 $mods[] = new TakeDamageModification($target, $dmg);
             }
         }

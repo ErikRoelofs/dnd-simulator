@@ -3,6 +3,8 @@
 class HealAction implements ActionInterface, SpellInterface
 {
 
+    const EVENT_CAST = 'action.spell.heal';
+
     protected $amount;
     /**
      * @var SpellPoolResource
@@ -40,7 +42,7 @@ class HealAction implements ActionInterface, SpellInterface
             if(!$target) { continue; }
             $heal = $this->diceExpression->roll();
             $mods[] = new HealDamageModification($target, $heal);
-            $dispatcher->dispatch(new Event("heal", [ 'healer' => $me, 'target' => $target, 'amount' => $heal]));
+            $dispatcher->dispatch(new Event(self::EVENT_CAST, [ 'healer' => $me, 'target' => $target, 'amount' => $heal]));
         }
         return $mods;
     }

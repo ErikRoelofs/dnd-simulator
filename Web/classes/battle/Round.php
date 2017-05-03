@@ -2,6 +2,10 @@
 
 class Round
 {
+
+    const EVENT_START = 'round.start';
+    const EVENT_END = 'round.end';
+
     /**
      * @var EventDispatcher
      */
@@ -34,7 +38,7 @@ class Round
     }
 
     public function perform($initCounts, Faction $a, Faction $b) {
-        $this->dispatcher->dispatch(new Event("round.start"));
+        $this->dispatcher->dispatch(new Event(self::EVENT_START));
         $this->a = $a;
         $this->b = $b;
 
@@ -54,7 +58,7 @@ class Round
             }
             $init--;
         }
-        $this->dispatcher->dispatch(new Event("round.end"));
+        $this->dispatcher->dispatch(new Event(self::EVENT_END));
     }
 
     private function creatureTakesTurn(CreatureInterface $creature) {

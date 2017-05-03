@@ -3,6 +3,8 @@
 class SecondWindAction implements ActionInterface
 {
 
+    const EVENT_USED = 'action.secondwind.used';
+
     protected $amount;
     /**
      * @var LimitedUseUniqueResource
@@ -40,7 +42,7 @@ class SecondWindAction implements ActionInterface
             if(!$target) { continue; }
             $heal = $this->healExpression->roll();
             $mods[] = new HealDamageModification($target, $heal);
-            $dispatcher->dispatch(new Event('action.secondwind', [ 'user' => $me, 'amount' => $heal]));
+            $dispatcher->dispatch(new Event(self::EVENT_USED, [ 'user' => $me, 'amount' => $heal]));
         }
         return $mods;
     }

@@ -13,6 +13,7 @@ interface CreatureInterface
     const DIE_NORMAL = 102;
     const DIE_DISADVANTAGE = 103;
 
+    const EVENT_START_TURN = 'creature.turn.start';
     const EVENT_DOWNED = 'creature.downed';
 
     public function getMaxHP();
