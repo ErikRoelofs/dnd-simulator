@@ -15,6 +15,7 @@ interface CreatureInterface
 
     const EVENT_START_TURN = 'creature.turn.start';
     const EVENT_DOWNED = 'creature.downed';
+    const EVENT_TAKE_DAMAGE = 'creature.takeDamage';
 
     public function getMaxHP();
     public function getCurrentHP();

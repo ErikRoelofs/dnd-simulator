@@ -61,6 +61,10 @@ abstract class BaseCreature implements CreatureInterface
     {
         $realDamage = $this->calculateDamageAmount($damage);
         $this->currentHP -= $realDamage;
+        $this->dispatcher->dispatch(new Event(self::EVENT_TAKE_DAMAGE, [ 'target' => $this, 'damage' => $realDamage]));
+        if($this->currentHP === 0) {
+            $this->dispatcher->dispatch(new Event(CreatureInterface::EVENT_DOWNED, ['creature' => $this]));
+        }
         return $realDamage;
     }
 

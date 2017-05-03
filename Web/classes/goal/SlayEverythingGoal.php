@@ -18,7 +18,7 @@ class SlayEverythingGoal implements GoalInterface
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
     {
         $painNeeded = $this->painNeeded($perspective);
-        if($painNeeded === 0) { return 0; }
+        if($painNeeded == 0) { return 0; }
         $impact = 0;
         $outcomes = $action->predict($perspective, $targets);
         foreach($outcomes as $modification) {

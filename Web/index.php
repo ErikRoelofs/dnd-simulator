@@ -19,20 +19,19 @@ $def = new ServiceDefinitions();
 $def->load($app);
 
 $app['testbattle'] = function() {
-    return function($app) {
+    return function($app, $log = null) {
 
-        $log = new Log;
-
-        //$app['event']->listen("all", new LogListener($log));
-        $app['event']->subscribe(new AttackSubscriber($log));
-        $app['event']->subscribe(new KnockoutSubscriber($log));
-        $app['event']->subscribe(new TakeDamageSubscriber($log));
-        $app['event']->subscribe(new HealDamageSubscriber($log));
-        $app['event']->subscribe(new SimpleDamageSpellSubscriber($log));
-        $app['event']->subscribe(new TurnStartsSubscriber($log));
-        $app['event']->subscribe(new RoundStartsSubscriber($log));
-        $app['event']->subscribe(new HealSpellSubscriber($log));
-        $app['event']->subscribe(new SecondWindSubscriber($log));
+        if($log) {
+            $app['event']->subscribe(new AttackSubscriber($log));
+            $app['event']->subscribe(new KnockoutSubscriber($log));
+            $app['event']->subscribe(new TakeDamageSubscriber($log));
+            $app['event']->subscribe(new HealDamageSubscriber($log));
+            $app['event']->subscribe(new SimpleDamageSpellSubscriber($log));
+            $app['event']->subscribe(new TurnStartsSubscriber($log));
+            $app['event']->subscribe(new RoundStartsSubscriber($log));
+            $app['event']->subscribe(new HealSpellSubscriber($log));
+            $app['event']->subscribe(new SecondWindSubscriber($log));
+        }
 
         $fac1 = new Faction($app['event']);
         $ftr = new Fighter($app['event']);
@@ -66,18 +65,22 @@ $app['testbattle'] = function() {
 */
 //        $fac2->addCreature(new Ogre("Dumfuk"));
 
-        $battle = new Battle($app['event'], $log, $fac1, $fac2);
+        $app['event']->subscribe($fac1);
+        $app['event']->subscribe($fac2);
+
+        $battle = new Battle($app['event'], $fac1, $fac2);
         return $battle;
     };
 };
 
 $app->get('/test', function() use ($app) {
 
-    $battle = $app['testbattle']($app);
+    $log = new Log;
+    $battle = $app['testbattle']($app, $log);
     $battle->doBattle();
     $battle->printResult();
 
-    $battle->getLog()->printOut();
+    $log->printOut();
     return '';
 
 });

@@ -12,11 +12,6 @@ class Round
     protected $dispatcher;
 
     /**
-     * @var Log
-     */
-    protected $log;
-
-    /**
      * @var Faction
      */
     protected $a;
@@ -29,12 +24,10 @@ class Round
     /**
      * Round constructor.
      * @param EventDispatcher $dispatcher
-     * @param Log $log
      */
-    public function __construct(EventDispatcher $dispatcher, Log $log)
+    public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-        $this->log = $log;
     }
 
     public function perform($initCounts, Faction $a, Faction $b) {
@@ -51,8 +44,6 @@ class Round
                         foreach($mods as $mod) {
                             $mod->execute($this->dispatcher);
                         }
-                        $this->a->removeDead();
-                        $this->b->removeDead();
                     }
                 }
             }

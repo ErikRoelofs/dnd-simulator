@@ -1,6 +1,6 @@
 <?php
 
-class Faction
+class Faction implements EventSubscriberInterface
 {
 
     /**
@@ -47,7 +47,6 @@ class Faction
             if($creature->isDead()) {
                 $this->downed[] = $creature;
                 unset($this->creatures[$key]);
-                $this->dispatcher->dispatch(new Event(CreatureInterface::EVENT_DOWNED, ['creature' => $creature]));
             }
         }
     }
@@ -64,6 +63,18 @@ class Faction
             }
         }
         return false;
+    }
+
+    public function handle(Event $event)
+    {
+        $this->removeDead();
+    }
+
+    public function getSubscribed()
+    {
+        return [
+            CreatureInterface::EVENT_DOWNED
+        ];
     }
 
 }

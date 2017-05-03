@@ -4,11 +4,6 @@ class Battle
 {
 
     /**
-     * @var Log
-     */
-    private $log;
-
-    /**
      * @var Faction
      */
     private $factionA;
@@ -31,10 +26,9 @@ class Battle
      * @param $factionA
      * @param $factionB
      */
-    public function __construct(EventDispatcher $dispatcher, Log $log, Faction $factionA, Faction $factionB)
+    public function __construct(EventDispatcher $dispatcher, Faction $factionA, Faction $factionB)
     {
         $this->dispatcher = $dispatcher;
-        $this->log = $log;
         $this->factionA = $factionA;
         $this->factionB = $factionB;
     }
@@ -65,7 +59,7 @@ class Battle
 
     private function nextRound() {
         $this->roundCount++;
-        $round = new Round($this->dispatcher, $this->log);
+        $round = new Round($this->dispatcher);
         $round->perform($this->initCounts, $this->factionA, $this->factionB);
     }
 
@@ -92,10 +86,6 @@ class Battle
 
     private function getCreatureString(CreatureInterface $creature) {
         return $creature->getName() . ' ' .$creature->getCurrentHP() . '/' . $creature->getMaxHP() . '<br />';
-    }
-
-    public function getLog() {
-        return $this->log;
     }
 
     public function getRoundsElapsed() {

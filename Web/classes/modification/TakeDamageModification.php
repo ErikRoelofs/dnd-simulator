@@ -2,9 +2,7 @@
 
 class TakeDamageModification implements ModificationInterface
 {
-
-    const EVENT_TAKE_DAMAGE = 'modification.takeDamage';
-
+    
     /**
      * @var CreatureInterface
      */
@@ -28,8 +26,7 @@ class TakeDamageModification implements ModificationInterface
 
     public function execute(EventDispatcher $dispatcher)
     {
-        $realDamage = $this->target->takeDamage($this->damage);
-        $dispatcher->dispatch(new Event(self::EVENT_TAKE_DAMAGE, [ 'target' => $this->target, 'damage' => $realDamage]));
+        $this->target->takeDamage($this->damage);
     }
 
     /**

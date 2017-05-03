@@ -28,7 +28,7 @@ class TakeDamageSubscriber implements EventSubscriberInterface
     public function getSubscribed()
     {
         return [
-            TakeDamageModification::EVENT_TAKE_DAMAGE
+            CreatureInterface::EVENT_TAKE_DAMAGE
         ];
     }
 
