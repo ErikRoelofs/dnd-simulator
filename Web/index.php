@@ -31,6 +31,8 @@ $app['testbattle'] = function() {
             $app['event']->subscribe(new RoundStartsSubscriber($log));
             $app['event']->subscribe(new HealSpellSubscriber($log));
             $app['event']->subscribe(new SecondWindSubscriber($log));
+            $app['event']->subscribe(new GainedConditionSubscriber($log));
+            $app['event']->subscribe(new LostConditionSubscriber($log));
         }
 
         $fac1 = new Faction($app['event']);

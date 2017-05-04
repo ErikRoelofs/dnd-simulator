@@ -113,7 +113,9 @@ abstract class BaseCreature implements CreatureInterface
     public function takeTurn(Faction $myFaction, Faction $otherFaction)
     {
         $this->dispatcher->dispatch(new Event(self::EVENT_START_TURN, ['creature' => $this]));
-        return $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $this->dispatcher));
+        $outcome = $this->strategy->doTurn(new Perspective($this, $myFaction, $otherFaction, $this->dispatcher));
+        $this->dispatcher->dispatch(new Event(self::EVENT_END_TURN, ['creature' => $this]));
+        return $outcome;
     }
 
     public function getActions()
@@ -263,6 +265,7 @@ abstract class BaseCreature implements CreatureInterface
     {
         $effect->setOwner($this);
         $this->effects[spl_object_hash($effect)] = $effect;
+        $this->dispatcher->dispatch(new Event(self::EVENT_GAINED_CONDITION, ['effect' => $effect, 'creature' => $this]));
     }
 
     public function loseEffect(ActiveEffect $effect)
@@ -271,6 +274,7 @@ abstract class BaseCreature implements CreatureInterface
             throw new Exception("Cannot lose effect; not on this creature.");
         }
         unset($this->effects[spl_object_hash($effect)]);
+        $this->dispatcher->dispatch(new Event(self::EVENT_LOST_CONDITION, ['effect' => $effect, 'creature' => $this]));
     }
 
 

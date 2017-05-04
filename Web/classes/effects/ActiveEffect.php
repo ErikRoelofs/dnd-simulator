@@ -54,4 +54,8 @@ class ActiveEffect
         $this->owner->loseEffect($this);
     }
 
+    public function getOwner() {
+        return $this->owner;
+    }
+
 }

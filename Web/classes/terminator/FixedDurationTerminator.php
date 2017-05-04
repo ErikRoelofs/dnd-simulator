@@ -29,19 +29,20 @@ class FixedDurationTerminator implements TerminatorInterface, EventSubscriberInt
 
     public function handle(Event $event)
     {
-        if($event->getName() === Round::EVENT_END) {
-            $this->roundsLeft--;
-        }
-        if($event->getName() === CreatureInterface::EVENT_START_TURN && $this->roundsLeft == 0) {
-            $this->endEffect();
+        if($event->getName() === CreatureInterface::EVENT_END_TURN && $event->getData()['creature'] == $this->effect->getOwner()) {
+            if($this->roundsLeft > 1) {
+                $this->roundsLeft--;
+            }
+            else {
+                $this->endEffect();
+            }
         }
     }
 
     public function getSubscribed()
     {
         return [
-            Round::EVENT_END,
-            CreatureInterface::EVENT_START_TURN
+            CreatureInterface::EVENT_END_TURN
         ];
     }
 
