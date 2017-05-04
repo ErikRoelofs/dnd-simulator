@@ -44,14 +44,8 @@ class IceMephit extends BaseCreature
     }
 
     public function explode(Faction $myFaction, Faction $otherFaction) {
-       $target = $otherFaction->getRandomCreature();
-       $damage = damage("1d8", Damage::TYPE_SLASHING);
-       $roll = $damage->roll();
-       if(!$target->makeSave(Ability::DEXTERITY, 10)) {
-           $this->dispatcher->dispatch(new Event(SimpleDamageSpellAction::EVENT_NOT_SAVED, ['caster' => $this, 'target' => $target, 'damage' => $roll, 'name' => 'Icy Death']));
-           return [ new TakeDamageModification($target, $roll) ];
-       }
-       return [];
+       $explode = new ExplodeAction(damage("1d8", Damage::TYPE_SLASHING), 20);
+       return $explode->perform(new Perspective($this, $myFaction, $otherFaction, $this->dispatcher),[$otherFaction->getRandomCreature()]);
     }
 
 

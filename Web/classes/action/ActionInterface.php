@@ -6,6 +6,8 @@ interface ActionInterface
     const TYPE_MOVEMENT = 2;
     const TYPE_ACTION = 3;
 
+    const TYPE_FEATURE = 4;
+
     const TARGET_CREATURE = 100;
     const TARGET_ENEMY_CREATURE = 100;
     const TARGET_FRIENDLY_CREATURE = 101;
