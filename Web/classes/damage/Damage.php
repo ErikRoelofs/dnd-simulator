@@ -9,6 +9,7 @@ class Damage
     const TYPE_COLD = 3;
     const TYPE_LIGHTNING = 4;
     const TYPE_FORCE = 5;
+    const TYPE_POISON = 6;
 
     const TYPE_BLUDGEONING = 11;
     const TYPE_PIERCING = 12;

@@ -4,7 +4,7 @@ class SpellPoolResource implements ResourceInterface
 {
 
     // technically you have infinite level 0 slots but whatever
-    protected $slots = [ 0 => 1000000, 1 => 2, 2 => 1 ];
+    protected $slots = [ 0 => 1000000, 1 => 2, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0 ];
 
     protected $saveDC;
     protected $spellAttack;
@@ -14,10 +14,13 @@ class SpellPoolResource implements ResourceInterface
      * @param $saveDC
      * @param $spellAttack
      */
-    public function __construct($saveDC, $spellAttack)
+    public function __construct($saveDC, $spellAttack, $slots = null)
     {
         $this->saveDC = $saveDC;
         $this->spellAttack = $spellAttack;
+        if($this->slots !== null) {
+            $this->slots = $slots;
+        }
     }
 
     /**

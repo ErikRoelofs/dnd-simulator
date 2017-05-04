@@ -87,7 +87,7 @@ abstract class BaseCreature implements CreatureInterface
                 $taken += $roll->getAmount();
             }
         }
-        return min($taken, $this->currentHP);
+        return (int) min($taken, $this->currentHP);
     }
 
     public function getAC()

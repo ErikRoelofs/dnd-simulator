@@ -54,11 +54,17 @@ $app['testbattle'] = function() {
       */
 
 
+        /*
         $fac2->addCreature(new Skeleton('Bones', $app['event']));
         $fac2->addCreature(new Skeleton('Rattles', $app['event']));
         $fac2->addCreature(new Skeleton('Clatters', $app['event']));
         $fac2->addCreature(new Skeleton('Chatters', $app['event']));
         $fac2->addCreature(new Skeleton('Jim', $app['event']));
+        */
+
+        $fac2->addCreature(new IceMephit('Chilly', $app['event']));
+        $fac2->addCreature(new IceMephit('Willy', $app['event']));
+        $fac2->addCreature(new IceMephit('Nilly', $app['event']));
 
 /*
         $fac2->addCreature(new Hobgoblin('Bluk'));

@@ -1,12 +1,16 @@
 Working on:
+
+- interrupts
+
+ - when the Mephit dies, it explodes
+  - add the option to raise immediate Modifications to the Round, to be applied before anything else
+  - the Mephit must trigger an action to perform on death
+  - the action must be resolved and create Modifications to raise
+
+
 - durations
 
--V until end of my next turn
--V until start of my next turn
--V fixed number of turns (end of mine)
 -- concentration
-
-V duration must be attached to an active effect
 
 - effects must be applied using a modification
 
@@ -94,6 +98,7 @@ V saves
 - conditions
 - concentration
 - temp HP
+- resources as attachable to actions
 
 Interface:
 - setup parties
