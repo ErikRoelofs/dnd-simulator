@@ -1,10 +1,11 @@
 <?php
 
-class Round
+class Round implements EventSubscriberInterface
 {
 
     const EVENT_START = 'round.start';
     const EVENT_END = 'round.end';
+    const EVENT_INTERRUPT = 'round.interrupt';
 
     /**
      * @var EventDispatcher
@@ -28,6 +29,7 @@ class Round
     public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
+        $this->dispatcher->subscribe($this);
     }
 
     public function perform($initCounts, Faction $a, Faction $b) {
@@ -50,15 +52,40 @@ class Round
             $init--;
         }
         $this->dispatcher->dispatch(new Event(self::EVENT_END));
+        $this->dispatcher->unsubscribe($this);
     }
 
     private function creatureTakesTurn(CreatureInterface $creature) {
 
         if($this->a->memberOf($creature)) {
-            return $creature->takeTurn($this->a, $this->b, $this->dispatcher);
+            return $creature->takeTurn($this->a, $this->b);
         }
         else {
-            return $creature->takeTurn($this->b, $this->a, $this->dispatcher);
+            return $creature->takeTurn($this->b, $this->a);
         }
     }
+
+    public function handle(Event $event)
+    {
+        $creature = $event->getData()['creature'];
+        $method = $event->getData()['method'];
+        if($this->a->memberOf($creature)) {
+            $mods = $creature->$method($this->a, $this->b);
+        }
+        else {
+            $mods = $creature->$method($this->b, $this->a);
+        }
+        foreach($mods as $mod) {
+            $mod->execute($this->dispatcher);
+        }
+    }
+
+    public function getSubscribed()
+    {
+        return [
+            self::EVENT_INTERRUPT
+        ];
+    }
+
+
 }

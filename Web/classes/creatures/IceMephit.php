@@ -34,4 +34,25 @@ class IceMephit extends BaseCreature
         return $this->actions;
     }
 
+    public function takeDamage(RolledDamage $damage)
+    {
+        $damage = parent::takeDamage($damage);
+        if($this->currentHP === 0) {
+            $this->dispatcher->dispatch(new Event(Round::EVENT_INTERRUPT, ['creature' => $this, 'method' => 'explode']));
+        }
+        return $damage;
+    }
+
+    public function explode(Faction $myFaction, Faction $otherFaction) {
+       $target = $otherFaction->getRandomCreature();
+       $damage = damage("1d8", Damage::TYPE_SLASHING);
+       $roll = $damage->roll();
+       if(!$target->makeSave(Ability::DEXTERITY, 10)) {
+           $this->dispatcher->dispatch(new Event(SimpleDamageSpellAction::EVENT_NOT_SAVED, ['caster' => $this, 'target' => $target, 'damage' => $roll, 'name' => 'Icy Death']));
+           return [ new TakeDamageModification($target, $roll) ];
+       }
+       return [];
+    }
+
+
 }
