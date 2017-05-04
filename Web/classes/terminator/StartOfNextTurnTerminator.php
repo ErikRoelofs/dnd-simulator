@@ -1,5 +1,5 @@
 <?php
-    
+
 class StartOfNextTurnTerminator extends AbstractTerminator implements TerminatorInterface, EventSubscriberInterface
 {
 

@@ -1,12 +1,12 @@
 Working on:
 - durations
 
--- until end of my next turn
--- until start of my next turn
--- fixed number of turns (end of mine)
+-V until end of my next turn
+-V until start of my next turn
+-V fixed number of turns (end of mine)
 -- concentration
 
-- duration must be attached to an active effect
+V duration must be attached to an active effect
 
 - effects must be applied using a modification
 
