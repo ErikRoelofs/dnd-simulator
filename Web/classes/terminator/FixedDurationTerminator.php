@@ -1,19 +1,9 @@
 <?php
 
-class FixedDurationTerminator implements TerminatorInterface, EventSubscriberInterface
+class FixedDurationTerminator extends AbstractTerminator implements TerminatorInterface, EventSubscriberInterface
 {
 
     protected $roundsLeft;
-
-    /**
-     * @var ActiveEffect
-     */
-    protected $effect;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $dispatcher;
 
     /**
      * FixedDurationTerminator constructor.
@@ -22,8 +12,7 @@ class FixedDurationTerminator implements TerminatorInterface, EventSubscriberInt
     public function __construct(EventDispatcher $dispatcher, $roundsLeft)
     {
         $this->roundsLeft = $roundsLeft;
-        $this->dispatcher = $dispatcher;
-        $dispatcher->subscribe($this);
+        parent::__construct($dispatcher);
     }
 
 
@@ -44,17 +33,6 @@ class FixedDurationTerminator implements TerminatorInterface, EventSubscriberInt
         return [
             CreatureInterface::EVENT_END_TURN
         ];
-    }
-
-    public function setEffect(ActiveEffect $effect)
-    {
-        $this->effect = $effect;
-    }
-
-    public function endEffect()
-    {
-        $this->effect->terminate();
-        $this->dispatcher->unsubscribe($this);
     }
 
 }
