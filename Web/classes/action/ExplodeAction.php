@@ -5,6 +5,7 @@ class ExplodeAction implements ActionInterface
 
     const EVENT_SAVED = 'action.explode.miss';
     const EVENT_NOT_SAVED = 'action.explode.hit';
+    const EVENT_NO_DAMAGE = 'action.explode.nothing';
 
     /**
      * @var DamageExpression
@@ -13,15 +14,23 @@ class ExplodeAction implements ActionInterface
 
     protected $saveDC;
 
+    protected $ability;
+
+    protected $saveHalves;
+
     /**
-     * AttackAction constructor.
-     * @param $attackBonus
-     * @param $damage
+     * ExplodeAction constructor.
+     * @param DamageExpression $damageExpression
+     * @param $saveDC
+     * @param $ability
+     * @param $saveHalves
      */
-    public function __construct(DamageExpression $damageExpression, $saveDC)
+    public function __construct(DamageExpression $damageExpression, $saveDC, $ability = Ability::DEXTERITY, $saveHalves = true)
     {
         $this->damageExpression = $damageExpression;
         $this->saveDC = $saveDC;
+        $this->ability = $ability;
+        $this->saveHalves = $saveHalves;
     }
 
     public function getType()
@@ -37,11 +46,16 @@ class ExplodeAction implements ActionInterface
         foreach($targets as $target) {
             if(!$target) { continue; }
             $roll = $this->damageExpression->roll();
-            if(!$target->makeSave(Ability::DEXTERITY, $this->saveDC)) {
+            if(!$target->makeSave($this->ability, $this->saveDC)) {
                 $dispatcher->dispatch(new Event(self::EVENT_NOT_SAVED, ['caster' => $me, 'target' => $target, 'damage' => $roll]));
                 return [ new TakeDamageModification($target, $roll) ];
             }
-            $dispatcher->dispatch(new Event(self::EVENT_SAVED, ['caster' => $me, 'target' => $target]));
+            elseif($this->saveHalves) {
+                $roll = $roll->multiply(0.5);
+                $dispatcher->dispatch(new Event(self::EVENT_SAVED, ['caster' => $me, 'target' => $target, 'damage' => $roll]));
+                return [ new TakeDamageModification($target, $roll) ];
+            }
+            $dispatcher->dispatch(new Event(self::EVENT_NO_DAMAGE, ['caster' => $me, 'target' => $target]));
             return [];
 
         }

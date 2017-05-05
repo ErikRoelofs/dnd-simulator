@@ -12,7 +12,7 @@ class IceMephit extends BaseCreature
 
    public function __construct($name, $dispatcher)
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), $name, 'Ice Mephit', 21,11,3, damage("1d4+1", Damage::TYPE_SLASHING, "1d4", Damage::TYPE_FIRE), 1, [], $dispatcher);
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), $name, 'Ice Mephit', 21,11,3, damage("1d4+1", Damage::TYPE_SLASHING, "1d4", Damage::TYPE_COLD), 1, [], $dispatcher);
 
         $this->spellPool = new SpellPoolResource(10, 5, [ 1 => 1 ]);
 
@@ -24,8 +24,8 @@ class IceMephit extends BaseCreature
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
 
-        $this->vulnerabilities = [ Damage::TYPE_BLUDGEONING, Damage::TYPE_FIRE ];
-        $this->immunities = [ Damage::TYPE_COLD, Damage::TYPE_POISON ];
+        $this->vulnerabilities = [ Damage::TYPE_BLUDGEONING => true, Damage::TYPE_FIRE => true];
+        $this->immunities = [ Damage::TYPE_COLD => true, Damage::TYPE_POISON => true];
 
     }
 
@@ -44,7 +44,7 @@ class IceMephit extends BaseCreature
     }
 
     public function explode(Faction $myFaction, Faction $otherFaction) {
-       $explode = new ExplodeAction(damage("1d8", Damage::TYPE_SLASHING), 20);
+       $explode = new ExplodeAction(damage("1d8", Damage::TYPE_SLASHING), 10);
        return $explode->perform(new Perspective($this, $myFaction, $otherFaction, $this->dispatcher),[$otherFaction->getRandomCreature()]);
     }
 

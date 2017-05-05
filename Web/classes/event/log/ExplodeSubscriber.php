@@ -25,11 +25,15 @@ class ExplodeSubscriber implements EventSubscriberInterface
 
         switch($event->getName()) {
             case ExplodeAction::EVENT_SAVED: {
-                $this->log->write($caster->getName() . ' exploded all over ' . $target->getName() . ', but it did not hurt', Log::MEDIUM_IMPORTANT);
+                $this->log->write($caster->getName() . ' exploded all over ' . $target->getName() . ', but they saved and only took ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
                 break;
             }
             case ExplodeAction::EVENT_NOT_SAVED: {
                 $this->log->write($caster->getName() . ' exploded all over ' . $target->getName() . ' for ' . $dmg . ' damage', Log::MEDIUM_IMPORTANT);
+                break;
+            }
+            case ExplodeAction::EVENT_NO_DAMAGE: {
+                $this->log->write($caster->getName() . ' exploded all over ' . $target->getName() . ', but it did not hurt', Log::MEDIUM_IMPORTANT);
                 break;
             }
         }
