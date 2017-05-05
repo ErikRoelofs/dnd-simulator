@@ -1,13 +1,5 @@
 Working on:
 
-- interrupts
-
- - when the Mephit dies, it explodes
-  - add the option to raise immediate Modifications to the Round, to be applied before anything else
-  - the Mephit must flag an action to perform on death
-  - the action must be resolved and create Modifications to raise
-
-
 - durations
 
 -- concentration
@@ -19,8 +11,6 @@ ActiveEffect {
   EffectTerminator (?)
 }
 
-FixedDurationTerminator (tracks end of turn events)
-StartOfTurnTerminator (tracks start of turn event)
 ConcentrationTerminator (tracks damage to caster)
 
 events:

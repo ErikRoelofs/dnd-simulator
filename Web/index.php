@@ -38,8 +38,6 @@ $app['testbattle'] = function() {
 
         $fac1 = new Faction($app['event']);
         $ftr = new Fighter($app['event']);
-        $terminator = new FixedDurationTerminator($app['event'], 2);
-        $ftr->gainEffect(new ActiveEffect(new Paralysed(), $terminator));
         $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric($app['event']));
         $fac1->addCreature(new Rogue($app['event']));
@@ -63,9 +61,14 @@ $app['testbattle'] = function() {
         $fac2->addCreature(new Skeleton('Jim', $app['event']));
         */
 
+        /*
         $fac2->addCreature(new IceMephit('Chilly', $app['event']));
         $fac2->addCreature(new IceMephit('Willy', $app['event']));
         $fac2->addCreature(new IceMephit('Nilly', $app['event']));
+*/
+        $fac2->addCreature(new MagmaMephit('Hotty', $app['event']));
+        $fac2->addCreature(new MagmaMephit('Smokey', $app['event']));
+        $fac2->addCreature(new MagmaMephit('Burney', $app['event']));
 
 /*
         $fac2->addCreature(new Hobgoblin('Bluk'));
