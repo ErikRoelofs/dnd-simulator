@@ -99,6 +99,3 @@ Core:
 - events
 - reactions (interrupts)
 - expanded logging
-
-Minor:
-- rename "realdamage" -> "hitpoints lost"

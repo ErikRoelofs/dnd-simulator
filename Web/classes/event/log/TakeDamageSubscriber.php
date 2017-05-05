@@ -20,9 +20,9 @@ class TakeDamageSubscriber implements EventSubscriberInterface
     public function handle(Event $event)
     {
         $target = $event->getData()['target'];
-        $dmg = $event->getData()['damage'];
+        $dmg = $event->getData()['hpLost'];
 
-        $this->log->write($target->getName() . ' has taken ' . $dmg . ' points of damage', Log::MEDIUM_IMPORTANT);
+        $this->log->write($target->getName() . ' has lost ' . $dmg . ' hitpoints', Log::MEDIUM_IMPORTANT);
     }
 
     public function getSubscribed()
