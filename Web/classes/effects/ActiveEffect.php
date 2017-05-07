@@ -56,8 +56,9 @@ class ActiveEffect
         $this->owner = $owner;
     }
 
-    public function terminate() {
+    public function shouldTerminate() {
         $this->owner->loseEffect($this);
+        $this->terminator->onEffectEnd();
     }
 
     public function getOwner() {

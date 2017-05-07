@@ -8,6 +8,8 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
      */
     protected $dispatcher;
 
+    private $subscribed = true;
+
     /**
      * @var ActiveEffect
      */
@@ -33,10 +35,16 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
         $this->effect = $effect;
     }
 
-    public function endEffect()
+    protected function endEffect()
     {
-        $this->effect->terminate();
-        $this->dispatcher->unsubscribe($this);
+        $this->effect->shouldTerminate();
+    }
+
+    public function onEffectEnd() {
+        if($this->subscribed) {
+            $this->dispatcher->unsubscribe($this);
+            $this->subscribed = false;
+        }
     }
 
 }

@@ -39,7 +39,10 @@ $app['testbattle'] = function() {
 
         $fac1 = new Faction($factionAName, $app['event']);
         $ftr = new Fighter($app['event']);
-        $effect = new ActiveEffect('being stupid', new Blinded(), new ConcentrationTerminator($app['event']));
+        $effect = new ActiveEffect('being stupid', new Blinded(), new CombinedTerminator(
+            [ new ConcentrationTerminator($app['event']),
+             new FixedDurationTerminator($app['event'], 1)]
+        ));
         $ftr->gainEffect($effect);
         $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric($app['event']));

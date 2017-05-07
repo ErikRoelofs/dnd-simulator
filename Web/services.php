@@ -15,6 +15,7 @@ require_once __DIR__.'/classes/condition/ConditionInterface.php';
 require_once __DIR__.'/classes/event/EventListenerInterface.php';
 require_once __DIR__.'/classes/event/EventSubscriberInterface.php';
 require_once __DIR__.'/classes/terminator/TerminatorInterface.php';
+require_once __DIR__.'/classes/terminator/AbstractTerminator.php';
 
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
