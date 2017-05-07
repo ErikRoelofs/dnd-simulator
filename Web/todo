@@ -1,25 +1,4 @@
-Working on:
 
-- durations
-
--- concentration
-
-- effects must be applied using a modification
-
-ActiveEffect {
-  Condition
-  EffectTerminator (?)
-}
-
-ConcentrationTerminator (tracks damage to caster)
-
-events:
-- start of creature turn
-- end of creature turn
-- end of round
-- creature dies
-- creature takes damage
-- creature gains condition
 
 ======
 
@@ -82,7 +61,7 @@ Actions:
 - buffing
 V advantage/disadvantage
 V saves
-- durations
+V durations
 - multipart (extra attack; condition bonuses like superiority)
 - riders & modifications (casting from higher slot)
 - conditions
