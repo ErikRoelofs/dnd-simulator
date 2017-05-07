@@ -3,6 +3,8 @@
 class Faction implements EventSubscriberInterface
 {
 
+    protected $name;
+
     /**
      * @var EventDispatcher
      */
@@ -14,8 +16,9 @@ class Faction implements EventSubscriberInterface
      * Faction constructor.
      * @param EventDispatcher $dispatcher
      */
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct($name, EventDispatcher $dispatcher)
     {
+        $this->name = $name;
         $this->dispatcher = $dispatcher;
     }
 
@@ -75,6 +78,14 @@ class Faction implements EventSubscriberInterface
         return [
             CreatureInterface::EVENT_DOWNED
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
 }

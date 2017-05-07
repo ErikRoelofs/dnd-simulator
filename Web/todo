@@ -99,3 +99,5 @@ Core:
 - events
 - reactions (interrupts)
 - expanded logging
+- loading creatures from a library
+- expand actions; make them modular

@@ -19,7 +19,7 @@ $def = new ServiceDefinitions();
 $def->load($app);
 
 $app['testbattle'] = function() {
-    return function($app, $log = null) {
+    return function($app, $factionAName, $factionBName, $log = null) {
 
         if($log) {
             $app['event']->subscribe(new AttackSubscriber($log));
@@ -36,13 +36,14 @@ $app['testbattle'] = function() {
             $app['event']->subscribe(new ExplodeSubscriber($log));
         }
 
-        $fac1 = new Faction($app['event']);
+        $fac1 = new Faction($factionAName, $app['event']);
         $ftr = new Fighter($app['event']);
         $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric($app['event']));
         $fac1->addCreature(new Rogue($app['event']));
         $fac1->addCreature(new Wizard($app['event']));
-        $fac2 = new Faction($app['event']);
+
+        $fac2 = new Faction($factionBName, $app['event']);
 
         /*
         $fac2->addCreature(new Goblin('Skiv'));
@@ -88,9 +89,10 @@ $app['testbattle'] = function() {
 };
 
 $app->get('/test', function() use ($app) {
-
+    $players = 'Players';
+    $monsters = 'Monsters';
     $log = new Log;
-    $battle = $app['testbattle']($app, $log);
+    $battle = $app['testbattle']($app, $players, $monsters, $log);
     $battle->doBattle();
     $battle->printResult();
 
@@ -100,24 +102,26 @@ $app->get('/test', function() use ($app) {
 });
 
 $app->get('/test/batch', function() use ($app) {
-    $wonByA = 0;
-    $wonByB = 0;
+    $players = 'Players';
+    $monsters = 'Monsters';
+    $wonByPlayers = 0;
+    $wonByMonsters = 0;
     $avgDuration = 0;
     for($i = 0 ; $i <= 1000 ; $i++ ) {
-        $battle = $app['testbattle']($app);
+        $battle = $app['testbattle']($app, $players, $monsters);
         $battle->doBattle();
-        if($battle->getWinner() == 'faction A') {
-            $wonByA++;
+        if($battle->getWinner() == $players) {
+            $wonByPlayers++;
         }
         else {
-            $wonByB++;
+            $wonByMonsters++;
         }
-        $avgDuration = ($avgDuration * ($wonByB+$wonByA) + $battle->getRoundsElapsed()) / ($wonByA + $wonByB + 1);
+        $avgDuration = ($avgDuration * ($wonByPlayers+$wonByMonsters) + $battle->getRoundsElapsed()) / ($wonByPlayers + $wonByMonsters + 1);
 
     }
 
-    echo round(($wonByA/$i)*100,1) . '% encounters are won by Faction A<br />';
-    echo round(($wonByB/$i)*100,1) . '% encounters are won by Faction B<br />';
+    echo round(($wonByPlayers/$i)*100,1) . '% encounters are won by ' . $players . '<br />';
+    echo round(($wonByMonsters/$i)*100,1) . '% encounters are won by ' . $monsters . ' <br />';
     echo 'average encounter duration: ' . round($avgDuration, 2) . ' rounds.<br />';
     echo 'Simulated a total of ' . ($i-1) . ' encounters.<br />';
 

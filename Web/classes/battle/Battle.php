@@ -64,20 +64,20 @@ class Battle
     }
 
     public function printResult() {
-        echo '<h1>Faction A survivors:</h1>';
+        echo '<h1>' . $this->factionA->getName() . '  survived:</h1>';
         foreach($this->factionA->getCreatures() as $creature) {
             echo $this->getCreatureString($creature);
         }
-        echo '<h1>Faction A downed:</h1>';
+        echo '<h1>' . $this->factionA->getName() . ' downed:</h1>';
         foreach($this->factionA->getDowned() as $creature) {
             echo $this->getCreatureString($creature);
         }
 
-        echo '<h1>Faction B survivors:</h1>';
+        echo '<h1>' . $this->factionB->getName() . ' survived:</h1>';
         foreach($this->factionB->getCreatures() as $creature) {
             echo $this->getCreatureString($creature);
         }
-        echo '<h1>Faction B downed:</h1>';
+        echo '<h1>' . $this->factionB->getName() . ' downed:</h1>';
         foreach($this->factionB->getDowned() as $creature) {
             echo $this->getCreatureString($creature);
         }
@@ -93,11 +93,11 @@ class Battle
     }
 
     public function getWinner() {
-        if($this->factionB->hasCreatures()) {
-            return 'faction B';
+        if($this->factionA->hasCreatures()) {
+            return $this->factionA->getName();
         }
         else {
-            return 'faction A';
+            return $this->factionB->getName();
         }
     }
 
