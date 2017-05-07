@@ -34,10 +34,13 @@ $app['testbattle'] = function() {
             $app['event']->subscribe(new GainedConditionSubscriber($log));
             $app['event']->subscribe(new LostConditionSubscriber($log));
             $app['event']->subscribe(new ExplodeSubscriber($log));
+            $app['event']->subscribe(new ConcentrationSubscriber($log));
         }
 
         $fac1 = new Faction($factionAName, $app['event']);
         $ftr = new Fighter($app['event']);
+        $effect = new ActiveEffect('being stupid', new Blinded(), new ConcentrationTerminator($app['event']));
+        $ftr->gainEffect($effect);
         $fac1->addCreature($ftr);
         $fac1->addCreature(new Cleric($app['event']));
         $fac1->addCreature(new Rogue($app['event']));

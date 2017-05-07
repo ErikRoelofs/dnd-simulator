@@ -9,6 +9,11 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
     protected $dispatcher;
 
     /**
+     * @var ActiveEffect
+     */
+    protected $effect;
+
+    /**
      * FixedDurationTerminator constructor.
      * @param $roundsLeft
      */
