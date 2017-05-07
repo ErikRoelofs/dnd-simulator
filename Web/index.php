@@ -44,42 +44,7 @@ $app['testbattle'] = function() {
         $fac1->addCreature(new Rogue($app['event']));
         $fac1->addCreature(new Wizard($app['event']));
 
-        $fac2 = new Faction($factionBName, $app['event']);
-
-        /*
-        $fac2->addCreature(new Goblin('Skiv'));
-        $fac2->addCreature(new Goblin('Nork'));
-        $fac2->addCreature(new Goblin('Brak'));
-        $fac2->addCreature(new Goblin('Glum'));
-        $fac2->addCreature(new Goblin('Tschu'));
-      */
-
-
-        /*
-        $fac2->addCreature(new Skeleton('Bones', $app['event']));
-        $fac2->addCreature(new Skeleton('Rattles', $app['event']));
-        $fac2->addCreature(new Skeleton('Clatters', $app['event']));
-        $fac2->addCreature(new Skeleton('Chatters', $app['event']));
-        $fac2->addCreature(new Skeleton('Jim', $app['event']));
-        */
-
-        /*
-        $fac2->addCreature(new IceMephit('Chilly', $app['event']));
-        $fac2->addCreature(new IceMephit('Willy', $app['event']));
-        $fac2->addCreature(new IceMephit('Nilly', $app['event']));
-*/
-        $fac2->addCreature(new MagmaMephit('Hotty', $app['event']));
-        $fac2->addCreature(new MagmaMephit('Smokey', $app['event']));
-        $fac2->addCreature(new MagmaMephit('Burney', $app['event']));
-
-/*
-        $fac2->addCreature(new Hobgoblin('Bluk'));
-        $fac2->addCreature(new Hobgoblin('Pluk'));
-        $fac2->addCreature(new Hobgoblin('Ruk'));
-        $fac2->addCreature(new Hobgoblin('Tuk'));
-        $fac2->addCreature(new Hobgoblin('Nuk'));
-*/
-//        $fac2->addCreature(new Ogre("Dumfuk"));
+        $fac2 = $app['encounter-builder']->createFactionByRecipe($factionBName, '2 Ogre');
 
         $app['event']->subscribe($fac1);
         $app['event']->subscribe($fac2);
@@ -90,6 +55,7 @@ $app['testbattle'] = function() {
 };
 
 $app->get('/test', function() use ($app) {
+
     $players = 'Players';
     $monsters = 'Monsters';
     $log = new Log;

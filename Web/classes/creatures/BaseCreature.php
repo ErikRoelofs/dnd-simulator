@@ -277,5 +277,14 @@ abstract class BaseCreature implements CreatureInterface
         $this->dispatcher->dispatch(new Event(self::EVENT_LOST_CONDITION, ['effect' => $effect, 'creature' => $this]));
     }
 
+    public function addVulnerability($vulnerability) {
+        $this->vulnerabilities[$vulnerability] = true;
+    }
+    public function addResistance($resistance) {
+        $this->resistances[$resistance] = true;
+    }
+    public function addImmunity($immunity) {
+        $this->immunities[$immunity] = true;
+    }
 
 }

@@ -37,12 +37,21 @@ class ServiceDefinitions {
 
 	public function load($app)
 	{
-		$app['yaml'] = function ($app) {
-			return new \Symfony\Component\Yaml\Yaml();
-		};
 
 		$app['event'] = function($app) {
 		    return new EventDispatcher();
+        };
+
+        $app['namegenerator'] = function($app) {
+            return new NameGenerator();
+        };
+
+		$app['monster-repo'] = function($app) {
+		    return new MonsterRepository($app['event'], $app['namegenerator']);
+        };
+
+		$app['encounter-builder'] = function($app) {
+		    return new SimpleEncounterBuilder($app['event'], $app['monster-repo']);
         };
 	}
 

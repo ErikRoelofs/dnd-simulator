@@ -1,0 +1,43 @@
+Goblin:
+  type: Goblin
+  ac: 15
+  hp: 7
+  attackBonus: 4
+  damage:
+    - 1d6+2
+    - 13
+  initiative: 2
+  saves: []
+Hobgoblin:
+  type: Hobgoblin
+  ac: 18
+  hp: 11
+  attackBonus: 3
+  damage:
+    - 1d8+1
+    - 13
+  initiative: 1
+  saves: []
+Ogre:
+  type: Ogre
+  ac: 11
+  hp: 59
+  attackBonus: 6
+  damage:
+    - 2d8+4
+    - 11
+  initiative: -1
+  saves: []
+Skeleton:
+  type: Skeleton
+  ac: 13
+  hp: 13
+  attackBonus: 4
+  damage:
+    - 1d6+2
+    - 13
+  initiative: 2
+  saves:
+    2 : 2
+  vulnerabilities:
+    - 11
