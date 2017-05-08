@@ -36,6 +36,9 @@ class MagmaMephit extends BaseCreature
 
     public function takeDamage(RolledDamage $damage)
     {
+        if($this->currentHP === 0) {
+            return;
+        }
         $damage = parent::takeDamage($damage);
         if($this->currentHP === 0) {
             $this->dispatcher->dispatch(new Event(Round::EVENT_INTERRUPT, ['creature' => $this, 'method' => 'explode']));

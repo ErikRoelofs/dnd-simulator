@@ -59,6 +59,9 @@ abstract class BaseCreature implements CreatureInterface
 
     public function takeDamage(RolledDamage $damage)
     {
+        if($this->currentHP === 0) {
+            return;
+        }
         $hpLost = $this->calculateDamageAmount($damage);
         $this->currentHP -= $hpLost;
         $this->dispatcher->dispatch(new Event(self::EVENT_TAKE_DAMAGE, [ 'target' => $this, 'hpLost' => $hpLost]));

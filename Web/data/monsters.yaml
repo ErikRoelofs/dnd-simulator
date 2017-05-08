@@ -41,3 +41,16 @@ Skeleton:
     2 : 2
   vulnerabilities:
     - 11
+Skeleton:
+  type: Skeleton
+  ac: 13
+  hp: 13
+  attackBonus: 4
+  damage:
+    - 1d6+2
+    - 13
+  initiative: 2
+  saves:
+    2 : 2
+  vulnerabilities:
+    - 11
