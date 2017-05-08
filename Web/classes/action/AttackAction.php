@@ -70,14 +70,13 @@ class AttackAction implements ActionInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        $mods = [];
+        $outcomes = [];
         foreach($targets as $target) {
-            if(!$target) { continue; }
             $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
-            $avgDmg = $this->damageExpression->avg()->multiply($chanceToHit);
-            $mods[] = new TakeDamageModification($target, $avgDmg);
+            $mod = new TakeDamageModification($target, $this->damageExpression->avg());
+            $outcomes[] = new Outcome([$mod], $chanceToHit);
         }
-        return $mods;
+        return new Prediction($outcomes);
     }
 
     public function isAvailable(CreatureInterface $creature)

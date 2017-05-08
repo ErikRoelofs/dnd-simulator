@@ -44,14 +44,15 @@ class MultiAttackAction implements ActionInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        $mods = [];
+        $prediction = new Prediction();
         foreach($this->attacks as $attack) {
             $temp = $this->sliceTargets($attack, $targets);
             $attackTargets = $temp['targets'];
             $targets = $temp['remainder'];
-            $mods = array_merge($mods, $attack->predict($perspective, $attackTargets));
+            $newPrediction = $attack->predict($perspective, $attackTargets);
+            $prediction = new Prediction(array_merge($prediction->getOutcomes(), $newPrediction->getOutcomes()));
         }
-        return $mods;
+        return $prediction;
     }
 
     public function isAvailable(CreatureInterface $creature)

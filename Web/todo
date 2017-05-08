@@ -1,4 +1,49 @@
+Modularized actions:
 
+- type component (when) (? or is this a cost ?)
+- options component (at who, riders, modifications)
+- target component (at who)
+- effect component (what)
+- resource component (at what cost)
+
+- follow ups?
+ -> "swing action" -> "hit action" or "miss action" or "crit action"
+ -> "swing action" -> "hit action" -> "maneauver action"
+ - (for prediction, need to branch it)
+
+- action execution plan:
+-> analyse (receive a prediction tree (including follow-up options?))
+-> chose
+-> do the step
+-> possibly trigger additional actions
+
+ComponentBasedAction
+  addCost( action-type, spell slot, limited resource, concentration, item, etc )
+  addEffect( makeAttackRoll, dealDamage, allowSave, addActiveEffect )
+  addOption ( target, spell-level, rider )
+
+
+
+ActionEffect
+  perform()
+  predict()
+  followUp( Action )
+
+AttackRollActionEffect
+  onCritical( ActionEffect )
+  onHit( ActionEffect )
+  onMiss ( ActionEffect )
+
+AllowSaveActionEffect
+  onPass( ActionEffect )
+  onMiss ( ActionEffect )
+
+
+DealDamageActionEffect
+HealActionEffect
+
+AddActiveEffectActionEffect
+RemoveActiveEffectActionEffect
 
 ======
 

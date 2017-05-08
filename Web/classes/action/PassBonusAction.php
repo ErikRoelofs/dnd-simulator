@@ -20,7 +20,7 @@ class PassBonusAction implements ActionInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        return [];
+        return new Prediction();
     }
 
     public function isAvailable(CreatureInterface $creature)

@@ -44,7 +44,7 @@ $app['testbattle'] = function() {
         $fac1->addCreature(new Rogue($app['event']));
         $fac1->addCreature(new Wizard($app['event']));
 
-        $fac2 = $app['encounter-builder']->createFactionByRecipe($factionBName, '6 Goblin');
+        $fac2 = $app['encounter-builder']->createFactionByRecipe($factionBName, '5 Goblin');
 
         $app['event']->subscribe($fac1);
         $app['event']->subscribe($fac2);

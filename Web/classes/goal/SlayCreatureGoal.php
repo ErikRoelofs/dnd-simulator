@@ -29,14 +29,17 @@ class SlayCreatureGoal implements GoalInterface
     public function calculateImpact(Perspective $perspective, ActionInterface $action, $targets)
     {
         $impact = 0;
-        $outcomes = $action->predict($perspective, $targets);
-        foreach($outcomes as $modification) {
-            if($modification instanceof TakeDamageModification) {
-                if($modification->getTarget() === $this->creature) {
-                    $impact += $modification->getDamage() / $this->creature->getCurrentHP();
+        $prediction = $action->predict($perspective, $targets);
+        foreach($prediction->getOutcomes() as $outcome) {
+            foreach($outcome->getModifications() as $modification) {
+                if($modification instanceof TakeDamageModification) {
+                    if($modification->getTarget() === $this->creature) {
+                        $impact += $modification->getDamage() / $this->creature->getCurrentHP();
+                    }
                 }
             }
         }
+
         return min(1, $impact);
     }
 

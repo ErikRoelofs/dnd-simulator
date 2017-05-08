@@ -27,11 +27,13 @@ class HealFriendsGoal implements GoalInterface
         $healNeeded = $this->healNeeded($targets);
         if($healNeeded === 0) { return 0; }
         $impact = 0;
-        $outcomes = $action->predict($perspective, $targets);
-        // buggy: does not take into account one heal spell hitting & overhealing the same target twice
-        foreach($outcomes as $modification) {
-            if($modification instanceof HealDamageModification) {
-                $impact += min( $modification->getAmount(), $modification->getTarget()->getMaxHP() - $modification->getTarget()->getCurrentHP() );
+
+        $prediction = $action->predict($perspective, $targets);
+        foreach($prediction->getOutcomes() as $outcome) {
+            foreach($outcome->getModifications() as $modification) {
+                if($modification instanceof HealDamageModification) {
+                    $impact += min( $modification->getAmount(), $modification->getTarget()->getMaxHP() - $modification->getTarget()->getCurrentHP() );
+                }
             }
         }
         return $impact / $healNeeded;

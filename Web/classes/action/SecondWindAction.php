@@ -54,13 +54,13 @@ class SecondWindAction implements ActionInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        $mods = [];
+        $outcomes = [];
         $healAvg = $this->healExpression->avg();
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $mods[] = new HealDamageModification($target, $healAvg);
+            $outcomes[] = new Outcome([new HealDamageModification($target, $healAvg)], 1);
         }
-        return $mods;
+        return new Prediction($outcomes);
     }
 
     public function isAvailable(CreatureInterface $creature)

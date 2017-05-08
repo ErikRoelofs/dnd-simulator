@@ -95,18 +95,20 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        $mods = [];
+        $outcomes = [];
         $avgDmg = $this->damageExpression->avg();
         foreach($targets as $target) {
-            if(!$target) { continue; }
             if($this->saveForHalf > 0) {
                 $chanceOfSave = $target->predictSave($this->saveForHalf, $this->resource->getSaveDC());
-                $multiplier = 1 - (0.5 * $chanceOfSave);
-                $avgDmg = $avgDmg->multiply($multiplier);
+                $halfDmg = $avgDmg->multiply(0.5);
+                $outcomes[] = new Outcome([new TakeDamageModification($target, $avgDmg)], 1 - $chanceOfSave);
+                $outcomes[] = new Outcome([new TakeDamageModification($target, $halfDmg)], $chanceOfSave);
             }
-            $mods[] = new TakeDamageModification($target, $avgDmg);
+            else {
+                $outcomes[] = new Outcome([new TakeDamageModification($target, $avgDmg)], 1);
+            }
         }
-        return $mods;
+        return new Prediction($outcomes);
     }
 
     public function isAvailable(CreatureInterface $creature)

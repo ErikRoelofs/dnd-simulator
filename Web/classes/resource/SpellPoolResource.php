@@ -18,7 +18,7 @@ class SpellPoolResource implements ResourceInterface
     {
         $this->saveDC = $saveDC;
         $this->spellAttack = $spellAttack;
-        if($this->slots !== null) {
+        if($slots !== null) {
             $this->slots = $slots;
         }
     }
@@ -34,7 +34,6 @@ class SpellPoolResource implements ResourceInterface
     public function spend(ActionInterface $action, CreatureInterface $creature)
     {
         if(!$action instanceof SpellInterface) {
-            var_dump($action);
             throw new Exception("Cannot spend resources: this is not a spell?");
         }
         $this->slots[$action->getSpellLevel()]--;

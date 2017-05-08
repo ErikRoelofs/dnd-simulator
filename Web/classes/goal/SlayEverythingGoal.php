@@ -20,10 +20,12 @@ class SlayEverythingGoal implements GoalInterface
         $painNeeded = $this->painNeeded($perspective);
         if($painNeeded == 0) { return 0; }
         $impact = 0;
-        $outcomes = $action->predict($perspective, $targets);
-        foreach($outcomes as $modification) {
-            if($modification instanceof TakeDamageModification) {
-                $impact += $modification->getTarget()->predictDamageTaken($modification->getDamage());
+        $prediction = $action->predict($perspective, $targets);
+        foreach($prediction->getOutcomes() as $outcome) {
+            foreach($outcome->getModifications() as $modification) {
+                if($modification instanceof TakeDamageModification) {
+                    $impact += ($modification->getTarget()->predictDamageTaken($modification->getDamage()) * $outcome->getOdds());
+                }
             }
         }
         return $impact / $painNeeded;

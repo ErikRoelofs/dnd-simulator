@@ -54,13 +54,13 @@ class HealAction implements ActionInterface, SpellInterface
 
     public function predict(Perspective $perspective, $targets)
     {
-        $mods = [];
         $healAvg = $this->diceExpression->avg();
+        $outcomes = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $mods[] = new HealDamageModification($target, $healAvg);
+            $outcomes[] = new Outcome([new HealDamageModification($target, $healAvg)], 1);
         }
-        return $mods;
+        return new Prediction($outcomes);
     }
 
     public function isAvailable(CreatureInterface $creature)
