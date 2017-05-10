@@ -69,5 +69,8 @@ class SpellPoolResource implements ResourceInterface
         return $this->slots[$action->getSpellLevel()] > 0;
     }
 
+    public function useSlot($level) {
+        $this->slots[$level]--;
+    }
 
 }
