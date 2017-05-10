@@ -10,9 +10,10 @@ class TestBro extends BaseCreature
         parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Beefcake', 'Testbro', 500,17,5,damage("1d12+3", Damage::TYPE_SLASHING), -1, [], $dispatcher);
         $a = new ActionPool();
 
+        $dmg = damage("1d12+3", Damage::TYPE_SLASHING);
         $mod = new ModularAction(
             new TargetComponent([ActionInterface::TARGET_ENEMY_CREATURE]),
-            [ new AttackEffect(5, damage("1d12+3", Damage::TYPE_SLASHING)) ],
+            [ new AttackRollEffect(5, new CritEffect($dmg), new HitEffect($dmg), new MissEffect()) ],
             []
         );
 

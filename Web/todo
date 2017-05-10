@@ -1,3 +1,5 @@
+- predict damage rolls, attack rolls (on creatureinterface)
+
 Modularized actions:
 
 - type component (when) (? or is this a cost ?)
