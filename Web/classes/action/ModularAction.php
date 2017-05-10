@@ -40,7 +40,7 @@ class ModularAction implements ActionInterface
     {
         $mods = [];
         foreach($this->effectComponents as $effectComponent) {
-            $mods = array_merge($mods, $effectComponent->perform());
+            $mods = array_merge($mods, $effectComponent->perform($perspective, $targets));
         }
         return $mods;
     }
@@ -66,6 +66,7 @@ class ModularAction implements ActionInterface
         foreach($this->resourceComponents as $resource) {
             $available = $available && $resource->available($this);
         }
+        return $available;
     }
 
     public function getResourceCost()

@@ -36,7 +36,7 @@ class Battle
     public function doBattle() {
         $rounds = 0;
         $this->setup();
-        while($this->factionA->hasCreatures() && $this->factionB->hasCreatures() && $rounds < 10) {
+        while($this->factionA->hasCreatures() && $this->factionB->hasCreatures() && $rounds < 20) {
             $this->nextRound();
             $rounds++;
         }
