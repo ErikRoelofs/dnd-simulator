@@ -36,13 +36,12 @@ class SavingThrowEffect implements EffectComponentInterface
         $outs = [];
         foreach($targets as $target) {
             if(!$target) { continue; }
-            $saved = $target->makeSave($this->type, $this->dc);
 
-            if( $saved ) {
+            if( $target->makeSave($this->type, $this->dc) ) {
                 $outs = array_merge( $outs, $this->onSucceed->perform($perspective, [$target]) );
             }
             else {
-                $outs = array_merge( $this->onFail->perform($perspective, [$target]) );
+                $outs = array_merge( $outs, $this->onFail->perform($perspective, [$target]) );
             }
         }
         return $outs;

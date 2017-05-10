@@ -24,7 +24,7 @@ class TestBro extends BaseCreature
         );
         $mod2 = new ModularAction(
             new TargetComponent([ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE]),
-            [ new SavingThrowEffect(11, Ability::DEXTERITY, new DamageEffect(damage("3d6", Damage::TYPE_FIRE)), new HalfDamageEffect(damage("3d6", Damage::TYPE_FIRE))) ],
+            [ new SavingThrowEffect($this->spellbook->getSaveDC(), Ability::DEXTERITY, new DamageEffect(damage("3d6", Damage::TYPE_FIRE)), new HalfDamageEffect(damage("3d6", Damage::TYPE_FIRE))) ],
             [ new SpellslotResource($this->spellbook, 1) ]
         );
 

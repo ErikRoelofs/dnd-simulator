@@ -1,13 +1,13 @@
 <?php
 
-class SimpleDamageSpellAction implements ActionInterface, SpellInterface
+class SimpleDamageSpellAction implements ActionInterface
 {
 
     const EVENT_SAVED = 'action.spell.simpledamage.passedSave';
     const EVENT_NOT_SAVED = 'action.spell.simpledamage.failedSave';
 
     /**
-     * @var SpellPoolResource
+     * @var SpellslotResource
      */
     protected $resource;
 
@@ -51,7 +51,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
      * @param int $saveForHalf
      * @param string $name
      */
-    public function __construct(SpellPoolResource $resource, DamageExpression $damageExpression, array $targets, $level, $action, $saveForHalf, $name)
+    public function __construct(SpellslotResource $resource, DamageExpression $damageExpression, array $targets, $level, $action, $saveForHalf, $name)
     {
         $this->resource = $resource;
         $this->damageExpression = $damageExpression;
@@ -76,7 +76,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
         $halfDmg = $dmg->multiply(0.5);
         foreach($targets as $target) {
             if(!$target) { continue; }
-            if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, $this->resource->getSaveDC())) {
+            if($this->saveForHalf > 0 && $target->makeSave($this->saveForHalf, 13)) {
                 $dispatcher->dispatch(new Event(self::EVENT_SAVED, ['caster' => $me, 'target' => $target, 'damage' => $halfDmg, 'name' => $this->name]));
                 $mods[] = new TakeDamageModification($target, $halfDmg);
             }
@@ -99,7 +99,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
         $avgDmg = $this->damageExpression->avg();
         foreach($targets as $target) {
             if($this->saveForHalf > 0) {
-                $chanceOfSave = $target->predictSave($this->saveForHalf, $this->resource->getSaveDC());
+                $chanceOfSave = $target->predictSave($this->saveForHalf, 13);
                 $halfDmg = $avgDmg->multiply(0.5);
                 $outcomes[] = new Outcome([new TakeDamageModification($target, $avgDmg)], 1 - $chanceOfSave);
                 $outcomes[] = new Outcome([new TakeDamageModification($target, $halfDmg)], $chanceOfSave);
@@ -119,11 +119,6 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
     public function getResourceCost()
     {
         return [ $this->resource ];
-    }
-
-    public function getSpellLevel()
-    {
-        return $this->level;
     }
 
 }

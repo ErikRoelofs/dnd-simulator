@@ -1,6 +1,6 @@
 <?php
 
-class SpellPoolResource implements ResourceInterface
+class SpellPoolResource
 {
 
     // technically you have infinite level 0 slots but whatever
@@ -23,32 +23,6 @@ class SpellPoolResource implements ResourceInterface
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUses()
-    {
-        return $this->slots;
-    }
-
-    public function spend(ActionInterface $action, CreatureInterface $creature)
-    {
-        if(!$action instanceof SpellInterface) {
-            throw new Exception("Cannot spend resources: this is not a spell?");
-        }
-        $this->slots[$action->getSpellLevel()]--;
-    }
-
-    public function getUseValue(ActionInterface $action, CreatureInterface $creature)
-    {
-        return $this->value;
-    }
-
-    public function getTotalValue(CreatureInterface $creature)
-    {
-        return $this->value * $this->uses;
-    }
-
     public function hasSlot($level) {
         return isset($this->slots[$level]) && $this->slots[$level] > 0;
     }
@@ -59,14 +33,6 @@ class SpellPoolResource implements ResourceInterface
 
     public function getSpellAttack() {
         return $this->spellAttack;
-    }
-
-    public function available(ActionInterface $action)
-    {
-        if(!$action instanceof SpellInterface) {
-            throw new Exception("Cannot spend resources: this is not a spell?");
-        }
-        return $this->slots[$action->getSpellLevel()] > 0;
     }
 
     public function useSlot($level) {

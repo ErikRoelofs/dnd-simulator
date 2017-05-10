@@ -18,8 +18,8 @@ class Wizard extends BaseCreature
         $a = new ActionPool();
         $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
         $a->addAction(new PassAction());
-        $a->addAction(new SimpleDamageSpellAction($this->spellPool, damage("3d4+3", Damage::TYPE_FORCE), [ ActionInterface::TARGET_ENEMY_CREATURE ], 1, ActionInterface::TYPE_ACTION, 0, "Magic Missile"));
-        $a->addAction(new SimpleDamageSpellAction($this->spellPool, damage("3d6", Damage::TYPE_FIRE), [ ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE ], 1, ActionInterface::TYPE_ACTION, Ability::DEXTERITY, "Burning Hands"));
+        $a->addAction(new SimpleDamageSpellAction(new SpellslotResource($this->spellPool, 1), damage("3d4+3", Damage::TYPE_FORCE), [ ActionInterface::TARGET_ENEMY_CREATURE ], 1, ActionInterface::TYPE_ACTION, 0, "Magic Missile"));
+        $a->addAction(new SimpleDamageSpellAction(new SpellslotResource($this->spellPool, 1), damage("3d6", Damage::TYPE_FIRE), [ ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE ], 1, ActionInterface::TYPE_ACTION, Ability::DEXTERITY, "Burning Hands"));
         $a->addAction(new PassMovementAction());
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
