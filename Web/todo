@@ -1,5 +1,3 @@
-- predict damage rolls, attack rolls (on creatureinterface)
-
 Modularized actions:
 
 - type component (when) (? or is this a cost ?)
@@ -127,3 +125,6 @@ Core:
 - expanded logging
 - loading creatures from a library
 - expand actions; make them modular
+
+
+- multiple hits from a spell should use the same damage

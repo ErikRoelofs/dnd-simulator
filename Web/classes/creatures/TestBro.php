@@ -16,8 +16,14 @@ class TestBro extends BaseCreature
             [ new AttackRollEffect(5, new CritEffect($dmg), new HitEffect($dmg), new MissEffect()) ],
             []
         );
+        $mod2 = new ModularAction(
+            new TargetComponent([ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE, ActionInterface::TARGET_UNIQUE_ENEMY_CREATURE]),
+            [ new SavingThrowEffect(11, Ability::DEXTERITY, new DamageEffect(damage("3d6", Damage::TYPE_FIRE)), new HalfDamageEffect(damage("3d6", Damage::TYPE_FIRE))) ],
+            []
+        );
 
         $a->addAction($mod);
+        $a->addAction($mod2);
         $a->addAction(new SecondWindAction(dice("1d10+1")));
         $a->addAction(new PassAction());
         $a->addAction(new PassMovementAction());
