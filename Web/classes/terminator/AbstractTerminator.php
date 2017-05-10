@@ -8,7 +8,7 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
      */
     protected $dispatcher;
 
-    private $subscribed = true;
+    private $subscribed = false;
 
     /**
      * @var ActiveEffect
@@ -22,7 +22,6 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
     public function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-        $dispatcher->subscribe($this);
     }
 
 
@@ -44,6 +43,14 @@ abstract class AbstractTerminator implements TerminatorInterface, EventSubscribe
         if($this->subscribed) {
             $this->dispatcher->unsubscribe($this);
             $this->subscribed = false;
+        }
+    }
+
+    public function onEffectStart()
+    {
+        if(!$this->subscribed) {
+            $this->dispatcher->subscribe($this);
+            $this->subscribed = true;
         }
     }
 

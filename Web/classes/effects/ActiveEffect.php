@@ -54,6 +54,7 @@ class ActiveEffect
 
     public function setOwner(CreatureInterface $owner) {
         $this->owner = $owner;
+        $this->terminator->onEffectStart();
     }
 
     public function shouldTerminate() {

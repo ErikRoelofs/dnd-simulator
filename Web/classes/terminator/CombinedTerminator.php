@@ -31,4 +31,11 @@ class CombinedTerminator implements TerminatorInterface
         }
     }
 
+    public function onEffectStart()
+    {
+        foreach($this->terminators as $terminator) {
+            $terminator->onEffectStart();
+        }
+    }
+
 }
