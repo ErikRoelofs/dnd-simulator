@@ -192,6 +192,27 @@ abstract class BaseCreature implements CreatureInterface
         return $dmg;
     }
 
+    public function predictAttackRoll($bonus, CreatureInterface $target)
+    {
+        $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
+        return [
+            ['type' => AttackRollEffect::ATTACK_CRIT, 'chance' => 0.05],
+            ['type' => AttackRollEffect::ATTACK_HIT, 'chance' => $chanceToHit - 0.05], // because a crit is also a hit
+            ['type' => AttackRollEffect::ATTACK_MISS, 'chance' => 1 - $chanceToHit],
+        ];
+    }
+
+    public function predictDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target)
+    {
+        $dmg = $damageExpression->avg();
+        if ($hitType === ActionInterface::ATTACK_CRIT) {
+            $dmg = $dmg->add($damageExpression->avgDiceOnly());
+        }
+        return $dmg;
+    }
+
+
+
     // we assume there are never multiple overrides with different effects
     // because no conditions exist as far as I know that enable this
     public function getOverride($type, $data = null) {

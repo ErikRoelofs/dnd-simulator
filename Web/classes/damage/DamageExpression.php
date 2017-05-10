@@ -41,6 +41,14 @@ class DamageExpression
         return new RolledDamage($results);
     }
 
+    public function avgDiceOnly() {
+        $results = [];
+        foreach($this->components as $component) {
+            $results[] = $component->avgDiceOnly();
+        }
+        return new RolledDamage($results);
+    }
+
     public static function written(array $args) {
         $length = count($args);
         $parts = [];

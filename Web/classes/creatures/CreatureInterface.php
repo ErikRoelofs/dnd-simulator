@@ -44,6 +44,9 @@ interface CreatureInterface
     public function makeAttackRoll($bonus, CreatureInterface $target);
     public function makeDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target);
 
+    public function predictAttackRoll($bonus, CreatureInterface $target);
+    public function predictDamageRoll($hitType, DamageExpression $damageExpression, CreatureInterface $target);
+
     public function getDieState($type, $data = null);
 
     public function gainEffect(ActiveEffect $effect);

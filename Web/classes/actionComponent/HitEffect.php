@@ -29,7 +29,7 @@ class HitEffect implements EffectComponentInterface
     {
         $mods = [];
         foreach($targets as $target) {
-            $dmg = $perspective->getMe()->makeDamageRoll(AttackEffect::EVENT_HIT, $this->damageExpression, $target);
+            $dmg = $perspective->getMe()->predictDamageRoll(AttackEffect::EVENT_HIT, $this->damageExpression, $target);
             $mods[] = new TakeDamageModification($target, $dmg);
         }
         return $mods;

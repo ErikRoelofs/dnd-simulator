@@ -48,6 +48,10 @@ class DamageComponent
         return new Damage($this->dice->avg(), $this->type);
     }
 
+    public function avgDiceOnly() {
+        return new Damage($this->dice->avgDiceOnly(), $this->type);
+    }
+
     public function __toString() {
         return (string) $this->dice . ' ' . Damage::write($this->type);
     }

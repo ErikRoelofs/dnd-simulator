@@ -41,11 +41,14 @@ class DiceExpression
     }
 
     public function avg() {
+        return $this->avgDiceOnly() + $this->flatAmount;
+    }
+
+    public function avgDiceOnly() {
         $totalAvg = 0;
         foreach($this->dicepool as $dice) {
             $totalAvg += $dice->avg();
         }
-        $totalAvg += $this->flatAmount;
         return $totalAvg;
     }
 

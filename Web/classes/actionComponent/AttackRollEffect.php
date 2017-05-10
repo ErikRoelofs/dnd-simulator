@@ -69,11 +69,29 @@ class AttackRollEffect implements EffectComponentInterface
     {
         $outcomes = [];
         foreach($targets as $target) {
-            $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
-            $mods = $this->onHit->predict($perspective, $targets);
-            foreach($mods as $mod) {
-                $outcomes[] = new Outcome([$mod], $chanceToHit);
+            foreach($perspective->getMe()->predictAttackRoll($this->attackBonus, $target) as $outcome ) {
+                switch($outcome['type']) {
+                    case self::ATTACK_CRIT: {
+                        $mods = $this->onCrit->predict($perspective, $targets);
+                        foreach($mods as $mod) {
+                            $outcomes[] = new Outcome([$mod], $outcome['chance']);
+                        }
+                    }
+                    case self::ATTACK_HIT: {
+                        $mods = $this->onHit->predict($perspective, $targets);
+                        foreach($mods as $mod) {
+                            $outcomes[] = new Outcome([$mod], $outcome['chance']);
+                        }
+                    }
+                    case self::ATTACK_MISS: {
+                        $mods = $this->onMiss->predict($perspective, $targets);
+                        foreach($mods as $mod) {
+                            $outcomes[] = new Outcome([$mod], $outcome['chance']);
+                        }
+                    }
+                }
             }
+
         }
         return new Prediction($outcomes);
     }
