@@ -56,5 +56,10 @@ class RechargableResource implements ResourceInterface, EventSubscriberInterface
         ];
     }
 
+    public function available(ActionInterface $action)
+    {
+        return $this->charged;
+    }
+
 
 }

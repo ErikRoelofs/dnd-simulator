@@ -7,4 +7,6 @@ interface ResourceInterface
     public function getUseValue(ActionInterface $action, CreatureInterface $creature);
 
     public function getTotalValue(CreatureInterface $creature);
+
+    public function available(ActionInterface $action);
 }

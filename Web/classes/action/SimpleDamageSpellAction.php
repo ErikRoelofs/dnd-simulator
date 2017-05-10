@@ -113,7 +113,7 @@ class SimpleDamageSpellAction implements ActionInterface, SpellInterface
 
     public function isAvailable(CreatureInterface $creature)
     {
-        return $this->resource->hasSlot($this->getSpellLevel());
+        return $this->resource->available($this);
     }
 
     public function getResourceCost()

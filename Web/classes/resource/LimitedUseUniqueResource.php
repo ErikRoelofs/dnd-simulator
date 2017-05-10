@@ -40,5 +40,10 @@ class LimitedUseUniqueResource implements ResourceInterface
         return $this->value * $this->uses;
     }
 
+    public function available(ActionInterface $action)
+    {
+        return $this->uses > 0;
+    }
+
 
 }

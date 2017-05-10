@@ -65,7 +65,7 @@ class SecondWindAction implements ActionInterface
 
     public function isAvailable(CreatureInterface $creature)
     {
-        return $this->resource->getUses() > 0;
+        return $this->resource->available($this);
     }
 
     public function getResourceCost()

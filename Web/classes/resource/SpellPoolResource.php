@@ -61,4 +61,13 @@ class SpellPoolResource implements ResourceInterface
         return $this->spellAttack;
     }
 
+    public function available(ActionInterface $action)
+    {
+        if(!$action instanceof SpellInterface) {
+            throw new Exception("Cannot spend resources: this is not a spell?");
+        }
+        return $this->slots[$action->getSpellLevel()] > 0;
+    }
+
+
 }
