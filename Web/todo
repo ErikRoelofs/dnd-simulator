@@ -1,7 +1,20 @@
+Armor class:
+- multiple types
+- with conditional bonusses & tags
+
+==
+- spells
+- shields
+- base
+- light armor
+- medium armor
+- heavy armor
+- special
+
 Modularized actions:
 
 - type component (when) (? or is this a cost ?)
-- options component (at who, riders, modifications)
+- options component (riders, modifications)
 - target component (at who)
 - effect component (what)
 - resource component (at what cost)
@@ -22,22 +35,10 @@ ComponentBasedAction
   addEffect( makeAttackRoll, dealDamage, allowSave, addActiveEffect )
   addOption ( target, spell-level, rider )
 
-
-
 ActionEffect
   perform()
   predict()
   followUp( Action )
-
-AttackRollActionEffect
-  onCritical( ActionEffect )
-  onHit( ActionEffect )
-  onMiss ( ActionEffect )
-
-AllowSaveActionEffect
-  onPass( ActionEffect )
-  onMiss ( ActionEffect )
-
 
 DealDamageActionEffect
 HealActionEffect

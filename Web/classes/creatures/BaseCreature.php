@@ -11,8 +11,10 @@ abstract class BaseCreature implements CreatureInterface
     protected $type;
     protected $maxHP;
     protected $currentHP;
-    protected $attackBonus;
-    protected $damage;
+
+    /**
+     * @var AC
+     */
     protected $ac;
     protected $initiative;
 
@@ -32,17 +34,15 @@ abstract class BaseCreature implements CreatureInterface
      */
     protected $effects = [];
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $attackBonus, $damage, $initiative, $saves, $dispatcher)
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $initiative, $saves, $dispatcher)
     {
         $this->strategy = $strategy;
         $this->name = $name;
         $this->type = $type;
         $this->maxHP = $hp;
         $this->currentHP = $hp;
-        $this->attackBonus = $attackBonus;
-        $this->ac = $ac;
+        $this->ac = new AC($this, [new FixedACCalculation($ac)]);
         $this->initiative = $initiative;
-        $this->damage = $damage;
         $this->saves = $saves;
         $this->dispatcher = $dispatcher;
     }
@@ -95,7 +95,7 @@ abstract class BaseCreature implements CreatureInterface
 
     public function getAC()
     {
-        return $this->ac;
+        return $this->ac->getCurrentAC();
     }
 
     public function isDead()
@@ -121,15 +121,7 @@ abstract class BaseCreature implements CreatureInterface
         return $outcome;
     }
 
-    public function getActions()
-    {
-        $a = new ActionPool();
-        $a->addAction(new AttackAction($this->attackBonus, $this->damage, 1));
-        $a->addAction(new PassAction());
-        $a->addAction(new PassBonusAction());
-        $a->addAction(new PassMovementAction());
-        return $a;
-    }
+    abstract public function getActions();
 
     public function healDamage($heal)
     {
@@ -194,7 +186,7 @@ abstract class BaseCreature implements CreatureInterface
 
     public function predictAttackRoll($bonus, CreatureInterface $target)
     {
-        $chanceToHit = (21 - ($target->getAC() - $this->attackBonus)) / 20;
+        $chanceToHit = (21 - ($target->getAC() - $bonus)) / 20;
         return [
             ['type' => AttackRollEffect::ATTACK_CRIT, 'chance' => 0.05],
             ['type' => AttackRollEffect::ATTACK_HIT, 'chance' => $chanceToHit - 0.05], // because a crit is also a hit
