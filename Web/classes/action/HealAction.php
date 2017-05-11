@@ -7,7 +7,7 @@ class HealAction implements ActionInterface, SpellInterface
 
     protected $amount;
     /**
-     * @var SpellPoolResource
+     * @var SpellslotResource
      */
     protected $resource;
 
@@ -21,9 +21,9 @@ class HealAction implements ActionInterface, SpellInterface
      * @param $attackBonus
      * @param $damage
      */
-    public function __construct(DiceExpression $expr, SpellPoolResource $spellPoolResource)
+    public function __construct(DiceExpression $expr, SpellslotResource $spellslotResource)
     {
-        $this->resource = $spellPoolResource;
+        $this->resource = $spellslotResource;
         $this->diceExpression = $expr;
     }
 
@@ -65,7 +65,7 @@ class HealAction implements ActionInterface, SpellInterface
 
     public function isAvailable(CreatureInterface $creature)
     {
-        return $this->resource->hasSlot($this->getSpellLevel());
+        return $this->resource->available($this);
     }
 
     public function getResourceCost()

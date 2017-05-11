@@ -1,6 +1,6 @@
 <?php
 
-class Wizard extends BaseCreature
+class Wizard extends BasePlayer
 {
 
     private $actions = [];
@@ -12,7 +12,17 @@ class Wizard extends BaseCreature
 
     public function __construct(EventDispatcher $dispatcher)
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), 'Zappy', 'Wizard', 8,12,2, [], $dispatcher);
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1)]), 'Zappy', 'Wizard', 8,12,2, [
+            Ability::WISDOM => true,
+            Ability::INTELLIGENCE => true
+        ], [
+            Ability::STRENGTH => -1,
+            Ability::DEXTERITY => 2,
+            Ability::CONSTITUTION => 2,
+            Ability::INTELLIGENCE => 3,
+            Ability::WISDOM => 0,
+            Ability::CHARISMA => 0
+        ], 2, $dispatcher);
         $this->spellPool = new SpellPoolResource(13, 5);
 
         $a = new ActionPool();

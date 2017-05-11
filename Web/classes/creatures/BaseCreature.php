@@ -18,7 +18,9 @@ abstract class BaseCreature implements CreatureInterface
     protected $ac;
     protected $initiative;
 
+    protected $abilities = [];
     protected $saves = [];
+
 
     protected $resistances = [];
     protected $vulnerabilities = [];
@@ -34,7 +36,7 @@ abstract class BaseCreature implements CreatureInterface
      */
     protected $effects = [];
 
-    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $initiative, $saves, $dispatcher)
+    public function __construct(StrategyInterface $strategy, $name, $type, $hp, $ac, $initiative, $saves, $abilities, $dispatcher)
     {
         $this->strategy = $strategy;
         $this->name = $name;
@@ -43,6 +45,7 @@ abstract class BaseCreature implements CreatureInterface
         $this->currentHP = $hp;
         $this->ac = new AC($this, [new FixedACCalculation($ac)]);
         $this->initiative = $initiative;
+        $this->abilities = $abilities;
         $this->saves = $saves;
         $this->dispatcher = $dispatcher;
     }

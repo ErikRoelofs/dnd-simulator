@@ -1,3 +1,7 @@
+BaseCreature:
+- extend with BaseMonster
+- extend with BasePlayer
+
 Armor class:
 - multiple types
 - with conditional bonusses & tags
