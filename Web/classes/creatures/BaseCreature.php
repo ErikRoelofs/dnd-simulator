@@ -306,4 +306,10 @@ abstract class BaseCreature implements CreatureInterface
         $this->immunities[$immunity] = true;
     }
 
+    public function getAbility($ability)
+    {
+        return $this->abilities[$ability];
+    }
+
+
 }

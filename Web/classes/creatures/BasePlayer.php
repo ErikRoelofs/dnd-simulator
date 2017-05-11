@@ -15,7 +15,7 @@ abstract class BasePlayer extends BaseCreature
             }
         }
         parent::__construct($strategy, $name, $type, $hp, $ac, $initiative, $saves, $abilities, $dispatcher);
-
+        $this->ac->addCalculation(new BaseACCalculation($this));
     }
 
 }

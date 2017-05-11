@@ -53,4 +53,6 @@ interface CreatureInterface
     public function loseEffect(ActiveEffect $effect);
 
     public function getAvailableActions();
+
+    public function getAbility($ability);
 }
