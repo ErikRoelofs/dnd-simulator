@@ -17,7 +17,7 @@ class TestBro extends BaseCreature
 
     public function __construct(EventDispatcher $dispatcher)
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Beefcake', 'Testbro', 500,17,5,damage("1d12+3", Damage::TYPE_SLASHING), -1, [], $dispatcher);
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Beefcake', 'Testbro', 500,17,-1, [], $dispatcher);
         $a = new ActionPool();
         $this->spellbook = new SpellPoolResource(11, 5);
         $this->concentration = new ConcentrationResource($this);
