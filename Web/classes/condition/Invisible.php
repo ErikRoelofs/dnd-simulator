@@ -1,11 +1,7 @@
 <?php
 
-class Invisible implements ConditionInterface
+class Invisible implements ModifyRollConditionInterface
 {
-    public function replaceRoll($type, $data = null)
-    {
-        return null;
-    }
 
     public function modifiesRoll($type, $data = null)
     {
@@ -15,11 +11,6 @@ class Invisible implements ConditionInterface
         if($type === CreatureInterface::ROLL_ATTACKED) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-    }
-
-    public function restrictsAvailableActions()
-    {
-        return [];
     }
 
 }

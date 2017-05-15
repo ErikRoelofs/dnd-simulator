@@ -1,7 +1,7 @@
 <?php
 
 // crits currently aren't modeled (because distance isn't modeled)
-class Paralysed implements ConditionInterface
+class Paralysed implements RestrictActionsConditionInterface, ModifyRollConditionInterface, ReplaceRollConditionInterface
 {
 
     public function replaceRoll($type, $data = null) {

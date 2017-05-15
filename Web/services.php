@@ -13,14 +13,18 @@ require_once __DIR__.'/classes/action/SpellInterface.php';
 require_once __DIR__.'/classes/resource/ResourceInterface.php';
 require_once __DIR__.'/classes/modification/ModificationInterface.php';
 require_once __DIR__.'/classes/goal/GoalInterface.php';
-require_once __DIR__.'/classes/condition/ConditionInterface.php';
 require_once __DIR__.'/classes/event/EventListenerInterface.php';
 require_once __DIR__.'/classes/event/EventSubscriberInterface.php';
 require_once __DIR__.'/classes/terminator/TerminatorInterface.php';
 require_once __DIR__.'/classes/terminator/AbstractTerminator.php';
 require_once __DIR__.'/classes/actionComponent/EffectComponentInterface.php';
 require_once __DIR__.'/classes/creatureStats/ACCalculationInterface.php';
+require_once __DIR__.'/classes/creatureStats/AbstractACCalculation.php';
 
+require_once __DIR__.'/classes/condition/ConditionInterface.php';
+require_once __DIR__.'/classes/condition/interfaces/ModifyRollConditionInterface.php';
+require_once __DIR__.'/classes/condition/interfaces/ReplaceRollConditionInterface.php';
+require_once __DIR__.'/classes/condition/interfaces/RestrictActionsConditionInterface.php';
 
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);

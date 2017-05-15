@@ -212,7 +212,7 @@ abstract class BaseCreature implements CreatureInterface
     // because no conditions exist as far as I know that enable this
     public function getOverride($type, $data = null) {
         foreach($this->iterateConditions() as $condition) {
-            if($condition->replaceRoll($type, $data)) {
+            if($condition instanceof ReplaceRollConditionInterface && $condition->replaceRoll($type, $data)) {
                 return $condition->replaceRoll($type, $data);
             }
         }
@@ -223,12 +223,14 @@ abstract class BaseCreature implements CreatureInterface
         $advantage = false;
         $disadvantage = false;
         foreach($this->iterateConditions() as $condition) {
-            $change = $condition->modifiesRoll($type, $data);
-            if($change === CreatureInterface::DIE_DISADVANTAGE) {
-                $disadvantage = true;
-            }
-            if($change === CreatureInterface::DIE_ADVANTAGE) {
-                $advantage = true;
+            if($condition instanceof ModifyRollConditionInterface) {
+                $change = $condition->modifiesRoll($type, $data);
+                if ($change === CreatureInterface::DIE_DISADVANTAGE) {
+                    $disadvantage = true;
+                }
+                if ($change === CreatureInterface::DIE_ADVANTAGE) {
+                    $advantage = true;
+                }
             }
         }
         if($advantage && !$disadvantage) {
@@ -257,8 +259,10 @@ abstract class BaseCreature implements CreatureInterface
     {
         $actions = [ActionInterface::TYPE_ACTION => true, ActionInterface::TYPE_BONUS => true, ActionInterface::TYPE_MOVEMENT => true];;
         foreach($this->iterateConditions() as $condition) {
-            foreach($condition->restrictsAvailableActions() as $action) {
-                unset($actions[$action]);
+            if($condition instanceof RestrictActionsConditionInterface) {
+                foreach ($condition->restrictsAvailableActions() as $action) {
+                    unset($actions[$action]);
+                }
             }
         }
         return $actions;
@@ -278,6 +282,12 @@ abstract class BaseCreature implements CreatureInterface
         return array_map(function(ActiveEffect $item) {
             return $item->getCondition();
         }, $this->effects);
+    }
+
+    public function getConditionsModifying($interface) {
+        return array_filter($this->iterateConditions(), function($item) use ($interface){
+           return $item instanceof $interface;
+        });
     }
 
     public function gainEffect(ActiveEffect $effect)

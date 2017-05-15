@@ -1,23 +1,20 @@
 <?php
 
-class BaseACCalculation implements ACCalculationInterface
+class BaseACCalculation extends AbstractACCalculation
 {
 
-    protected $owner;
 
     /**
      * BaseACCalculation constructor.
-     * @param $owner
      */
-    public function __construct($owner)
+    public function __construct(CreatureInterface $owner)
     {
-        $this->owner = $owner;
+        parent::__construct($owner, 10);
     }
-
 
     public function calculate()
     {
-        return 10 + $this->owner->getAbility(Ability::DEXTERITY);
+        return 10 + $this->owner->getAbility(Ability::DEXTERITY) + $this->getConditionalBonus();
     }
 
     public function getTags()

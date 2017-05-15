@@ -1,12 +1,8 @@
 <?php
 
 // simplified: source is always assumed to be in sight; movement isn't modeled.
-class Frightened implements ConditionInterface
+class Frightened implements ModifyRollConditionInterface
 {
-    public function replaceRoll($type, $data = null)
-    {
-        return null;
-    }
 
     public function modifiesRoll($type, $data = null)
     {
@@ -16,11 +12,6 @@ class Frightened implements ConditionInterface
         if($type === CreatureInterface::ROLL_ABILITY) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-    }
-
-    public function restrictsAvailableActions()
-    {
-        return [];
     }
 
 }

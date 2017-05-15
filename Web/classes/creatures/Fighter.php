@@ -7,7 +7,7 @@ class Fighter extends BasePlayer
 
     public function __construct(EventDispatcher $dispatcher)
     {
-        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Jimbob', 'Fighter', 12,17, -1, [
+        parent::__construct(new BasicStrategy([new SlayEverythingGoal(1), new HealFriendsGoal(1), new ConserveResourcesGoal(1)]), 'Jimbob', 'Fighter', 12,0, -1, [
             Ability::STRENGTH => true,
             Ability::CONSTITUTION => true
         ], [
@@ -30,6 +30,9 @@ class Fighter extends BasePlayer
         $a->addAction(new PassMovementAction());
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
+
+        $this->ac->addCalculation(new HeavyArmorACCalculation($this, 16));
+        $this->gainEffect(new ActiveEffect("Defensive Fighting", new DefensiveFightingStyle(), new InherentTerminator()));
     }
 
     public function getActions()

@@ -1,12 +1,7 @@
 <?php
 
-class Restrained implements ConditionInterface
+class Restrained implements ModifyRollConditionInterface
 {
-    public function replaceRoll($type, $data = null)
-    {
-        return null;
-    }
-
 
     public function modifiesRoll($type, $data = null)
     {
@@ -20,11 +15,6 @@ class Restrained implements ConditionInterface
             return CreatureInterface::DIE_DISADVANTAGE;
         }
         return null;
-    }
-
-    public function restrictsAvailableActions()
-    {
-        return [];
     }
 
 }

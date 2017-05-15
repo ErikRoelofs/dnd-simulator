@@ -1,30 +1,11 @@
 <?php
 
-class MediumArmorACCalculation implements ACCalculationInterface
+class MediumArmorACCalculation extends AbstractACCalculation
 {
-
-    /**
-     * @var CreatureInterface
-     */
-
-    protected $owner;
-
-    protected $armor;
-
-    /**
-     * BaseACCalculation constructor.
-     * @param $owner
-     */
-    public function __construct(CreatureInterface $owner, $armor)
-    {
-        $this->owner = $owner;
-        $this->armor = $armor;
-    }
-
 
     public function calculate()
     {
-        return $this->armor + min( $this->owner->getAbility(Ability::DEXTERITY), 2 );
+        return $this->armor + min( $this->owner->getAbility(Ability::DEXTERITY), 2 ) + $this->getConditionalBonus();
     }
 
     public function getTags()

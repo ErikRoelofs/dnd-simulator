@@ -1,6 +1,6 @@
 <?php
 
-class Stunned implements ConditionInterface
+class Stunned implements RestrictActionsConditionInterface, ModifyRollConditionInterface, ReplaceRollConditionInterface
 {
     public function replaceRoll($type, $data = null)
     {

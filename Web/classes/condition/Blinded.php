@@ -1,11 +1,7 @@
 <?php
 
-class Blinded implements ConditionInterface
+class Blinded implements ModifyRollConditionInterface
 {
-    public function replaceRoll($type, $data = null)
-    {
-        return null;
-    }
 
     public function modifiesRoll($type, $data = null)
     {
@@ -15,11 +11,6 @@ class Blinded implements ConditionInterface
         if($type === CreatureInterface::ROLL_ATTACK) {
             return CreatureInterface::DIE_DISADVANTAGE;
         }
-    }
-
-    public function restrictsAvailableActions()
-    {
-        return [];
     }
 
 }

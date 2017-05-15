@@ -1,11 +1,7 @@
 <?php
 
-class Poisoned implements ConditionInterface
+class Poisoned implements ModifyRollConditionInterface
 {
-    public function replaceRoll($type, $data = null)
-    {
-        return null;
-    }
 
     public function modifiesRoll($type, $data = null)
     {
@@ -13,11 +9,6 @@ class Poisoned implements ConditionInterface
             return CreatureInterface::DIE_DISADVANTAGE;
         }
         return null;
-    }
-
-    public function restrictsAvailableActions()
-    {
-        return [];
     }
 
 }
