@@ -41,5 +41,4 @@ class Wizard extends BasePlayer
         return $this->actions;
     }
 
-
 }

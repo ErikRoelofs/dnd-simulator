@@ -3,8 +3,18 @@ BaseCreature:
 - extend with BasePlayer
 
 Armor class:
-- multiple types
-- with conditional bonusses & tags
+- allow conditions to modify armor tags (for wearing a shield)
+- create the Shield of Faith spell
+- create the Barkskin spell (effect that adds an AC calculation)
+
+Equipment:
+- allow weapons to change how attacks work (proficiency, damage)
+- give attacks sources
+- allow armor to add new AC calculations
+- allow selecting the right gear, and switching between equipment
+- allow items to grant additional actions (potions)
+- allow items to be spent/lost
+
 
 ==
 - spells
