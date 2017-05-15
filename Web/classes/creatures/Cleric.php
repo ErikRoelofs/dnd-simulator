@@ -38,6 +38,10 @@ class Cleric extends BasePlayer
         $shieldOfFaith = new ModularAction(new TargetComponent([ActionInterface::TARGET_FRIENDLY_CREATURE]), [$effect], [new SpellslotResource($this->spellPool, 1)]);
         $a->addAction($shieldOfFaith);
 
+        $effect = new ConditionEffect(function() use ($dispatcher) { return new ActiveEffect("Barkskin", new AddACCalculation(new FixedACCalculation(16)), new ConcentrationTerminator($dispatcher, $this)); });
+        $barkskin = new ModularAction(new TargetComponent([ActionInterface::TARGET_FRIENDLY_CREATURE]), [$effect], [new SpellslotResource($this->spellPool, 1)]);
+        $a->addAction($barkskin);
+
         $a->addAction(new PassBonusAction());
         $this->actions = $a;
 

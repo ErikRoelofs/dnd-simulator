@@ -25,6 +25,8 @@ interface CreatureInterface
     public function getCurrentHP();
 
     public function getAC();
+    public function addACCalculation(ACCalculationInterface $calculation);
+    public function removeACCalculation(ACCalculationInterface $calculation);
 
     public function takeTurn(Faction $myFaction, Faction $otherFaction);
 

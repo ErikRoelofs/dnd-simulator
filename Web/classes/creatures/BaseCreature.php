@@ -101,6 +101,14 @@ abstract class BaseCreature implements CreatureInterface
         return $this->ac->getCurrentAC();
     }
 
+    public function addACCalculation(ACCalculationInterface $calculation) {
+        $this->ac->addCalculation($calculation);
+    }
+
+    public function removeACCalculation(ACCalculationInterface $calculation) {
+        $this->ac->removeCalculation($calculation);
+    }
+
     public function isDead()
     {
         return $this->currentHP <= 0;
@@ -294,6 +302,10 @@ abstract class BaseCreature implements CreatureInterface
     {
         $effect->setOwner($this);
         $this->effects[spl_object_hash($effect)] = $effect;
+        $condition = $effect->getCondition();
+        if($condition instanceof StartStopConditionInterface) {
+            $condition->start($this);
+        }
         $this->dispatcher->dispatch(new Event(self::EVENT_GAINED_CONDITION, ['effect' => $effect, 'creature' => $this]));
     }
 
@@ -303,6 +315,10 @@ abstract class BaseCreature implements CreatureInterface
             throw new Exception("Cannot lose effect; not on this creature.");
         }
         unset($this->effects[spl_object_hash($effect)]);
+        $condition = $effect->getCondition();
+        if($condition instanceof StartStopConditionInterface) {
+            $condition->stop($this);
+        }
         $this->dispatcher->dispatch(new Event(self::EVENT_LOST_CONDITION, ['effect' => $effect, 'creature' => $this]));
     }
 

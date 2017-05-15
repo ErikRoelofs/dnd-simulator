@@ -25,6 +25,8 @@ require_once __DIR__.'/classes/condition/ConditionInterface.php';
 require_once __DIR__.'/classes/condition/interfaces/ModifyRollConditionInterface.php';
 require_once __DIR__.'/classes/condition/interfaces/ReplaceRollConditionInterface.php';
 require_once __DIR__.'/classes/condition/interfaces/RestrictActionsConditionInterface.php';
+require_once __DIR__.'/classes/condition/interfaces/ModifyACConditionInterface.php';
+require_once __DIR__.'/classes/condition/interfaces/StartStopConditionInterface.php';
 
 $dir_iterator = new RecursiveDirectoryIterator(__DIR__ . "/classes");
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);

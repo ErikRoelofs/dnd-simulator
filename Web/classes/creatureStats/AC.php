@@ -31,6 +31,16 @@ class AC
         $this->calculations[] = $calculation;
     }
 
+    public function removeCalculation(ACCalculationInterface $remove) {
+        foreach($this->calculations as $key => $calculation) {
+            if($calculation === $remove) {
+                unset($this->calculations[$key]);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function getCurrentAC() {
         $max = 0;
         foreach($this->calculations as $calculation) {

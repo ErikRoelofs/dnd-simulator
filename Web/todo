@@ -4,7 +4,11 @@ BaseCreature:
 
 Armor class:
 - allow conditions to modify armor tags (for wearing a shield)
-- create the Shield of Faith spell
+- condition that adds/removes something from the character
+  - an action
+  - an ac calculation
+  - an item
+  - etc?
 - create the Barkskin spell (effect that adds an AC calculation)
 
 Equipment:
