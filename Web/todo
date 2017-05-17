@@ -1,7 +1,3 @@
-BaseCreature:
-- extend with BaseMonster
-- extend with BasePlayer
-
 Armor class:
 - allow conditions to modify armor tags (for wearing a shield)
 - condition that adds/removes something from the character
@@ -18,16 +14,6 @@ Equipment:
 - allow selecting the right gear, and switching between equipment
 - allow items to grant additional actions (potions)
 - allow items to be spent/lost
-
-
-==
-- spells
-- shields
-- base
-- light armor
-- medium armor
-- heavy armor
-- special
 
 Modularized actions:
 
@@ -47,22 +33,6 @@ Modularized actions:
 -> chose
 -> do the step
 -> possibly trigger additional actions
-
-ComponentBasedAction
-  addCost( action-type, spell slot, limited resource, concentration, item, etc )
-  addEffect( makeAttackRoll, dealDamage, allowSave, addActiveEffect )
-  addOption ( target, spell-level, rider )
-
-ActionEffect
-  perform()
-  predict()
-  followUp( Action )
-
-DealDamageActionEffect
-HealActionEffect
-
-AddActiveEffectActionEffect
-RemoveActiveEffectActionEffect
 
 ======
 
@@ -87,9 +57,9 @@ RemoveActiveEffectActionEffect
 ===
 buff examples:
 
-- increase ac
-- (dis)advantage on saves
-- (dis)advantage on attacks
+V increase ac
+V (dis)advantage on saves
+V (dis)advantage on attacks
 - flat or rolled bonus to certain checks
 - event-based (WHEN this THEN that)
 - resistance/immunity/vulnerability
@@ -131,7 +101,7 @@ V durations
 - conditions
 - concentration
 - temp HP
-- resources as attachable to actions
+V resources as attachable to actions
 
 Interface:
 - setup parties
