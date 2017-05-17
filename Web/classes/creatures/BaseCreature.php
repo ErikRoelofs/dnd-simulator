@@ -69,9 +69,17 @@ abstract class BaseCreature implements CreatureInterface
         $this->currentHP -= $hpLost;
         $this->dispatcher->dispatch(new Event(self::EVENT_TAKE_DAMAGE, [ 'target' => $this, 'hpLost' => $hpLost]));
         if($this->currentHP === 0) {
-            $this->dispatcher->dispatch(new Event(CreatureInterface::EVENT_DOWNED, ['creature' => $this]));
+            $this->beDead();
         }
         return $hpLost;
+    }
+
+    public function beDead() {
+        $this->currentHP = 0;
+        foreach($this->effects as $effect) {
+            $effect->shouldTerminate();
+        }
+        $this->dispatcher->dispatch(new Event(CreatureInterface::EVENT_DOWNED, ['creature' => $this]));
     }
 
     public function predictDamageTaken(RolledDamage $damage)
