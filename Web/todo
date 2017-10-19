@@ -1,11 +1,11 @@
+Fix up actionComponent predictions. All should return a Prediction (which can be repacked by a higher level effect)
+
+Pack tactics:
+- on hit, apply an "adjacent" buff until start of next turn
+- on attack, check allies for adjacent buff; if present and attacking the target, apply pack tactics
+
 Armor class:
 - allow conditions to modify armor tags (for wearing a shield)
-- condition that adds/removes something from the character
-  - an action
-  - an ac calculation
-  - an item
-  - etc?
-- create the Barkskin spell (effect that adds an AC calculation)
 
 Equipment:
 - allow weapons to change how attacks work (proficiency, damage)
@@ -30,7 +30,7 @@ Modularized actions:
 
 - action execution plan:
 -> analyse (receive a prediction tree (including follow-up options?))
--> chose
+-> choose
 -> do the step
 -> possibly trigger additional actions
 
@@ -82,14 +82,13 @@ V resource conservation
 - predictions
 - self-preservation
 - encounter goals
+- protect/buff friends
+- debuff enemies
 
 Battlefield:
 - positioning
 - area targeting
 - death & dying
-
-Creatures:
-- abilities, proficiencies (?)
 
 Actions:
 - buffing
@@ -102,6 +101,7 @@ V durations
 - concentration
 - temp HP
 V resources as attachable to actions
+- real attacks, with weapons
 
 Interface:
 - setup parties

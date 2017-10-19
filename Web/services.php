@@ -6,6 +6,7 @@ require_once __DIR__.'/classes/creatures/CreatureInterface.php';
 require_once __DIR__.'/classes/creatures/BaseCreature.php';
 require_once __DIR__.'/classes/creatures/BasePlayer.php';
 require_once __DIR__.'/classes/creatures/BaseMonster.php';
+require_once __DIR__.'/classes/creatures/SimpleCreature.php';
 
 require_once __DIR__.'/classes/strategy/StrategyInterface.php';
 require_once __DIR__.'/classes/action/ActionInterface.php';

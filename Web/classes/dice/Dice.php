@@ -52,5 +52,4 @@ class Dice
         return $this->amount . "d" . $this->sides;
     }
 
-
 }

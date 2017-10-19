@@ -6,6 +6,8 @@ dnd5e-php:
     USER_ID: 1000
   volumes:
     - .:/var/www/html
+  ports:
+    - 80:80
 
 composercli:
   image: registry.hexia.io/zigweb/composer:4.0

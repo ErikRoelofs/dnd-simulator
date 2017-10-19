@@ -46,8 +46,9 @@ $app['testbattle'] = function() {
         $fac1->addCreature(new TestBro($app['event']));
 
         $fac2 = $app['encounter-builder']->createFactionByRecipe($factionBName, '1 Goblin');
-        $fac2->addCreature(new IceMephit("Chilly", $app['event']));
-        $fac2->addCreature(new MagmaMephit("Burny", $app['event']));
+        //$fac2->addCreature(new IceMephit("Chilly", $app['event']));
+        //$fac2->addCreature(new MagmaMephit("Burny", $app['event']));
+        $fac2->addCreature(new Hobgoblin("Choppy", $app['event']));
 
         $app['event']->subscribe($fac1);
         $app['event']->subscribe($fac2);
